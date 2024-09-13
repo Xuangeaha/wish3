@@ -5,7 +5,7 @@ import sys
 import random
 import webbrowser
 
-_ver = '3.0dev0.09.8100'
+_ver = '3.0prerelease_4'
 _global_font = '汉仪文黑-85w'
 
 class RoundShadow(QWidget):
@@ -78,7 +78,7 @@ class AboutWindow(MovableWindowWidget):
         self.about_close_button.setIcon(QIcon(r'.wish\assets\icon\close.png'))
         self.about_close_button.setFont(QFont(_global_font, 12))
         self.about_close_button.clicked.connect(self.close)
-        self.about_close_button.setFixedSize(24, 24)
+        self.about_close_button.setFixedSize(30, 30)
         self.about_close_button.setStyleSheet("""
             QPushButton:hover {
                 border-radius: 5px;
@@ -150,7 +150,7 @@ class LogWindow(MovableWindowWidget):
         self.log_close_button.setIcon(QIcon(r'.wish\assets\icon\close.png'))
         self.log_close_button.setFont(QFont(_global_font, 12))
         self.log_close_button.clicked.connect(self.close)
-        self.log_close_button.setFixedSize(24, 24)
+        self.log_close_button.setFixedSize(30, 30)
         self.log_close_button.setStyleSheet("""
             QPushButton:hover {
                 border-radius: 5px;
@@ -164,7 +164,7 @@ class LogWindow(MovableWindowWidget):
 
         self.log = QGridLayout()
 
-        with open('log.txt', 'r', encoding='utf-8') as file:
+        with open('CHANGELOG.txt', 'r', encoding='utf-8') as file:
             content_list = [line.strip() for line in file]
 
         self.log_layout.addLayout(self.log_header_layout)
@@ -172,13 +172,13 @@ class LogWindow(MovableWindowWidget):
         for x in range(1, int(len(content_list)/3+1)):
             log1 = QLabel(content_list[x*3-3].split("    ")[0]+"    ", self)
             log1.setFont(QFont(_global_font, 12))
-            log2 = QLabel(content_list[x*3-3].split("    ")[1]+"    ", self)
+            log2 = QLabel(content_list[x*3-3].split("    ")[1], self)
             log2.setFont(QFont(_global_font, 12))
-            log3 = QLabel(content_list[x*3-2], self)
+            log3 = QLabel(content_list[x*3-2]+"    ", self)
             log3.setFont(QFont(_global_font, 12))
             self.log.addWidget(log1, x, 1)
-            self.log.addWidget(log2, x, 2)
-            self.log.addWidget(log3, x, 3)
+            self.log.addWidget(log3, x, 2)
+            self.log.addWidget(log2, x, 3)
 
         self.log.setContentsMargins(35, 5, 35, 10)
         self.log_layout.addLayout(self.log)
@@ -207,7 +207,7 @@ class SettingsWindow(MovableWindowWidget):
         self.settings_close_button.setIcon(QIcon(r'.wish\assets\icon\close.png'))
         self.settings_close_button.setFont(QFont(_global_font, 12))
         self.settings_close_button.clicked.connect(self.close)
-        self.settings_close_button.setFixedSize(24, 24)
+        self.settings_close_button.setFixedSize(30, 30)
         self.settings_close_button.setStyleSheet("""
             QPushButton:hover {
                 border-radius: 5px;
@@ -247,15 +247,15 @@ class SettingsWindow(MovableWindowWidget):
         self.settings_bottom_layout = QHBoxLayout()
 
         self.about_button = QPushButton('关于..', self)
-        self.about_button.setFont(QFont(_global_font, 12))
+        self.about_button.setFont(QFont(_global_font, 10))
         self.about_button.clicked.connect(self.call_about_window)
-        self.about_button.setFixedSize(120, 24)
+        self.about_button.setFixedSize(150, 30)
         self.about_button.setToolTip('关于')
 
         self.log_button = QPushButton('更新说明..', self)
-        self.log_button.setFont(QFont(_global_font, 12))
+        self.log_button.setFont(QFont(_global_font, 10))
         self.log_button.clicked.connect(self.call_log_window)
-        self.log_button.setFixedSize(120, 24)
+        self.log_button.setFixedSize(150, 30)
         self.log_button.setToolTip('更新说明')
 
         self.settings_bottom_layout.addWidget(self.about_button)
@@ -267,7 +267,7 @@ class SettingsWindow(MovableWindowWidget):
         self.settings_layout.addStretch(10)
         self.settings_layout.addLayout(self.settings_bottom_layout)
         self.settings_layout.setContentsMargins(30, 25, 30, 25)
-
+        
         self.setGeometry(100, 100, 320, 350)
 
     def toggle_theme(self, index):
@@ -310,9 +310,9 @@ class WishWindow(MovableWindowWidget):
         self.is_information_shown = False
         self.is_in_guarantee: bool = False
         self.lucky_rest = list(range(1, 41))
-
+        # 当前保底机制：  · 每60次祈愿内，所有学号必出至少一次。\n                                · 任意连续8次祈愿内，相同学号至多出一次。
         self.information_list = [
-            "当前保底机制：  · 每60次祈愿内，所有学号必出至少一次。\n                                · 任意连续8次祈愿内，相同学号至多出一次。",
+            "—— 9月17日 中秋：发布候选 ReleaseCandidate —— \n —— 9月20日 祈愿·幸运观众3.0 正式版：Win/MacOS双平台发布  ——",
             "当前保底机制：  无保底全随机"]
 
         self.root_settings = SettingsWindow(self)
@@ -325,7 +325,7 @@ class WishWindow(MovableWindowWidget):
 
         self.header_layout = QHBoxLayout()
 
-        self.title_label = QLabel('祈愿·幸运观众 3.0（早期开发）'+_ver, self)
+        self.title_label = QLabel('祈愿·幸运观众 3.0（预发布版本）'+_ver, self)
         self.title_label.setFont(QFont(_global_font, 11))
 
         self.information_button = QPushButton('∨祈愿详情∨', self)
@@ -338,19 +338,19 @@ class WishWindow(MovableWindowWidget):
         self.minimize_button.setIcon(QIcon(r'.wish\assets\icon\minimize.png'))
         self.minimize_button.clicked.connect(self.showMinimized)
         self.set_style(self.minimize_button, 'blue', 'white',
-                       24, 24, '最小化')
+                       30, 30, '最小化')
 
         self.settings_button = QPushButton('', self)
         self.settings_button.setIcon(QIcon(r'.wish\assets\icon\settings.png'))
         self.settings_button.clicked.connect(self.call_settings_window)
         self.set_style(self.settings_button, 'blue', 'white',
-                       24, 24, '设置')
+                       30, 30, '设置')
 
         self.close_button = QPushButton('', self)
         self.close_button.setIcon(QIcon(r'.wish\assets\icon\close.png'))
         self.close_button.clicked.connect(self.close) 
         self.set_style(self.close_button, 'blue', 'white',
-                       24, 24, '关闭')
+                       30, 30, '关闭')
 
         self.header_layout.addWidget(self.title_label)
         self.header_layout.addWidget(self.information_button)
@@ -391,6 +391,8 @@ class WishWindow(MovableWindowWidget):
         self.main_layout.addLayout(self.bottom_layout)
         self.main_layout.setContentsMargins(30, 25, 30, 25)
 
+        self.setWindowTitle("祈愿 · 幸运观众 3.0")
+        self.setWindowIcon(QIcon(r'.wish\assets\wish\wish.png'))
         self.setGeometry(100, 100, 950, 60)
 
     def set_style(self, widget, background_color, color, sizex, sizey, tooltip):
