@@ -13,7 +13,7 @@ import sys
 import random
 import webbrowser
 
-_ver = '3.0releaseCandidate_3'
+_ver = '3.0-Release'
 _global_font = '汉仪文黑-85w'
 
 class RoundShadow(QWidget):
@@ -59,7 +59,8 @@ class MovableWindow(QWidget):
     """
     def __init__(self, parent=None):
         super(MovableWindow, self).__init__(parent)
-        self.dragging, self.dragPosition = False, None
+        self.dragging = False
+        self.dragPosition = None
         self.setAttribute(Qt.WA_TranslucentBackground)
 
     def mousePressEvent(self, event):  # 按下鼠标动作绑定
@@ -345,9 +346,8 @@ class WishWindow(MovableWindow):
         self.is_information_shown = False
         self.is_in_guarantee: bool = False
         self.lucky_rest = list(range(1, 41))
-        # 当前保底机制：  · 每60次祈愿内，所有学号必出至少一次。\n                                · 任意连续8次祈愿内，相同学号至多出一次。
         self.information_list = [
-            "—— 9月17日 中秋：发布候选 ReleaseCandidate —— \n —— 9月20日 祈愿·幸运观众3.0 正式版：Win/MacOS双平台发布  ——",
+            "当前保底机制：  · 每60次祈愿内，所有学号必出至少一次。\n                                · 任意连续8次祈愿内，相同学号至多出一次。",
             "当前保底机制：  无保底全随机"]
 
         self.root_settings = SettingsWindow(self)
@@ -360,7 +360,7 @@ class WishWindow(MovableWindow):
 
         self.header_layout = QHBoxLayout()  # 标题栏
 
-        self.title_label = QLabel('祈愿·幸运观众 3.0（发布候选版本）'+_ver, self)
+        self.title_label = QLabel('祈愿·幸运观众 3.0', self)
         self.title_label.setFont(QFont(_global_font, 11))
 
         self.information_button = QPushButton('∨祈愿详情∨', self)
