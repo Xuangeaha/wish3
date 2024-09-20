@@ -6,14 +6,15 @@ All rights reserved. | MIT License
 
 """
 
-from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QApplication, QGraphicsDropShadowEffect
+from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QMessageBox, QApplication, QGraphicsDropShadowEffect
 from PyQt5.QtGui import QColor, QFont, QIcon, QPainter
 from PyQt5.QtCore import QPoint, Qt, QTimer
+import re
 import sys
 import random
 import webbrowser
 
-_ver = '3.0-Release'
+_ver = '3.1-dev0951'
 _global_font = '汉仪文黑-85w'
 
 class RoundShadow(QWidget):
@@ -257,7 +258,7 @@ class SettingsWindow(MovableWindow):
         self.theme_combo.setFont(QFont(_global_font, 12))
         self.theme_combo.addItem("默认")
         self.theme_combo.addItem("轴月")
-        # self.theme_combo.addItem("党")
+        self.theme_combo.addItem("谢不开朗鸡罗")
         self.theme_combo.currentIndexChanged.connect(self.toggle_theme)
 
         self.guarantee_label = QLabel('保底机制：', self)  # 设置窗口：2 保底机制
@@ -268,10 +269,36 @@ class SettingsWindow(MovableWindow):
         self.guarantee_combo.addItem("无保底")
         self.guarantee_combo.currentIndexChanged.connect(self.toggle_guarantee)
 
+        self.tie_label = QLabel('「心之捆绑」：', self)  # 设置窗口：3 「心之捆绑」
+        self.tie_label.setFont(QFont(_global_font, 12))
+        self.tie_lineedit = QLineEdit(self)
+        self.tie_lineedit.setFixedWidth(180)
+        self.tie_lineedit.setFont(QFont(_global_font, 12))
+        self.tie_lineedit.setText(''.join([str(item) + '-' if index % 2 == 0 else str(item) + ' ' for index, item in enumerate(self.wish_window.tie_list)]))
+        self.tie_lineedit.setToolTip("「心之捆绑」：强制使两学号在两次连续祈愿中依次抽出。通过该方式祈愿获得的学号不计入保底。示例：“5-32 23-24”")
+
+        self.separate_label = QLabel('「心之隔离」：', self)  # 设置窗口：4 「心之隔离」
+        self.separate_label.setFont(QFont(_global_font, 12))
+        self.separate_lineedit = QLineEdit(self)
+        self.separate_lineedit.setFixedWidth(180)
+        self.separate_lineedit.setFont(QFont(_global_font, 12))
+        self.separate_lineedit.setText(''.join([str(item) + '|' if index % 2 == 0 else str(item) + ' ' for index, item in enumerate(self.wish_window.separate_list)]))
+        self.separate_lineedit.setToolTip("「心之隔离」：限制两学号不得在两次连续祈愿中依次抽出。为满足该机制而进行强制插入的学号不计入保底。示例：“5|32 23|24”")
+
+        self.apply_tie_separate_button = QPushButton('应用', self)  # 设置窗口底栏
+        self.apply_tie_separate_button.setFont(QFont(_global_font, 12))
+        self.apply_tie_separate_button.setFixedWidth(80)
+        self.apply_tie_separate_button.clicked.connect(self.apply_tie_separate)
+
         self.settings_main_layout.addWidget(self.theme_label, 0, 0)  # 设置窗口中心布局
         self.settings_main_layout.addWidget(self.theme_combo, 0, 1)
         self.settings_main_layout.addWidget(self.guarantee_label, 1, 0)
         self.settings_main_layout.addWidget(self.guarantee_combo, 1, 1)
+        self.settings_main_layout.addWidget(self.tie_label, 3, 0)
+        self.settings_main_layout.addWidget(self.tie_lineedit, 3, 1)
+        self.settings_main_layout.addWidget(self.separate_label, 4, 0)
+        self.settings_main_layout.addWidget(self.separate_lineedit, 4, 1)
+        self.settings_main_layout.addWidget(self.apply_tie_separate_button, 5, 1)
         self.settings_main_layout.setContentsMargins(30, 0, 30, 0)
 
         self.settings_bottom_layout = QHBoxLayout()
@@ -299,14 +326,55 @@ class SettingsWindow(MovableWindow):
         self.settings_layout.setContentsMargins(30, 25, 30, 25)
         
         self.setGeometry(100, 100, 320, 350)
+        
+    def apply_tie_separate(self):
+        def show_messagebox(message, type):
+            msg = QMessageBox()  
+            msg.setIcon(type)  
+            msg.setWindowTitle("祈愿 · 幸运观众")
+            msg.setText(message)
+            msg.exec_()  
+
+        while True:
+            try:
+                new_tie_list = [int(item) for item in filter(None, re.split(r'[- ]+', self.tie_lineedit.text()))] 
+            except ValueError:
+                show_messagebox("「心之捆绑」存在错误输入，请检查。", QMessageBox.Critical); break
+            if len(new_tie_list) % 2 != 0:
+                show_messagebox("「心之捆绑」存在输入格式错误，请检查。", QMessageBox.Critical); break
+            is_unsupported_number = False
+            for items in new_tie_list:
+                if not (1 <= items <= 40):
+                    is_unsupported_number = True
+            if is_unsupported_number:
+                show_messagebox("「心之捆绑」存在不支持的学号，请检查。", QMessageBox.Critical); break
+
+            try:
+                new_separate_list = [int(item) for item in filter(None, re.split(r'[| ]+', self.separate_lineedit.text()))] 
+            except ValueError:
+                show_messagebox("「心之隔离」存在存在错误输入，请检查。", QMessageBox.Critical); break
+            if len(new_separate_list) % 2 != 0:
+                show_messagebox("「心之隔离」存在输入格式错误，请检查。", QMessageBox.Critical); break
+            is_unsupported_number = False
+            for items in new_separate_list:
+                if not (1 <= items <= 40):
+                    is_unsupported_number = True
+            if is_unsupported_number:
+                show_messagebox("「心之捆绑」存在不支持的学号，请检查。", QMessageBox.Critical); break
+            
+            self.wish_window.tie_list = new_tie_list
+            self.wish_window.separate_list = new_separate_list
+            show_messagebox("「心之隔离」与「心之捆绑」已更新。", QMessageBox.Information)
+            print(self.wish_window.tie_list, self.wish_window.separate_list)
+            break
 
     def toggle_theme(self, index):  # 1 主题配色切换
         if index == 1:
             color = QColor(0, 165, 0)
             stylesheet = "QWidget {background-color: #00a500; color: white}"
         elif index == 2:
-            color = Qt.red
-            stylesheet = "QWidget {background-color: red; color: yellow}"
+            color = QColor(255, 184, 198)
+            stylesheet = "QWidget {background-color: #ffb8c6; color: white}"
         else:
             color = Qt.white
             stylesheet = "QWidget {background-color: white; color: black}"
@@ -342,7 +410,9 @@ class WishWindow(MovableWindow):
         self.history_last_60 = []
         self.pick_num = 0
         self.pick_num_rest = 60
+        self.last_pick = 0
         self.last_8_picks = []
+        self.last_pick_tied = False
         self.is_information_shown = False
         self.is_in_guarantee: bool = False
         self.lucky_rest = list(range(1, 41))
@@ -350,6 +420,8 @@ class WishWindow(MovableWindow):
             "当前保底机制：  · 每60次祈愿内，所有学号必出至少一次。\n                                · 任意连续8次祈愿内，相同学号至多出一次。",
             "当前保底机制：  无保底全随机"]
 
+        self.tie_list = []
+        self.separate_list = []
         self.root_settings = SettingsWindow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
@@ -360,7 +432,7 @@ class WishWindow(MovableWindow):
 
         self.header_layout = QHBoxLayout()  # 标题栏
 
-        self.title_label = QLabel('祈愿·幸运观众 3.0', self)
+        self.title_label = QLabel('祈愿·幸运观众 3.1（早期开发）'+_ver, self)
         self.title_label.setFont(QFont(_global_font, 11))
 
         self.information_button = QPushButton('∨祈愿详情∨', self)
@@ -441,7 +513,6 @@ class WishWindow(MovableWindow):
     ##############################################################################################################
     ############################################## 抽学号逻辑核心 #################################################
     ##############################################################################################################
-        
     def get_lucky(self):  
         """
         祈愿 · 幸运观众：抽学号逻辑核心
@@ -450,30 +521,52 @@ class WishWindow(MovableWindow):
 
         """
         if self.guarantee_mode == 0: ############################################## 8-60保底模式 ###############
-            if self.pick_num_rest == 0: ########################################### 重置保底
+            if self.pick_num_rest == 0:
                 self.reset_guarantee()
-            if len(self.last_8_picks) > 7: ######################################## 8抽历史记录
+            if len(self.last_8_picks) > 7:
                 self.last_8_picks.remove(self.last_8_picks[0])
-            self.is_in_guarantee = len(self.lucky_rest) >= self.pick_num_rest ##### 60抽保底判断
+            self.is_in_guarantee = len(self.lucky_rest) >= self.pick_num_rest ##### 60抽保底
             while True:
-                if self.is_in_guarantee: ########################################## 60抽保底中
+                if self.is_in_guarantee:
                     lucky_person = random.choice(self.lucky_rest)
-                else: ############################################################# 60抽未保底
+                else:
                     lucky_person = random.randint(1, 40)
-                if lucky_person not in self.last_8_picks: ######################### 8抽保底跳出
+                if lucky_person not in self.last_8_picks: ######################### 8抽保底
                     break
             self.last_8_picks.append(lucky_person)
-            if lucky_person not in self.history_last_60: ########################## 60抽保底记录
+            if lucky_person not in self.history_last_60: 
                 self.history_last_60.append(lucky_person)
                 self.lucky_rest.remove(lucky_person)
-            self.pick_num += 1 #################################################### 历史记录
+            self.pick_num += 1
             self.pick_num_rest -= 1
-            self.history_all.append(lucky_person)
         else: ##################################################################### 无保底模式 ##################
             self.reset_guarantee()
-            lucky_person = random.randint(1, 40) ################################## 全随机
+            lucky_person = random.randint(1, 40)
+
+        if not self.last_pick_tied: ###############################################「心之捆绑」###################
+            if self.last_pick in self.tie_list:
+                index = self.tie_list.index(self.last_pick)
+                if index % 2 == 0:
+                    lucky_person = self.tie_list[index+1]
+                else:
+                    lucky_person = self.tie_list[index-1]
+                self.last_pick_tied = True
+        else:
+            self.last_pick_tied = False
+
+        ###########################################################################「心之隔离」###################
+        if self.last_pick in self.separate_list:
+            index = self.separate_list.index(self.last_pick)
+            if index % 2 == 0:
+                separate_person = self.separate_list[index+1]
+            else:
+                separate_person = self.separate_list[index-1]
+            if lucky_person == separate_person:
+                lucky_person = random.randint(1, 40)
+
+        self.history_all.append(lucky_person)
+        self.last_pick = lucky_person
         return lucky_person
-    
     ##############################################################################################################
     ##############################################################################################################
     ##############################################################################################################
@@ -499,7 +592,7 @@ class WishWindow(MovableWindow):
         self.update_label_timer = QTimer(self)
         self.numbers = [self.get_lucky() for _ in range(10)]
         self.update_label_timer.timeout.connect(self.update_label)
-        self.update_label_timer.start(100)
+        self.update_label_timer.start(50)
 
     def update_label(self):  # 学号显示动画
         if self.update_label_index < len(self.numbers):
