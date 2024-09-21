@@ -1,5 +1,5 @@
 """
-祈愿·幸运观众 3.0 (Wish3: Who's the Luckiest Dog?)
+祈愿·幸运观众 3.1 (Wish3: Who's the Luckiest Dog?)
 
 Copyright © 2023-2024 XuangeAha(轩哥啊哈OvO)
 All rights reserved. | MIT License
@@ -14,15 +14,15 @@ import sys
 import random
 import webbrowser
 
-_ver = '3.1-dev09.51b'
+_short_ver = '3.1'
+_ver = '3.1-dev09.5100-exp'
 _global_font = '汉仪文黑-85w'
+_iconpath = r'wish.ico'
 
 class RoundShadow(QWidget):
     """
     圆角阴影窗口框架
     
-    Copyright © 2024 XuangeAha(轩哥啊哈OvO)
-
     """
     def __init__(self, parent=None):
         super(RoundShadow, self).__init__(parent)
@@ -55,8 +55,6 @@ class MovableWindow(QWidget):
     """
     可拖动鼠标窗口框架
 
-    Copyright © 2024 XuangeAha(轩哥啊哈OvO)
-
     """
     def __init__(self, parent=None):
         super(MovableWindow, self).__init__(parent)
@@ -85,17 +83,14 @@ class MovableWindow(QWidget):
 
 class AboutWindow(MovableWindow):
     """
-    祈愿 · 幸运观众 3.0：关于窗口
-    
-    Copyright © 2024 XuangeAha(轩哥啊哈OvO)
+    祈愿 · 幸运观众：关于窗口
     
     """
     def __init__(self, parent=None):
         super(AboutWindow, self).__init__(parent)
+        self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
-
-        self.round_shadow = RoundShadow(self)
 
         self.about_layout = QVBoxLayout(self)
 
@@ -120,7 +115,7 @@ class AboutWindow(MovableWindow):
         self.wish_icon.setPixmap(QIcon(r'.wish\assets\wish\wish.png').pixmap(100, 100))
         self.wish_icon.setAlignment(Qt.AlignCenter)
 
-        self.wish_title = QLabel('祈愿·幸运观众 3.0', self)  # 关于窗口：祈愿·幸运观众标题
+        self.wish_title = QLabel('祈愿·幸运观众 '+_short_ver, self)  # 关于窗口：祈愿·幸运观众标题
         self.wish_title.setFont(QFont(_global_font, 18))
         self.wish_title.setAlignment(Qt.AlignCenter)
         self.wish_subtitle = QLabel(_ver, self)
@@ -132,44 +127,37 @@ class AboutWindow(MovableWindow):
 
         self.call_github = QPushButton('Github(Xuangeaha) ↗', self)  # 关于窗口：外链按钮
         self.call_github.setFont(QFont('等线', 10))
-        self.call_csdn = QPushButton('CSDN(轩哥啊哈OvO) ↗', self)
-        self.call_csdn.setFont(QFont('等线', 10))
+        self.call_wishsite = QPushButton('祈愿·幸运观众 官方网站 ↗', self)
+        self.call_wishsite.setFont(QFont('等线', 10))
         self.call_github.clicked.connect(self.call_github_broser)
-        self.call_csdn.clicked.connect(self.call_csdn_broser)
-
+        self.call_wishsite.clicked.connect(self.call_wishsite_broser)
+        
         self.about_layout.addLayout(self.about_header_layout)  # 关于窗口布局
-        self.about_layout.addStretch(1)
-        self.about_layout.addWidget(self.wish_icon)
-        self.about_layout.addWidget(self.wish_title)
-        self.about_layout.addWidget(self.wish_subtitle)
-        self.about_layout.addStretch(1)
-        self.about_layout.addWidget(self.wish_copyright)
-        self.about_layout.addWidget(self.call_github)
-        self.about_layout.addWidget(self.call_csdn)
+        for _widget in [1, self.wish_icon, self.wish_title, self.wish_subtitle, 1, self.wish_copyright, self.call_github, self.call_wishsite]:
+            try: self.about_layout.addWidget(_widget)
+            except TypeError: self.about_layout.addStretch(_widget)
         self.about_layout.setContentsMargins(30, 25, 30, 25)
 
+        self.setWindowTitle("祈愿 · 幸运观众 - 关于")
+        self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(300, 300, 400, 400)
 
-    def call_github_broser(self):  # 外链调用
-        webbrowser.open('https://www.github.com/xuangeaha')
-
-    def call_csdn_broser(self):
-        webbrowser.open('https://xuangeaha.blog.csdn.net/')
+    def call_github_broser(self): webbrowser.open('https://www.github.com/xuangeaha')  # 外链调用
+    def call_wishsite_broser(self): webbrowser.open('https://xuangeaha.github.io/wishsite')
 
 
 class LogWindow(MovableWindow):
     """
-    祈愿 · 幸运观众 3.0：更新说明窗口
+    祈愿 · 幸运观众：更新说明窗口
     
     Copyright © 2024 XuangeAha(轩哥啊哈OvO)
     
     """
     def __init__(self, parent=None):
         super(LogWindow, self).__init__(parent)
+        self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
-
-        self.round_shadow = RoundShadow(self)
 
         self.log_layout = QVBoxLayout(self)
 
@@ -211,14 +199,14 @@ class LogWindow(MovableWindow):
         self.log_layout.addLayout(self.log_table)
         self.log_layout.setContentsMargins(30, 25, 30, 25)
 
+        self.setWindowTitle("祈愿 · 幸运观众 - 更新说明")
+        self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(300, 300, 400, 400)
 
 
 class SettingsWindow(MovableWindow):
     """
-    祈愿 · 幸运观众 3.0：设置窗口
-    
-    Copyright © 2024 XuangeAha(轩哥啊哈OvO)
+    祈愿 · 幸运观众：设置窗口
     
     """
     def __init__(self, wish_window, parent=None):
@@ -226,10 +214,10 @@ class SettingsWindow(MovableWindow):
         self.root_log = LogWindow(self)
         self.root_about = AboutWindow(self)
         self.wish_window = wish_window
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
 
         self.round_shadow = RoundShadow(self)
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
 
         self.settings_layout = QVBoxLayout(self)
 
@@ -256,9 +244,8 @@ class SettingsWindow(MovableWindow):
         self.theme_label.setFont(QFont(_global_font, 12))
         self.theme_combo = QComboBox(self)
         self.theme_combo.setFont(QFont(_global_font, 12))
-        self.theme_combo.addItem("默认")
-        self.theme_combo.addItem("轴月")
-        self.theme_combo.addItem("谢不开朗鸡罗")
+        for _item in ["默认", "轴月", "谢不开朗鸡罗"]:
+            self.theme_combo.addItem(_item)
         self.theme_combo.currentIndexChanged.connect(self.toggle_theme)
 
         self.guarantee_label = QLabel('保底机制：', self)  # 设置窗口：2 保底机制
@@ -275,7 +262,7 @@ class SettingsWindow(MovableWindow):
         self.tie_lineedit.setFixedWidth(180)
         self.tie_lineedit.setFont(QFont(_global_font, 12))
         self.tie_lineedit.setText(''.join([str(item) + '-' if index % 2 == 0 else str(item) + ' ' for index, item in enumerate(self.wish_window.tie_list)]))
-        self.tie_lineedit.setToolTip("「心之捆绑」：强制使两学号在两次连续祈愿中依次抽出。通过该方式祈愿获得的学号不计入保底。示例：“5-32 23-24”")
+        self.tie_lineedit.setToolTip("强制使两学号在两次连续祈愿中依次抽出。通过该方式祈愿获得的学号不计入保底。示例：“5-32 23-24”")
 
         self.separate_label = QLabel('「心之隔离」：', self)  # 设置窗口：4 「心之隔离」
         self.separate_label.setFont(QFont(_global_font, 12))
@@ -283,91 +270,48 @@ class SettingsWindow(MovableWindow):
         self.separate_lineedit.setFixedWidth(180)
         self.separate_lineedit.setFont(QFont(_global_font, 12))
         self.separate_lineedit.setText(''.join([str(item) + '|' if index % 2 == 0 else str(item) + ' ' for index, item in enumerate(self.wish_window.separate_list)]))
-        self.separate_lineedit.setToolTip("「心之隔离」：限制两学号不得在两次连续祈愿中依次抽出。为满足该机制而进行强制插入的学号不计入保底。示例：“5|32 23|24”")
+        self.separate_lineedit.setToolTip("限制两学号不得在两次连续祈愿中依次抽出。为满足该机制而进行强制插入的学号不计入保底。示例：“5|32 23|24”")
 
         self.apply_tie_separate_button = QPushButton('应用', self)  # 设置窗口底栏
         self.apply_tie_separate_button.setFont(QFont(_global_font, 12))
         self.apply_tie_separate_button.setFixedWidth(80)
         self.apply_tie_separate_button.clicked.connect(self.apply_tie_separate)
 
-        self.settings_main_layout.addWidget(self.theme_label, 0, 0)  # 设置窗口中心布局
-        self.settings_main_layout.addWidget(self.theme_combo, 0, 1)
-        self.settings_main_layout.addWidget(self.guarantee_label, 1, 0)
-        self.settings_main_layout.addWidget(self.guarantee_combo, 1, 1)
-        self.settings_main_layout.addWidget(self.tie_label, 3, 0)
-        self.settings_main_layout.addWidget(self.tie_lineedit, 3, 1)
-        self.settings_main_layout.addWidget(self.separate_label, 4, 0)
-        self.settings_main_layout.addWidget(self.separate_lineedit, 4, 1)
-        self.settings_main_layout.addWidget(self.apply_tie_separate_button, 5, 1)
+        for _widget in [[self.theme_label, 0, 0], [self.theme_combo, 0, 1],  # 设置窗口中心布局
+                        [self.guarantee_label, 1, 0], [self.guarantee_combo, 1, 1], 
+                        [self.tie_label, 3, 0], [self.tie_lineedit, 3, 1],
+                        [self.separate_label, 4, 0], [self.separate_lineedit, 4, 1], 
+                        [self.apply_tie_separate_button, 5, 1]]:
+            self.settings_main_layout.addWidget(_widget[0], _widget[1], _widget[2])
+
         self.settings_main_layout.setContentsMargins(30, 0, 30, 0)
 
         self.settings_bottom_layout = QHBoxLayout()
 
         self.about_button = QPushButton('关于..', self)  # 设置窗口底栏
         self.about_button.setFont(QFont(_global_font, 10))
-        self.about_button.clicked.connect(self.call_about_window)
+        self.about_button.clicked.connect(self.root_about.show)
         self.about_button.setFixedSize(150, 30)
         self.about_button.setToolTip('关于')
 
         self.log_button = QPushButton('更新说明..', self)
         self.log_button.setFont(QFont(_global_font, 10))
-        self.log_button.clicked.connect(self.call_log_window)
+        self.log_button.clicked.connect(self.root_log.show)
         self.log_button.setFixedSize(150, 30)
         self.log_button.setToolTip('更新说明')
 
         self.settings_bottom_layout.addWidget(self.about_button)
         self.settings_bottom_layout.addWidget(self.log_button)
 
-        self.settings_layout.addLayout(self.settings_header_layout)  # 设置窗口布局
-        self.settings_layout.addStretch(10)
-        self.settings_layout.addLayout(self.settings_main_layout)
-        self.settings_layout.addStretch(10)
-        self.settings_layout.addLayout(self.settings_bottom_layout)
+        for _layout in [self.settings_header_layout, 10, self.settings_main_layout, 10, self.settings_bottom_layout]:  # 设置窗口布局
+            try: self.settings_layout.addLayout(_layout)
+            except TypeError: self.settings_layout.addStretch(_layout)
         self.settings_layout.setContentsMargins(30, 25, 30, 25)
         
+        self.setWindowTitle("祈愿 · 幸运观众 - 设置")
+        self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(100, 100, 320, 350)
-        
-    def apply_tie_separate(self):
-        def show_messagebox(message, type):
-            msg = QMessageBox()  
-            msg.setIcon(type)  
-            msg.setWindowTitle("祈愿 · 幸运观众")
-            msg.setText(message)
-            msg.exec_()  
-
-        while True:
-            try:
-                new_tie_list = [int(item) for item in filter(None, re.split(r'[- ]+', self.tie_lineedit.text()))] 
-            except ValueError:
-                show_messagebox("「心之捆绑」存在错误输入，请检查。", QMessageBox.Critical); break
-            if len(new_tie_list) % 2 != 0:
-                show_messagebox("「心之捆绑」存在输入格式错误，请检查。", QMessageBox.Critical); break
-            is_unsupported_number = False
-            for items in new_tie_list:
-                if not (1 <= items <= 40):
-                    is_unsupported_number = True
-            if is_unsupported_number:
-                show_messagebox("「心之捆绑」存在不支持的学号，请检查。", QMessageBox.Critical); break
-
-            try:
-                new_separate_list = [int(item) for item in filter(None, re.split(r'[| ]+', self.separate_lineedit.text()))] 
-            except ValueError:
-                show_messagebox("「心之隔离」存在存在错误输入，请检查。", QMessageBox.Critical); break
-            if len(new_separate_list) % 2 != 0:
-                show_messagebox("「心之隔离」存在输入格式错误，请检查。", QMessageBox.Critical); break
-            is_unsupported_number = False
-            for items in new_separate_list:
-                if not (1 <= items <= 40):
-                    is_unsupported_number = True
-            if is_unsupported_number:
-                show_messagebox("「心之捆绑」存在不支持的学号，请检查。", QMessageBox.Critical); break
-            
-            self.wish_window.tie_list = new_tie_list
-            self.wish_window.separate_list = new_separate_list
-            show_messagebox("「心之隔离」与「心之捆绑」已更新。", QMessageBox.Information)
-            print(self.wish_window.tie_list, self.wish_window.separate_list)
-            break
-
+ 
     def toggle_theme(self, index):  # 1 主题配色切换
         if index == 1:
             color = QColor(0, 165, 0)
@@ -382,57 +326,72 @@ class SettingsWindow(MovableWindow):
         self.wish_window.setStyleSheet(stylesheet)
 
     def toggle_guarantee(self, index):  # 2 保底机制切换
+        self.wish_window.reset_guarantee()
         toggle_size = [60, 40]
         self.wish_window.guarantee_mode = index
         self.wish_window.information.setText(self.wish_window.information_list[index])
         self.wish_window.information.setFixedSize(950, toggle_size[index])
         self.wish_window.adjustSize()
+   
+    def apply_tie_separate(self):  # 3 / 4「心之捆绑」与「心之隔离」应用 
+        def show_messagebox(message, type):
+            msg = QMessageBox()  
+            msg.setIcon(type)  
+            msg.setWindowTitle("祈愿 · 幸运观众")
+            msg.setText(message)
+            msg.exec_() 
 
-    def call_about_window(self):  # 关于窗口/更新说明窗口调取
-        self.root_about.show()
-
-    def call_log_window(self):
-        self.root_log.show()
+        def check_list(lineedit, message_prefix): 
+            try:  
+                new_list = [int(item) for item in filter(None, re.split(r'[-| ]+', lineedit.text()))]  
+            except ValueError:  
+                show_messagebox(f"「{message_prefix}」存在错误输入，请检查。", QMessageBox.Critical); return None  
+            if len(new_list) % 2 != 0:  
+                show_messagebox(f"「{message_prefix}」存在输入格式错误，请检查。", QMessageBox.Critical); return None  
+            is_unsupported_number = False  
+            for number in new_list:  
+                if not (1 <= number <= 40):  
+                    is_unsupported_number = True  
+            if is_unsupported_number:  
+                show_messagebox(f"「{message_prefix}」存在不支持的学号，请检查。", QMessageBox.Warning); return None  
+            return new_list
+            
+        while True:  
+            new_tie_list = check_list(self.tie_lineedit, "心之捆绑")  
+            new_separate_list = check_list(self.separate_lineedit, "心之隔离") 
+            if new_tie_list is None or new_separate_list is None: break  
+            self.wish_window.tie_list, self.wish_window.separate_list = new_tie_list, new_separate_list
+            show_messagebox("「心之隔离」与「心之捆绑」已更新。", QMessageBox.Information)
+            break
 
 
 class WishWindow(MovableWindow):
     """
-    祈愿 · 幸运观众 3.0：主窗口
-    
-    Copyright © 2024 XuangeAha(轩哥啊哈OvO)
+    祈愿 · 幸运观众：主窗口
     
     """
     def __init__(self, parent=None):
         super(WishWindow, self).__init__(parent)
         self.numbers = []
         self.guarantee_mode = 0
-        self.history_all = []
-        self.history_last_60 = []
-        self.pick_num = 0
-        self.pick_num_rest = 60
-        self.last_pick = 0
-        self.last_8_picks = []
-        self.last_pick_tied = False
+        self.is_in_guarantee = False
         self.is_information_shown = False
-        self.is_in_guarantee: bool = False
-        self.lucky_rest = list(range(1, 41))
+        self.history_all, self.history_last_60 = [], []
+        self.tie_list, self.separate_list, self.last_pick_tied = [], [], False
+        self.pick_num, self.pick_num_rest, self.last_pick, self.last_8_picks, self.lucky_rest = 0, 60, 0, [], list(range(1, 41))
         self.information_list = [
             "当前保底机制：  · 每60次祈愿内，所有学号必出至少一次。\n                                · 任意连续8次祈愿内，相同学号至多出一次。",
             "当前保底机制：  无保底全随机"]
 
-        self.tie_list = []
-        self.separate_list = []
-        self.root_settings = SettingsWindow(self)
+        self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
 
-        self.round_shadow = RoundShadow(self)
-
+        self.root_settings = SettingsWindow(self)
         self.main_layout = QVBoxLayout(self)
-
         self.header_layout = QHBoxLayout()  # 标题栏
 
-        self.title_label = QLabel('祈愿·幸运观众 3.1（早期开发）'+_ver, self)
+        self.title_label = QLabel('祈愿·幸运观众 '+_short_ver+'（早期开发）'+_ver, self)
         self.title_label.setFont(QFont(_global_font, 11))
 
         self.information_button = QPushButton('∨祈愿详情∨', self)
@@ -447,20 +406,17 @@ class WishWindow(MovableWindow):
 
         self.settings_button = QPushButton('', self)
         self.settings_button.setIcon(QIcon(r'.wish\assets\icon\settings.png'))
-        self.settings_button.clicked.connect(self.call_settings_window)
+        self.settings_button.clicked.connect(self.root_settings.show)
         self.set_widget_style(self.settings_button, 'blue', 'white', 30, 30, '设置')
 
         self.close_button = QPushButton('', self)
         self.close_button.setIcon(QIcon(r'.wish\assets\icon\close.png'))
         self.close_button.clicked.connect(self.close) 
         self.set_widget_style(self.close_button, 'blue', 'white', 30, 30, '关闭')
-
-        self.header_layout.addWidget(self.title_label)  # 标题栏布局
-        self.header_layout.addWidget(self.information_button)
-        self.header_layout.addStretch(1)
-        self.header_layout.addWidget(self.minimize_button)
-        self.header_layout.addWidget(self.settings_button)
-        self.header_layout.addWidget(self.close_button)
+        
+        for _widget in [self.title_label, self.information_button, 1, self.minimize_button, self.settings_button, self.close_button]:  # 标题栏布局
+            try: self.header_layout.addWidget(_widget)
+            except TypeError: self.header_layout.addStretch(_widget)
 
         self.information = QLabel(self.information_list[0], self)  # 信息
         self.information.setFont(QFont(_global_font, 14))
@@ -485,17 +441,16 @@ class WishWindow(MovableWindow):
         self.button_ten.clicked.connect(self.draw_ten)
         self.button_ten.setFixedSize(150, 60)
 
-        self.bottom_layout.addWidget(self.label_number)
-        self.bottom_layout.addWidget(self.button_once)
-        self.bottom_layout.addWidget(self.button_ten)
+        for _widget in [self.label_number, self.button_once, self.button_ten]:
+            self.bottom_layout.addWidget(_widget)
 
         self.main_layout.addLayout(self.header_layout)
         self.main_layout.addWidget(self.information)
         self.main_layout.addLayout(self.bottom_layout)
         self.main_layout.setContentsMargins(30, 25, 30, 25)
 
-        self.setWindowTitle("祈愿 · 幸运观众 3.0")
-        self.setWindowIcon(QIcon(r'.wish\assets\wish\wish.png'))
+        self.setWindowTitle("祈愿 · 幸运观众")
+        self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(100, 100, 950, 60)
 
     def set_widget_style(self, widget, background_color, color, sizex, sizey, tooltip):  # 元件格式包装
@@ -507,17 +462,12 @@ class WishWindow(MovableWindow):
                 background-color: {background_color};
                 color: {color}; }} """)
 
-    def call_settings_window(self):
-        self.root_settings.show()
-
     ##############################################################################################################
     ############################################## 抽学号逻辑核心 #################################################
     ##############################################################################################################
     def get_lucky(self):  
         """
         祈愿 · 幸运观众：抽学号逻辑核心
-        
-        Copyright © 2023-2024 XuangeAha(轩哥啊哈OvO)
 
         """
         if self.guarantee_mode == 0: ############################################## 8-60保底模式 ###############
@@ -540,16 +490,12 @@ class WishWindow(MovableWindow):
             self.pick_num += 1
             self.pick_num_rest -= 1
         else: ##################################################################### 无保底模式 ##################
-            self.reset_guarantee()
             lucky_person = random.randint(1, 40)
 
         if not self.last_pick_tied: ###############################################「心之捆绑」###################
             if self.last_pick in self.tie_list:
                 index = self.tie_list.index(self.last_pick)
-                if index % 2 == 0:
-                    lucky_person = self.tie_list[index+1]
-                else:
-                    lucky_person = self.tie_list[index-1]
+                lucky_person = self.tie_list[index+1] if index % 2 == 0 else self.tie_list[index-1]
                 self.last_pick_tied = True
         else:
             self.last_pick_tied = False
@@ -557,10 +503,7 @@ class WishWindow(MovableWindow):
         ###########################################################################「心之隔离」###################
         if self.last_pick in self.separate_list:
             index = self.separate_list.index(self.last_pick)
-            if index % 2 == 0:
-                separate_person = self.separate_list[index+1]
-            else:
-                separate_person = self.separate_list[index-1]
+            separate_person = self.separate_list[index+1] if index % 2 == 0 else self.separate_list[index-1]
             if lucky_person == separate_person:
                 lucky_person = random.randint(1, 40)
 
@@ -583,11 +526,9 @@ class WishWindow(MovableWindow):
         self.adjustSize()
 
     def draw_once(self):  # 抽 1 次
-        self.clear_label()
         self.label_number.setText(f'{self.get_lucky()}')
 
     def draw_ten(self):  # 抽 10 次
-        self.clear_label()
         self.update_label_index = 0
         self.update_label_timer = QTimer(self)
         self.numbers = [self.get_lucky() for _ in range(10)]
@@ -600,9 +541,6 @@ class WishWindow(MovableWindow):
             self.update_label_index += 1
         else:
             self.update_label_timer.stop()
-
-    def clear_label(self):  # 清除学号
-        self.label_number.setText('')
 
 
 if __name__ == '__main__':
