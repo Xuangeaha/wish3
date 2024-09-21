@@ -14,7 +14,7 @@ import sys
 import random
 import webbrowser
 
-_ver = '3.1-dev0951'
+_ver = '3.1-dev09.51b'
 _global_font = '汉仪文黑-85w'
 
 class RoundShadow(QWidget):
