@@ -1,6 +1,13 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QMessageBox, QApplication, QGraphicsDropShadowEffect
-from PyQt5.QtGui import QColor, QFont, QIcon, QPainter
-from PyQt5.QtCore import QPoint, Qt, QTimer
+"""
+祈愿 · 幸运观众：更新说明窗口
+
+Copyright © 2024 XuangeAha(轩哥啊哈OvO)
+
+"""
+
+from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout
+from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtCore import Qt
 
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
@@ -8,12 +15,6 @@ from MovableWindow import MovableWindow
 from config import _global_font, _iconpath
 
 class LogWindow(MovableWindow):
-    """
-    祈愿 · 幸运观众：更新说明窗口
-    
-    Copyright © 2024 XuangeAha(轩哥啊哈OvO)
-    
-    """
     def __init__(self, parent=None):
         super(LogWindow, self).__init__(parent)
         self.round_shadow = RoundShadow(self)

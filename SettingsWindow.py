@@ -1,21 +1,23 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QMessageBox, QApplication, QGraphicsDropShadowEffect
-from PyQt5.QtGui import QColor, QFont, QIcon, QPainter
-from PyQt5.QtCore import QPoint, Qt, QTimer
+"""
+祈愿 · 幸运观众：设置窗口
+
+Copyright © 2023-2024 XuangeAha(轩哥啊哈OvO)
+
+"""
+
+from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QMessageBox
+from PyQt5.QtGui import QColor, QFont, QIcon
+from PyQt5.QtCore import Qt
+import re
 
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 from LogWindow import LogWindow
 from AboutWindow import AboutWindow
 
-import re
-
 from config import _global_font, _iconpath
 
 class SettingsWindow(MovableWindow):
-    """
-    祈愿 · 幸运观众：设置窗口
-    
-    """
     def __init__(self, wish_window, parent=None):
         super(SettingsWindow, self).__init__(parent)
         self.root_log = LogWindow(self)

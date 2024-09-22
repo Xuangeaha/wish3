@@ -1,10 +1,14 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QMessageBox, QApplication, QGraphicsDropShadowEffect
-from PyQt5.QtGui import QColor, QFont, QIcon, QPainter
-from PyQt5.QtCore import QPoint, Qt, QTimer
-import re
-import sys
+"""
+祈愿 · 幸运观众：主窗口
+
+Copyright © 2023-2024 XuangeAha(轩哥啊哈OvO)
+
+"""
+
+from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout
+from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtCore import Qt, QTimer
 import random
-import webbrowser
 
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
@@ -13,10 +17,6 @@ from SettingsWindow import SettingsWindow
 from config import _short_ver, _ver, _vername, _global_font, _iconpath
 
 class WishWindow(MovableWindow):
-    """
-    祈愿 · 幸运观众：主窗口
-    
-    """
     def __init__(self, parent=None):
         super(WishWindow, self).__init__(parent)
         self.numbers = []
