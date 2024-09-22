@@ -1,12 +1,15 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QMessageBox, QApplication, QGraphicsDropShadowEffect
-from PyQt5.QtGui import QColor, QFont, QIcon, QPainter
-from PyQt5.QtCore import QPoint, Qt, QTimer
+"""
+圆角阴影窗口框架
+
+Copyright © 2024 XuangeAha(轩哥啊哈OvO)
+
+"""
+
+from PyQt5.QtWidgets import QWidget, QGraphicsDropShadowEffect
+from PyQt5.QtGui import QColor, QPainter
+from PyQt5.QtCore import Qt
 
 class RoundShadow(QWidget):
-    """
-    圆角阴影窗口框架
-    
-    """
     def __init__(self, parent=None):
         super(RoundShadow, self).__init__(parent)
         self.border_width = 8

@@ -1,12 +1,14 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QMessageBox, QApplication, QGraphicsDropShadowEffect
-from PyQt5.QtGui import QColor, QFont, QIcon, QPainter
-from PyQt5.QtCore import QPoint, Qt, QTimer
+"""
+可拖动重构窗口框架
+
+Copyright © 2023-2024 XuangeAha(轩哥啊哈OvO)
+
+"""
+
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtCore import QPoint, Qt
 
 class MovableWindow(QWidget):
-    """
-    可拖动鼠标窗口框架
-
-    """
     def __init__(self, parent=None):
         super(MovableWindow, self).__init__(parent)
         self.dragging = False
