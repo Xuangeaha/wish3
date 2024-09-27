@@ -74,3 +74,4 @@ class AboutWindow(MovableWindow):
 
     def call_github_broser(self): webbrowser.open('https://www.github.com/xuangeaha')  # 外链调用
     def call_wishsite_broser(self): webbrowser.open('https://xuangeaha.github.io/wishsite')
+    

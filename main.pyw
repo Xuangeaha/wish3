@@ -11,8 +11,13 @@ from WishWindow import WishWindow
 
 from PyQt5.QtWidgets import QApplication
 
-if __name__ == '__main__':
+
+def run():
     app = QApplication(sys.argv)
     root = WishWindow()
     root.show()
     app.exec_()
+
+
+if __name__ == '__main__':
+    run()

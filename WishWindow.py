@@ -188,3 +188,4 @@ class WishWindow(MovableWindow):
             self.update_label_index += 1
         else:
             self.update_label_timer.stop()
+            

@@ -32,3 +32,4 @@ class MovableWindow(QWidget):
 
     def resizeEvent(self, event):  # 动态放缩调整
         self.round_shadow.resize(self.size())
+        

@@ -48,10 +48,13 @@ class LogWindow(MovableWindow):
         for x in range(1, int(len(content_list)/3+1)):
             log_column1 = QLabel(content_list[x*3-3].split("    ")[0]+"    ", self)
             log_column1.setFont(QFont(_global_font, 12))
+            log_column1.setFixedHeight(30)
             log_column2 = QLabel(content_list[x*3-3].split("    ")[1], self)
             log_column2.setFont(QFont(_global_font, 12))
+            log_column2.setFixedHeight(30)
             log_column3 = QLabel(content_list[x*3-2]+"    ", self)
             log_column3.setFont(QFont(_global_font, 12))
+            log_column3.setFixedHeight(30)
             self.log_table.addWidget(log_column1, x, 1)
             self.log_table.addWidget(log_column3, x, 2)
             self.log_table.addWidget(log_column2, x, 3)

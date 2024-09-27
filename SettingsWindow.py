@@ -53,7 +53,7 @@ class SettingsWindow(MovableWindow):
         self.theme_label.setFont(QFont(_global_font, 12))
         self.theme_combo = QComboBox(self)
         self.theme_combo.setFont(QFont(_global_font, 12))
-        for _item in ["默认", "轴月", "谢不开朗鸡罗"]:
+        for _item in ["默认", "轴月", "谢不开朗鸡罗", "（自定义图片）"]:
             self.theme_combo.addItem(_item)
         self.theme_combo.currentIndexChanged.connect(self.toggle_theme)
 
@@ -68,7 +68,7 @@ class SettingsWindow(MovableWindow):
         self.tie_label = QLabel('「心之捆绑」：', self)  # 设置窗口：3 「心之捆绑」
         self.tie_label.setFont(QFont(_global_font, 12))
         self.tie_lineedit = QLineEdit(self)
-        self.tie_lineedit.setFixedWidth(180)
+        self.tie_lineedit.setFixedWidth(160)
         self.tie_lineedit.setFont(QFont(_global_font, 12))
         self.tie_lineedit.setText(''.join([str(item) + '-' if index % 2 == 0 else str(item) + ' ' for index, item in enumerate(self.wish_window.tie_list)]))
         self.tie_lineedit.setToolTip("强制使两学号在两次连续祈愿中依次抽出。通过该方式祈愿获得的学号不计入保底。示例：“5-32 23-24”")
@@ -76,14 +76,14 @@ class SettingsWindow(MovableWindow):
         self.separate_label = QLabel('「心之隔离」：', self)  # 设置窗口：4 「心之隔离」
         self.separate_label.setFont(QFont(_global_font, 12))
         self.separate_lineedit = QLineEdit(self)
-        self.separate_lineedit.setFixedWidth(180)
+        self.separate_lineedit.setFixedWidth(160)
         self.separate_lineedit.setFont(QFont(_global_font, 12))
         self.separate_lineedit.setText(''.join([str(item) + '|' if index % 2 == 0 else str(item) + ' ' for index, item in enumerate(self.wish_window.separate_list)]))
         self.separate_lineedit.setToolTip("限制两学号不得在两次连续祈愿中依次抽出。为满足该机制而进行强制插入的学号不计入保底。示例：“5|32 23|24”")
 
         self.apply_tie_separate_button = QPushButton('应用', self)  # 设置窗口底栏
         self.apply_tie_separate_button.setFont(QFont(_global_font, 12))
-        self.apply_tie_separate_button.setFixedWidth(80)
+        self.apply_tie_separate_button.setFixedWidth(100)
         self.apply_tie_separate_button.clicked.connect(self.apply_tie_separate)
 
         for _widget in [[self.theme_label, 0, 0], [self.theme_combo, 0, 1],  # 设置窗口中心布局
@@ -100,13 +100,13 @@ class SettingsWindow(MovableWindow):
         self.about_button = QPushButton('关于..', self)  # 设置窗口底栏
         self.about_button.setFont(QFont(_global_font, 10))
         self.about_button.clicked.connect(self.root_about.show)
-        self.about_button.setFixedSize(150, 30)
+        self.about_button.setFixedSize(160, 30)
         self.about_button.setToolTip('关于')
 
         self.log_button = QPushButton('更新说明..', self)
         self.log_button.setFont(QFont(_global_font, 10))
         self.log_button.clicked.connect(self.root_log.show)
-        self.log_button.setFixedSize(150, 30)
+        self.log_button.setFixedSize(160, 30)
         self.log_button.setToolTip('更新说明')
 
         self.settings_bottom_layout.addWidget(self.about_button)
@@ -122,17 +122,22 @@ class SettingsWindow(MovableWindow):
         self.setGeometry(100, 100, 320, 350)
  
     def toggle_theme(self, index):  # 1 主题配色切换
+        color, picture = None, None
         if index == 1:
             color = QColor(0, 165, 0)
             stylesheet = "QWidget {background-color: #00a500; color: white}"
         elif index == 2:
             color = QColor(255, 184, 198)
             stylesheet = "QWidget {background-color: #ffb8c6; color: white}"
+        elif index == 3:
+            picture = r'.wish\assets\wish\wish.png'
         else:
             color = Qt.white
             stylesheet = "QWidget {background-color: white; color: black}"
-        self.wish_window.round_shadow.set_background_color(color)
-        self.wish_window.setStyleSheet(stylesheet)
+        try:
+            self.wish_window.round_shadow.set_background(colour=color, picture=picture)
+            self.wish_window.setStyleSheet(stylesheet)
+        except: pass
 
     def toggle_guarantee(self, index):  # 2 保底机制切换
         self.wish_window.reset_guarantee()
@@ -150,17 +155,15 @@ class SettingsWindow(MovableWindow):
             msg.exec_() 
 
         def check_list(lineedit, message_prefix): 
-            try:  
-                new_list = [int(item) for item in filter(None, re.split(r'[-| ]+', lineedit.text()))]  
-            except ValueError:  
-                show_messagebox(f"「{message_prefix}」存在错误输入，请检查。", QMessageBox.Critical); return None  
+            try: new_list = [int(item) for item in filter(None, re.split(r'[-| ]+', lineedit.text()))]  
+            except ValueError: show_messagebox(f"「{message_prefix}」存在错误输入，请检查。", QMessageBox.Critical); return None  
             if len(new_list) % 2 != 0:  
                 show_messagebox(f"「{message_prefix}」存在输入格式错误，请检查。", QMessageBox.Critical); return None  
             is_unsupported_number = False  
             for number in new_list:  
                 if not (1 <= number <= 40):  
                     is_unsupported_number = True  
-            if is_unsupported_number:  
+            if is_unsupported_number:
                 show_messagebox(f"「{message_prefix}」存在不支持的学号，请检查。", QMessageBox.Warning); return None  
             return new_list
             
