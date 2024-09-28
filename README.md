@@ -4,11 +4,12 @@
 
 A Qt-based desktop gadget for randomly selecting student numbers.
 
-**当前正式版：**`3.0` &emsp;&emsp;**当前开发版本：**`3.1-dev09.51-exp7`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
+**当前正式版：**`3.0` &emsp;&emsp;**当前开发版本：**`3.1-prerelease2`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
 
 ## 开发中 Developing
 
-### 祈愿 · 幸运观众 3.1：「心之捆绑」与「心之隔离」机制
+### 祈愿 · 幸运观众 3.1：「心之捆绑」与「心之隔离」机制、自定义图片背景
+    预计发布时间：2024年10月20日
 
     ·「心之捆绑」
         强制使两学号在两次连续祈愿中依次抽出。示例：“5-32 23-24”
@@ -22,7 +23,16 @@ A Qt-based desktop gadget for randomly selecting student numbers.
 
     「心之捆绑」与「心之隔离」均可在「设置」窗口设置。以正确格式输入捆绑或隔离学号，点击“应用”按钮后，自下一次祈愿起即生效。
     
-    · 该机制于「祈愿 · 幸运观众」开发版本3.1-dev09.51-exp后加入。
+    >>> 该机制于「祈愿 · 幸运观众」开发版本3.1-dev09.51-exp后加入。
+
+    · 自定义图片背景
+        设置自定义图片作为祈愿窗口背景。
+        · 通过「设置」窗口中「自定义图片」栏目选择照片即可设置。
+        · 推荐照片尺寸：1050x200
+        
+        · 声明：我们尊重并保护所有照片版权，其解释权及所有权均严格归属于原始拍摄者所有，祈愿 · 幸运观众不拥有、不转让任何照片知识产权。用户上传的照片需确保已获得合法授权或属于公共领域资源，不侵犯任何第三方权益。我们鼓励合法、健康的内容创作与分享，感谢使用该功能。
+
+    >>> 该机制于「祈愿 · 幸运观众」开发版本3.1-prerelease2后加入。
 
 **Copyright © 2023-2024 XuangeAha(轩哥啊哈OvO)**
 

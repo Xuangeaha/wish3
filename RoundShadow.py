@@ -13,8 +13,7 @@ class RoundShadow(QWidget):
     def __init__(self, parent=None):
         super(RoundShadow, self).__init__(parent)
         self.border_width = 8
-        self.pixmap = QPixmap('')  # 加载图片  
-        self.background_brush = QBrush(self.pixmap)  # 创建画刷 
+        self.background_picture = QBrush(QPixmap(''))
         self.background_colour = QColor(Qt.white)
         self.setAttribute(Qt.WA_TranslucentBackground) 
         self.toggle_colour_picture = 0
@@ -30,7 +29,7 @@ class RoundShadow(QWidget):
             self.background_colour = colour
             self.toggle_colour_picture = 0
         if picture != None:
-            self.background_brush = QBrush(QPixmap(picture))
+            self.background_picture = QBrush(QPixmap(picture))
             self.toggle_colour_picture = 1
         self.update()
 
@@ -40,7 +39,9 @@ class RoundShadow(QWidget):
         if self.toggle_colour_picture == 0:
             painter.setBrush(self.background_colour) 
         elif self.toggle_colour_picture == 1:
-            painter.setBrush(self.background_brush) 
+            painter.setBrush(self.background_picture) 
+        else:
+            pass
         painter.setPen(Qt.transparent)  
 
         radius, rect = 16, self.rect()

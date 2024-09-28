@@ -5,7 +5,7 @@ Copyright © 2024 XuangeAha(轩哥啊哈OvO)
 
 """
 
-from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QMessageBox
+from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QMessageBox, QFileDialog
 from PyQt5.QtGui import QColor, QFont, QIcon
 from PyQt5.QtCore import Qt
 import re
@@ -120,24 +120,37 @@ class SettingsWindow(MovableWindow):
         self.setWindowTitle("祈愿 · 幸运观众 - 设置")
         self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(100, 100, 320, 350)
- 
+    
+    def show_messagebox(self, message, type):
+        msg = QMessageBox()  
+        msg.setIcon(type)  
+        msg.setWindowTitle("祈愿 · 幸运观众")
+        msg.setText(message)
+        msg.exec_() 
+
     def toggle_theme(self, index):  # 1 主题配色切换
-        color, picture = None, None
+        colour, picture = None, None
         if index == 1:
-            color = QColor(0, 165, 0)
+            colour = QColor(0, 165, 0)
             stylesheet = "QWidget {background-color: #00a500; color: white}"
         elif index == 2:
-            color = QColor(255, 184, 198)
+            colour = QColor(255, 184, 198)
             stylesheet = "QWidget {background-color: #ffb8c6; color: white}"
         elif index == 3:
-            picture = r'.wish\assets\wish\wish.png'
+            options = QFileDialog.Options()  
+            fileName, _ = QFileDialog.getOpenFileName(None, "选择背景图片（推荐大小：1050x200）", r".wish\themes", "Image files (*.jpg *.png)", options=options)  
+            if fileName:  
+                picture = fileName  
+                stylesheet = "QLabel {color: white}"
+                fileInfomation = fileName.split('/')[-1].split(', ')
+                declare_ch = ">>> 祈愿 · 幸运观众致力于为用户提供个性化体验，允许用户自定义设置照片作为个性化背景。我们尊重并保护所有照片版权，其解释权及所有权均严格归属于原始拍摄者所有，祈愿 · 幸运观众不拥有、不转让任何照片知识产权。用户上传的照片需确保已获得合法授权或属于公共领域资源，不侵犯任何第三方权益。我们鼓励合法、健康的内容创作与分享，感谢您的使用。"
+                declare_en = ">>> Wish3: Who's the luckiest dog? is dedicated to providing users with a personalized experience, allowing them to customize and set their own photos as individual backgrounds. We respect and protect all photograph copyrights, with the right of interpretation and ownership strictly belonging to the original photographer. Wish3: Who's the luckiest dog? does not own or transfer any intellectual property rights related to photographs. Users must ensure that the photos they upload have been legally authorized or belong to public domain resources, and do not infringe upon any third-party rights. We encourage legal and healthy content creation and sharing. Thank you for using our service."
+                self.show_messagebox(f"自定义图片背景已应用。\n\n照片标题：{fileInfomation[0]}\n拍摄者：{fileInfomation[1]}\n拍摄时间：{fileInfomation[2].split('.')[0]}\n\n{declare_ch}\n\n{declare_en}", QMessageBox.Information)
         else:
-            color = Qt.white
+            colour = Qt.white
             stylesheet = "QWidget {background-color: white; color: black}"
-        try:
-            self.wish_window.round_shadow.set_background(colour=color, picture=picture)
-            self.wish_window.setStyleSheet(stylesheet)
-        except: pass
+        self.wish_window.round_shadow.set_background(colour=colour, picture=picture)
+        self.wish_window.setStyleSheet(stylesheet)
 
     def toggle_guarantee(self, index):  # 2 保底机制切换
         self.wish_window.reset_guarantee()
@@ -147,24 +160,17 @@ class SettingsWindow(MovableWindow):
         self.wish_window.adjustSize()
    
     def apply_tie_separate(self):  # 3 / 4「心之捆绑」与「心之隔离」应用 
-        def show_messagebox(message, type):
-            msg = QMessageBox()  
-            msg.setIcon(type)  
-            msg.setWindowTitle("祈愿 · 幸运观众")
-            msg.setText(message)
-            msg.exec_() 
-
         def check_list(lineedit, message_prefix): 
             try: new_list = [int(item) for item in filter(None, re.split(r'[-| ]+', lineedit.text()))]  
-            except ValueError: show_messagebox(f"「{message_prefix}」存在错误输入，请检查。", QMessageBox.Critical); return None  
+            except ValueError: self.show_messagebox(f"「{message_prefix}」存在错误输入，请检查。", QMessageBox.Critical); return None  
             if len(new_list) % 2 != 0:  
-                show_messagebox(f"「{message_prefix}」存在输入格式错误，请检查。", QMessageBox.Critical); return None  
+                self.show_messagebox(f"「{message_prefix}」存在输入格式错误，请检查。", QMessageBox.Critical); return None  
             is_unsupported_number = False  
             for number in new_list:  
                 if not (1 <= number <= 40):  
                     is_unsupported_number = True  
             if is_unsupported_number:
-                show_messagebox(f"「{message_prefix}」存在不支持的学号，请检查。", QMessageBox.Warning); return None  
+                self.show_messagebox(f"「{message_prefix}」存在不支持的学号，请检查。", QMessageBox.Warning); return None  
             return new_list
             
         while True:  
@@ -172,5 +178,5 @@ class SettingsWindow(MovableWindow):
             new_separate_list = check_list(self.separate_lineedit, "心之隔离") 
             if new_tie_list is None or new_separate_list is None: break  
             self.wish_window.tie_list, self.wish_window.separate_list = new_tie_list, new_separate_list
-            show_messagebox("「心之隔离」与「心之捆绑」已更新。", QMessageBox.Information)
+            self.show_messagebox("「心之隔离」与「心之捆绑」已更新。", QMessageBox.Information)
             break
