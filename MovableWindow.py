@@ -14,7 +14,7 @@ class MovableWindow(QWidget):
         self.dragging = False
         self.dragPosition = None
         self.setAttribute(Qt.WA_TranslucentBackground)
-
+    
     def mousePressEvent(self, event):  # 按下鼠标动作绑定
         if event.button() == Qt.LeftButton:
             self.dragging = True

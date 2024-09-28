@@ -6,7 +6,7 @@ Copyright © 2023-2024 XuangeAha(轩哥啊哈OvO)
 """
 
 from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtGui import QFont, QFontDatabase, QIcon
 from PyQt5.QtCore import Qt, QTimer
 import random
 
@@ -14,7 +14,7 @@ from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 from SettingsWindow import SettingsWindow
 
-from config import _short_ver, _ver, _vername, _global_font, _iconpath
+from config import _short_ver, _ver, _vername, _iconpath
 
 class WishWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -33,6 +33,7 @@ class WishWindow(MovableWindow):
         self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
+        _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0]  
 
         self.root_settings = SettingsWindow(self)
         self.main_layout = QVBoxLayout(self)

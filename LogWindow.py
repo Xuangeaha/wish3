@@ -6,13 +6,13 @@ Copyright © 2024 XuangeAha(轩哥啊哈OvO)
 """
 
 from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtGui import QFont, QFontDatabase, QIcon
 from PyQt5.QtCore import Qt
 
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 
-from config import _global_font, _iconpath
+from config import _iconpath
 
 class LogWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -20,6 +20,7 @@ class LogWindow(MovableWindow):
         self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
+        _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0]  
 
         self.log_layout = QVBoxLayout(self)
 

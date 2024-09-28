@@ -6,7 +6,7 @@ Copyright © 2024 XuangeAha(轩哥啊哈OvO)
 """
 
 from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QMessageBox, QFileDialog
-from PyQt5.QtGui import QColor, QFont, QIcon
+from PyQt5.QtGui import QColor, QFont, QFontDatabase, QIcon
 from PyQt5.QtCore import Qt
 import re
 
@@ -15,7 +15,7 @@ from MovableWindow import MovableWindow
 from LogWindow import LogWindow
 from AboutWindow import AboutWindow
 
-from config import _global_font, _iconpath
+from config import _iconpath
 
 class SettingsWindow(MovableWindow):
     def __init__(self, wish_window, parent=None):
@@ -27,6 +27,7 @@ class SettingsWindow(MovableWindow):
         self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
+        _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0]  
 
         self.settings_layout = QVBoxLayout(self)
 
@@ -38,11 +39,7 @@ class SettingsWindow(MovableWindow):
         self.settings_close_button.setFont(QFont(_global_font, 12))
         self.settings_close_button.clicked.connect(self.close)
         self.settings_close_button.setFixedSize(30, 30)
-        self.settings_close_button.setStyleSheet("""
-            QPushButton:hover {
-                border-radius: 5px;
-                background-color: red;
-                color: white; }""")
+        self.settings_close_button.setStyleSheet("QPushButton:hover {border-radius: 5px; background-color: red; color: white; }")
         self.settings_header_layout.addWidget(self.settings_title_label)
         self.settings_header_layout.addStretch(1)
         self.settings_header_layout.addWidget(self.settings_close_button)
@@ -119,7 +116,7 @@ class SettingsWindow(MovableWindow):
         
         self.setWindowTitle("祈愿 · 幸运观众 - 设置")
         self.setWindowIcon(QIcon(_iconpath))
-        self.setGeometry(100, 100, 320, 350)
+        self.setGeometry(200, 200, 320, 350)
     
     def show_messagebox(self, message, type):
         msg = QMessageBox()  
@@ -138,14 +135,18 @@ class SettingsWindow(MovableWindow):
             stylesheet = "QWidget {background-color: #ffb8c6; color: white}"
         elif index == 3:
             options = QFileDialog.Options()  
-            fileName, _ = QFileDialog.getOpenFileName(None, "选择背景图片（推荐大小：1050x200）", r".wish\themes", "Image files (*.jpg *.png)", options=options)  
+            fileName, _ = QFileDialog.getOpenFileName(None, "选择背景图片（推荐大小：1050x200）", r".wish\themes", "图片文件 (*.jpg *.png)", options=options)  
             if fileName:  
                 picture = fileName  
                 stylesheet = "QLabel {color: white}"
-                fileInfomation = fileName.split('/')[-1].split(', ')
+                try:
+                    file_name_split = fileName.split('/')[-1].split(', ')
+                    file_infomation = f"照片标题：{file_name_split[0]}\n拍摄者：{file_name_split[1]}\n拍摄时间：{file_name_split[2].split('.')[0]}"
+                except IndexError:
+                    file_infomation = f"照片信息：{fileName}"
                 declare_ch = ">>> 祈愿 · 幸运观众致力于为用户提供个性化体验，允许用户自定义设置照片作为个性化背景。我们尊重并保护所有照片版权，其解释权及所有权均严格归属于原始拍摄者所有，祈愿 · 幸运观众不拥有、不转让任何照片知识产权。用户上传的照片需确保已获得合法授权或属于公共领域资源，不侵犯任何第三方权益。我们鼓励合法、健康的内容创作与分享，感谢您的使用。"
-                declare_en = ">>> Wish3: Who's the luckiest dog? is dedicated to providing users with a personalized experience, allowing them to customize and set their own photos as individual backgrounds. We respect and protect all photograph copyrights, with the right of interpretation and ownership strictly belonging to the original photographer. Wish3: Who's the luckiest dog? does not own or transfer any intellectual property rights related to photographs. Users must ensure that the photos they upload have been legally authorized or belong to public domain resources, and do not infringe upon any third-party rights. We encourage legal and healthy content creation and sharing. Thank you for using our service."
-                self.show_messagebox(f"自定义图片背景已应用。\n\n照片标题：{fileInfomation[0]}\n拍摄者：{fileInfomation[1]}\n拍摄时间：{fileInfomation[2].split('.')[0]}\n\n{declare_ch}\n\n{declare_en}", QMessageBox.Information)
+                declare_en = ">>> Wish3: Lucky Audience is dedicated to providing users with a personalized experience, permitting them to customize their own photos as personalized backgrounds. We respect and protect all rights of interpretation and ownership strictly belonging to the original photographer. Wish3: Lucky Audience does not own or transfer any intellectual property rights related to photographs. Users must ensure that the photos they upload have been legally authorized or are public domain resources, and do not infringe upon any third-party rights. We encourage legal and healthy content creation and sharing. Thank you for using our service."
+                self.show_messagebox(f"自定义图片背景已应用。\n\n{file_infomation}\n\n{declare_ch}\n\n{declare_en}", QMessageBox.Information)
         else:
             colour = Qt.white
             stylesheet = "QWidget {background-color: white; color: black}"

@@ -6,14 +6,14 @@ Copyright © 2024 XuangeAha(轩哥啊哈OvO)
 """
 
 from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtGui import QFont, QFontDatabase , QIcon
 from PyQt5.QtCore import Qt
 import webbrowser
 
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 
-from config import _short_ver, _ver, _global_font, _iconpath
+from config import _short_ver, _ver, _iconpath
 
 class AboutWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -21,6 +21,7 @@ class AboutWindow(MovableWindow):
         self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
+        _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0]  
 
         self.about_layout = QVBoxLayout(self)
 
