@@ -8,7 +8,6 @@ Copyright © 2024 XuangeAha(轩哥啊哈OvO)
 from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout
 from PyQt5.QtGui import QFont, QFontDatabase , QIcon
 from PyQt5.QtCore import Qt
-import webbrowser
 
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
@@ -73,6 +72,11 @@ class AboutWindow(MovableWindow):
         self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(300, 300, 400, 400)
 
-    def call_github_broser(self): webbrowser.open('https://www.github.com/xuangeaha')  # 外链调用
-    def call_wishsite_broser(self): webbrowser.open('https://xuangeaha.github.io/wishsite')
+    def call_github_broser(self):  # 外链调用
+        import webbrowser
+        webbrowser.open('https://www.github.com/xuangeaha') 
+        
+    def call_wishsite_broser(self): 
+        import webbrowser
+        webbrowser.open('https://xuangeaha.github.io/wishsite')
     

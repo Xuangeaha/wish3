@@ -39,7 +39,8 @@ class WishWindow(MovableWindow):
         self.main_layout = QVBoxLayout(self)
         self.header_layout = QHBoxLayout()  # 标题栏
 
-        self.title_label = QLabel(f'祈愿·幸运观众 {_short_ver}（{_vername}）{_ver}', self)
+        title = f'祈愿·幸运观众 {_short_ver}（{_vername}）{_ver}' if _vername != '正式版' else f'祈愿·幸运观众 {_short_ver}'
+        self.title_label = QLabel(title, self)
         self.title_label.setFont(QFont(_global_font, 11))
 
         self.information_button = QPushButton('∨祈愿详情∨', self)

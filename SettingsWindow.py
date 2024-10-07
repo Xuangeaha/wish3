@@ -97,13 +97,13 @@ class SettingsWindow(MovableWindow):
         self.about_button = QPushButton('关于..', self)  # 设置窗口底栏
         self.about_button.setFont(QFont(_global_font, 10))
         self.about_button.clicked.connect(self.root_about.show)
-        self.about_button.setFixedSize(160, 30)
+        self.about_button.setFixedSize(180, 30)
         self.about_button.setToolTip('关于')
 
         self.log_button = QPushButton('更新说明..', self)
         self.log_button.setFont(QFont(_global_font, 10))
         self.log_button.clicked.connect(self.root_log.show)
-        self.log_button.setFixedSize(160, 30)
+        self.log_button.setFixedSize(180, 30)
         self.log_button.setToolTip('更新说明')
 
         self.settings_bottom_layout.addWidget(self.about_button)
@@ -116,7 +116,7 @@ class SettingsWindow(MovableWindow):
         
         self.setWindowTitle("祈愿 · 幸运观众 - 设置")
         self.setWindowIcon(QIcon(_iconpath))
-        self.setGeometry(200, 200, 320, 350)
+        self.setGeometry(200, 200, 360, 350)
     
     def show_messagebox(self, message, type):
         msg = QMessageBox()  
@@ -135,7 +135,7 @@ class SettingsWindow(MovableWindow):
             stylesheet = "QWidget {background-color: #ffb8c6; color: white}"
         elif index == 3:
             options = QFileDialog.Options()  
-            fileName, _ = QFileDialog.getOpenFileName(None, "选择背景图片（推荐大小：1050x200）", r".wish\themes", "图片文件 (*.jpg *.png)", options=options)  
+            fileName, _ = QFileDialog.getOpenFileName(None, "选择背景图片（推荐大小：1050x210）", r".wish\themes", "图片文件 (*.jpg *.png)", options=options)  
             if fileName:  
                 picture = fileName  
                 stylesheet = "QLabel {color: white}"
