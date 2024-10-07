@@ -6,10 +6,8 @@ A Qt-based desktop gadget for randomly selecting student numbers.
 
 **当前正式版：**`3.0` &emsp;&emsp;**当前开发版本：**`3.1-prerelease3`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
 
-## 开发中 Developing
-
-### 祈愿 · 幸运观众 3.1：「心之捆绑」与「心之隔离」机制、自定义图片背景
-    预计发布时间：2024年10月20日
+## 祈愿 · 幸运观众 3.1：「心之捆绑」与「心之隔离」机制、自定义图片背景
+    2024年10月20日
 
     ||| 新增 |||
     
