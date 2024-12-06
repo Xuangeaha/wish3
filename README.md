@@ -8,6 +8,7 @@ A Qt-based desktop gadget for randomly selecting student numbers.
 
 ## 祈愿 · 幸运观众 3.1.1 次要更新（2024年12月6日）
     ||| 新增 |||
+    
     · 特定学号排除功能。
 
     · 祈愿窗口置顶显示功能。
