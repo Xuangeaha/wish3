@@ -194,6 +194,6 @@ class SettingsWindow(MovableWindow):
             self.wish_window.setWindowFlags(self.wish_window.windowFlags() | Qt.WindowStaysOnTopHint)
             self.wish_window.show()
         else:
-            self.wish_window.setWindowFlags(self.wish_window.swindowFlags() & ~Qt.WindowStaysOnTopHint)
+            self.wish_window.setWindowFlags(self.wish_window.windowFlags() & ~Qt.WindowStaysOnTopHint)
             self.wish_window.show()
         pass
