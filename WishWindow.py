@@ -14,7 +14,7 @@ from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 from SettingsWindow import SettingsWindow
 
-from config import _short_ver, _ver, _vername, _iconpath
+from config import _short_ver, _ver, _vername, _iconpath, _base_numbers ,_excluded_numbers
 
 class WishWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -25,7 +25,8 @@ class WishWindow(MovableWindow):
         self.is_information_shown = False
         self.history_all, self.history_last_60 = [], []
         self.tie_list, self.separate_list, self.last_pick_tied = [], [], False
-        self.pick_num, self.pick_num_rest, self.last_pick, self.last_8_picks, self.lucky_rest = 0, 60, 0, [], list(range(1, 41))
+        self.supportable_numbers = [_i for _i in _base_numbers if _i not in _excluded_numbers]
+        self.pick_num, self.pick_num_rest, self.last_pick, self.last_8_picks, self.lucky_rest = 0, 60, 0, [], self.supportable_numbers.copy()
         self.information_list = [
             "当前保底机制：  · 每60次祈愿内，所有学号必出至少一次。\n                                · 任意连续8次祈愿内，相同学号至多出一次。",
             "当前保底机制：  无保底全随机"]
@@ -129,7 +130,7 @@ class WishWindow(MovableWindow):
                 if self.is_in_guarantee:
                     lucky_person = random.choice(self.lucky_rest)
                 else:
-                    lucky_person = random.randint(1, 40)
+                    lucky_person = random.choice(self.supportable_numbers)
                 if lucky_person not in self.last_8_picks: ######################### 8抽保底
                     break
             self.last_8_picks.append(lucky_person)
@@ -139,7 +140,7 @@ class WishWindow(MovableWindow):
             self.pick_num += 1
             self.pick_num_rest -= 1
         else: ##################################################################### 无保底模式 ##################
-            lucky_person = random.randint(1, 40)
+            lucky_person = random.choice(self.supportable_numbers)
 
         if not self.last_pick_tied: ###############################################「心之捆绑」###################
             if self.last_pick in self.tie_list:
@@ -154,7 +155,7 @@ class WishWindow(MovableWindow):
             index = self.separate_list.index(self.last_pick)
             separate_person = self.separate_list[index+1] if index % 2 == 0 else self.separate_list[index-1]
             if lucky_person == separate_person:
-                lucky_person = random.randint(1, 40)
+                lucky_person = random.choice(self.supportable_numbers)
 
         self.history_all.append(lucky_person)
         self.last_pick = lucky_person
@@ -165,7 +166,7 @@ class WishWindow(MovableWindow):
 
     def reset_guarantee(self):  # 重置保底
         self.history_last_60 = []
-        self.lucky_rest = list(range(1, 41))
+        self.lucky_rest = self.supportable_numbers.copy()
         self.pick_num, self.pick_num_rest, self.is_in_guarantee = 0, 60, False
 
     def toggle_information(self):  # 信息显示及按钮文字切换

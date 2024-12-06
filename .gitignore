@@ -3,5 +3,4 @@ __pycache__/*
 .wish/themes/*
 
 *.lnk
-*.ttf
 *.spec

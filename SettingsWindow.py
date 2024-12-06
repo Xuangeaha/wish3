@@ -5,7 +5,7 @@ Copyright © 2024 XuangeAha(轩哥啊哈OvO)
 
 """
 
-from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QMessageBox, QFileDialog
+from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QMessageBox, QFileDialog, QCheckBox
 from PyQt5.QtGui import QColor, QFont, QFontDatabase, QIcon
 from PyQt5.QtCore import Qt
 import re
@@ -78,7 +78,7 @@ class SettingsWindow(MovableWindow):
         self.separate_lineedit.setText(''.join([str(item) + '|' if index % 2 == 0 else str(item) + ' ' for index, item in enumerate(self.wish_window.separate_list)]))
         self.separate_lineedit.setToolTip("限制两学号不得在两次连续祈愿中依次抽出。为满足该机制而进行强制插入的学号不计入保底。示例：“5|32 23|24”")
 
-        self.apply_tie_separate_button = QPushButton('应用', self)  # 设置窗口底栏
+        self.apply_tie_separate_button = QPushButton('应用', self)
         self.apply_tie_separate_button.setFont(QFont(_global_font, 12))
         self.apply_tie_separate_button.setFixedWidth(100)
         self.apply_tie_separate_button.clicked.connect(self.apply_tie_separate)
@@ -93,19 +93,26 @@ class SettingsWindow(MovableWindow):
         self.settings_main_layout.setContentsMargins(30, 0, 30, 0)
 
         self.settings_bottom_layout = QHBoxLayout()
+        
+        self.onfront_label = QLabel('窗口始终置顶:', self)  # 设置窗口底栏
+        self.onfront_label.setFont(QFont(_global_font, 12))
+        self.onfront_checkbox = QCheckBox('', self)
+        self.onfront_checkbox.stateChanged.connect(self.toggle_onfront)
 
         self.about_button = QPushButton('关于..', self)  # 设置窗口底栏
         self.about_button.setFont(QFont(_global_font, 10))
         self.about_button.clicked.connect(self.root_about.show)
-        self.about_button.setFixedSize(180, 30)
+        self.about_button.setFixedSize(100, 30)
         self.about_button.setToolTip('关于')
 
         self.log_button = QPushButton('更新说明..', self)
         self.log_button.setFont(QFont(_global_font, 10))
         self.log_button.clicked.connect(self.root_log.show)
-        self.log_button.setFixedSize(180, 30)
+        self.log_button.setFixedSize(100, 30)
         self.log_button.setToolTip('更新说明')
 
+        self.settings_bottom_layout.addWidget(self.onfront_label)
+        self.settings_bottom_layout.addWidget(self.onfront_checkbox)
         self.settings_bottom_layout.addWidget(self.about_button)
         self.settings_bottom_layout.addWidget(self.log_button)
 
@@ -168,7 +175,7 @@ class SettingsWindow(MovableWindow):
                 self.show_messagebox(f"「{message_prefix}」存在输入格式错误，请检查。", QMessageBox.Critical); return None  
             is_unsupported_number = False  
             for number in new_list:  
-                if not (1 <= number <= 40):  
+                if number not in self.wish_window.supportable_numbers.copy(): 
                     is_unsupported_number = True  
             if is_unsupported_number:
                 self.show_messagebox(f"「{message_prefix}」存在不支持的学号，请检查。", QMessageBox.Warning); return None  
@@ -181,3 +188,12 @@ class SettingsWindow(MovableWindow):
             self.wish_window.tie_list, self.wish_window.separate_list = new_tie_list, new_separate_list
             self.show_messagebox("「心之隔离」与「心之捆绑」已更新。", QMessageBox.Information)
             break
+    
+    def toggle_onfront(self):
+        if self.onfront_checkbox.isChecked():
+            self.wish_window.setWindowFlags(self.wish_window.windowFlags() | Qt.WindowStaysOnTopHint)
+            self.wish_window.show()
+        else:
+            self.wish_window.setWindowFlags(self.wish_window.swindowFlags() & ~Qt.WindowStaysOnTopHint)
+            self.wish_window.show()
+        pass

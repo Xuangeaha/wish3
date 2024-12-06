@@ -5,7 +5,9 @@ Copyright © 2024 XuangeAha(轩哥啊哈OvO)
 
 """
 
-_short_ver = '3.1'
-_ver = '3.1-Release'
+_short_ver = '3.1.1'
+_ver = '3.1.1-Release'
 _vername = '正式版'
 _iconpath = r'wish.ico'
+_base_numbers = list(range(1, 41))
+_excluded_numbers = [13, 18]
