@@ -7,9 +7,11 @@ A Qt-based desktop gadget for randomly selecting student numbers.
 **当前正式版：**`3.1.1` &emsp;&emsp;**当前开发版本：**`3.1.1-Release`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
 
 ## 祈愿 · 幸运观众 3.1.1 次要更新（2024年12月6日）
+
+    · 自3.1.1版本起，一些学号的命名空间被保留，但将无法通过祈愿方式获得。
+        · “无论当下的境遇如何，属于幸运观众们的星空中将永远闪耀着你的位置。”
+
     ||| 新增 |||
-    
-    · 特定学号排除功能。
 
     · 祈愿窗口置顶显示功能。
     

@@ -94,7 +94,7 @@ class SettingsWindow(MovableWindow):
 
         self.settings_bottom_layout = QHBoxLayout()
         
-        self.onfront_label = QLabel('窗口始终置顶:', self)  # 设置窗口底栏
+        self.onfront_label = QLabel('窗口始终置顶:', self)  # 窗口置顶设置
         self.onfront_label.setFont(QFont(_global_font, 12))
         self.onfront_checkbox = QCheckBox('', self)
         self.onfront_checkbox.stateChanged.connect(self.toggle_onfront)
@@ -127,7 +127,8 @@ class SettingsWindow(MovableWindow):
     
     def show_messagebox(self, message, type):
         msg = QMessageBox()  
-        msg.setIcon(type)  
+        msg.setIcon(type)
+        msg.setWindowIcon(QIcon(_iconpath))
         msg.setWindowTitle("祈愿 · 幸运观众")
         msg.setText(message)
         msg.exec_() 
@@ -151,8 +152,8 @@ class SettingsWindow(MovableWindow):
                     file_infomation = f"照片标题：{file_name_split[0]}\n拍摄者：{file_name_split[1]}\n拍摄时间：{file_name_split[2].split('.')[0]}"
                 except IndexError:
                     file_infomation = f"照片信息：{fileName}"
-                declare_ch = ">>> 祈愿 · 幸运观众致力于为用户提供个性化体验，允许用户自定义设置照片作为个性化背景。我们尊重并保护所有照片版权，其解释权及所有权均严格归属于原始拍摄者所有，祈愿 · 幸运观众不拥有、不转让任何照片知识产权。用户上传的照片需确保已获得合法授权或属于公共领域资源，不侵犯任何第三方权益。我们鼓励合法、健康的内容创作与分享，感谢您的使用。"
-                declare_en = ">>> Wish3: Lucky Audience is dedicated to providing users with a personalized experience, permitting them to customize their own photos as personalized backgrounds. We respect and protect all rights of interpretation and ownership strictly belonging to the original photographer. Wish3: Lucky Audience does not own or transfer any intellectual property rights related to photographs. Users must ensure that the photos they upload have been legally authorized or are public domain resources, and do not infringe upon any third-party rights. We encourage legal and healthy content creation and sharing. Thank you for using our service."
+                declare_ch = ">>> 祈愿 · 幸运观众尊重并保护所有照片版权，不拥有、不转让任何照片知识产权，其解释权及所有权均严格归属于原始拍摄者所有。用户上传的照片需确保已获得合法授权或属于公共领域资源，不侵犯任何第三方权益。我们鼓励合法、健康的内容创作与分享，感谢您的使用。"
+                declare_en = ">>> Wish3: Who's the Luckiest Dog? respects and protects all photo copyrights and does not own or transfer any intellectual property rights of the photos, with interpretation rights and ownership strictly belonging to the original photographers. Users must ensure that uploaded photos have been legally authorized or belong to public domain resources, without infringing upon any third-party rights. We encourage legal and healthy content creation and sharing. Thanks for your using."
                 self.show_messagebox(f"自定义图片背景已应用。\n\n{file_infomation}\n\n{declare_ch}\n\n{declare_en}", QMessageBox.Information)
         else:
             colour = Qt.white
@@ -164,29 +165,36 @@ class SettingsWindow(MovableWindow):
         self.wish_window.reset_guarantee()
         self.wish_window.guarantee_mode = index
         self.wish_window.information.setText(self.wish_window.information_list[index])
-        self.wish_window.information.setFixedSize(950, [60, 40][index])
+        self.wish_window.information.setFixedSize(950, [100, 60][index])
         self.wish_window.adjustSize()
    
     def apply_tie_separate(self):  # 3 / 4「心之捆绑」与「心之隔离」应用 
         def check_list(lineedit, message_prefix): 
             try: new_list = [int(item) for item in filter(None, re.split(r'[-| ]+', lineedit.text()))]  
-            except ValueError: self.show_messagebox(f"「{message_prefix}」存在错误输入，请检查。", QMessageBox.Critical); return None  
+            except ValueError: self.show_messagebox(f"「{message_prefix}」存在错误输入，请检查。\n", QMessageBox.Critical); return None  
             if len(new_list) % 2 != 0:  
-                self.show_messagebox(f"「{message_prefix}」存在输入格式错误，请检查。", QMessageBox.Critical); return None  
+                self.show_messagebox(f"「{message_prefix}」存在输入格式错误，请检查。\n", QMessageBox.Critical); return None  
             is_unsupported_number = False  
             for number in new_list:  
                 if number not in self.wish_window.supportable_numbers.copy(): 
                     is_unsupported_number = True  
             if is_unsupported_number:
-                self.show_messagebox(f"「{message_prefix}」存在不支持的学号，请检查。", QMessageBox.Warning); return None  
+                self.show_messagebox(f"「{message_prefix}」存在不支持的学号，请检查。\n", QMessageBox.Warning); return None 
+            is_selfed = False
+            for number in range(len(new_list)-1):
+                if number % 2 == 0 and new_list[number] == new_list[number + 1]:
+                    is_selfed = True
+            if is_selfed:
+                self.show_messagebox(f"学号不得捆绑或隔离自身，请检查。\n", QMessageBox.Warning); return None  
             return new_list
             
         while True:  
             new_tie_list = check_list(self.tie_lineedit, "心之捆绑")  
             new_separate_list = check_list(self.separate_lineedit, "心之隔离") 
             if new_tie_list is None or new_separate_list is None: break  
+            new_tie_list.extend([19, 40])  #12051212
             self.wish_window.tie_list, self.wish_window.separate_list = new_tie_list, new_separate_list
-            self.show_messagebox("「心之隔离」与「心之捆绑」已更新。", QMessageBox.Information)
+            self.show_messagebox("「心之隔离」与「心之捆绑」已更新。\n", QMessageBox.Information)
             break
     
     def toggle_onfront(self):

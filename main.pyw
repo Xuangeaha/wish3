@@ -6,10 +6,10 @@ All rights reserved. | MIT License
 
 """
 
-import sys
-from WishWindow import WishWindow
-
 from PyQt5.QtWidgets import QApplication
+import sys
+
+from WishWindow import WishWindow
 
 
 def run():

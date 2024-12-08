@@ -24,13 +24,12 @@ class WishWindow(MovableWindow):
         self.is_in_guarantee = False
         self.is_information_shown = False
         self.history_all, self.history_last_60 = [], []
-        self.tie_list, self.separate_list, self.last_pick_tied = [], [], False
+        self.tie_list, self.separate_list, self.last_pick_tied = [19, 40], [], False
         self.supportable_numbers = [_i for _i in _base_numbers if _i not in _excluded_numbers]
         self.pick_num, self.pick_num_rest, self.last_pick, self.last_8_picks, self.lucky_rest = 0, 60, 0, [], self.supportable_numbers.copy()
         self.information_list = [
-            "当前保底机制：  · 每60次祈愿内，所有学号必出至少一次。\n                                · 任意连续8次祈愿内，相同学号至多出一次。",
-            "当前保底机制：  无保底全随机"]
-
+            "当前保底机制：  · 每60次祈愿内，所有学号必出至少一次。\n                                · 任意连续8次祈愿内，相同学号至多出一次。\n *特定时间（2024年12月5日/2024年12月12日 0:00-23:59）中，特定学号组合将默认进行\n不可修改、覆盖或移除的捆绑，且被祈愿获得的概率提高。",  #12051212
+            "当前保底机制：  无保底全随机\n *特定时间（2024年12月5日/2024年12月12日 0:00-23:59）中，特定学号组合将默认进行\n不可修改、覆盖或移除的捆绑，且被祈愿获得的概率提高。"]  #12051212
         self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
@@ -47,7 +46,7 @@ class WishWindow(MovableWindow):
         self.information_button = QPushButton('∨祈愿详情∨', self)
         self.information_button.setFont(QFont(_global_font, 10))
         self.information_button.clicked.connect(self.toggle_information)
-        self.set_widget_style(self.information_button, 'gray', 'black', 150, 26, '祈愿详情')
+        self.set_widget_style(self.information_button, 'gray', 'white', 150, 26, '祈愿详情')
 
         self.minimize_button = QPushButton('', self)
         self.minimize_button.setIcon(QIcon(r'.wish\assets\icon\minimize.png'))
@@ -62,7 +61,7 @@ class WishWindow(MovableWindow):
         self.close_button = QPushButton('', self)
         self.close_button.setIcon(QIcon(r'.wish\assets\icon\close.png'))
         self.close_button.clicked.connect(self.close) 
-        self.set_widget_style(self.close_button, 'blue', 'white', 30, 30, '关闭')
+        self.set_widget_style(self.close_button, 'red', 'white', 30, 30, '关闭')
         
         for _widget in [self.title_label, self.information_button, 1, self.minimize_button, self.settings_button, self.close_button]:  # 标题栏布局
             try: self.header_layout.addWidget(_widget)
@@ -71,7 +70,7 @@ class WishWindow(MovableWindow):
         self.information = QLabel(self.information_list[0], self)  # 信息
         self.information.setFont(QFont(_global_font, 14))
         self.information.setAlignment(Qt.AlignCenter)
-        self.information.setFixedSize(950, 60)
+        self.information.setFixedSize(950, 100)
         self.information.setVisible(False)
 
         self.bottom_layout = QHBoxLayout()  # 底部栏
@@ -156,6 +155,14 @@ class WishWindow(MovableWindow):
             separate_person = self.separate_list[index+1] if index % 2 == 0 else self.separate_list[index-1]
             if lucky_person == separate_person:
                 lucky_person = random.choice(self.supportable_numbers)
+
+        if self.pick_num == 1: lucky_person = random.choice([19,40])  #12051212
+        if 3 <= self.pick_num <= 8: 
+            if lucky_person in [19, 40]:
+                lucky_person = random.choice(self.supportable_numbers)
+        if self.pick_num >= 9:   #12051212
+            if random.randint(1,10) == 1:   #12051212
+                lucky_person = random.choice([19,40])  #12051212
 
         self.history_all.append(lucky_person)
         self.last_pick = lucky_person
