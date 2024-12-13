@@ -1,7 +1,7 @@
 """
 祈愿·幸运观众 3 (Wish3: Who's the Luckiest Dog?)
 
-Copyright © 2023-2024 XuangeAha(轩哥啊哈OvO)
+Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO)
 All rights reserved. | MIT License
 
 """

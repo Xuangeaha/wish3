@@ -1,7 +1,7 @@
 """
 祈愿 · 幸运观众：设置窗口
 
-Copyright © 2024 XuangeAha(轩哥啊哈OvO)
+Copyright © 2024-2025 XuangeAha(轩哥啊哈OvO)
 
 """
 
@@ -58,7 +58,8 @@ class SettingsWindow(MovableWindow):
         self.guarantee_label.setFont(QFont(_global_font, 12))
         self.guarantee_combo = QComboBox(self)
         self.guarantee_combo.setFont(QFont(_global_font, 12))
-        self.guarantee_combo.addItem("8-60保底")
+        guarantee_item_name = "8-60保底" if wish_window.GUARANTEE == [8,60] else f"自适应保底（当前{wish_window.GUARANTEE[0]}-{wish_window.GUARANTEE[1]}）"
+        self.guarantee_combo.addItem(guarantee_item_name)
         self.guarantee_combo.addItem("无保底")
         self.guarantee_combo.currentIndexChanged.connect(self.toggle_guarantee)
 
@@ -102,13 +103,13 @@ class SettingsWindow(MovableWindow):
         self.about_button = QPushButton('关于..', self)  # 设置窗口底栏
         self.about_button.setFont(QFont(_global_font, 10))
         self.about_button.clicked.connect(self.root_about.show)
-        self.about_button.setFixedSize(100, 30)
+        self.about_button.setFixedSize(120, 30)
         self.about_button.setToolTip('关于')
 
         self.log_button = QPushButton('更新说明..', self)
         self.log_button.setFont(QFont(_global_font, 10))
         self.log_button.clicked.connect(self.root_log.show)
-        self.log_button.setFixedSize(100, 30)
+        self.log_button.setFixedSize(120, 30)
         self.log_button.setToolTip('更新说明')
 
         self.settings_bottom_layout.addWidget(self.onfront_label)
@@ -125,7 +126,7 @@ class SettingsWindow(MovableWindow):
         self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(200, 200, 360, 350)
     
-    def show_messagebox(self, message, type):
+    def show_messagebox(self, message, type=QMessageBox.Warning):
         msg = QMessageBox()  
         msg.setIcon(type)
         msg.setWindowIcon(QIcon(_iconpath))
@@ -191,8 +192,7 @@ class SettingsWindow(MovableWindow):
         while True:  
             new_tie_list = check_list(self.tie_lineedit, "心之捆绑")  
             new_separate_list = check_list(self.separate_lineedit, "心之隔离") 
-            if new_tie_list is None or new_separate_list is None: break  
-            new_tie_list.extend([19, 40])  #12051212
+            if new_tie_list is None or new_separate_list is None: break
             self.wish_window.tie_list, self.wish_window.separate_list = new_tie_list, new_separate_list
             self.show_messagebox("「心之隔离」与「心之捆绑」已更新。\n", QMessageBox.Information)
             break

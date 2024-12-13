@@ -1,7 +1,7 @@
 """
 祈愿 · 幸运观众：主窗口
 
-Copyright © 2023-2024 XuangeAha(轩哥啊哈OvO)
+Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO)
 
 """
 
@@ -15,6 +15,7 @@ from MovableWindow import MovableWindow
 from SettingsWindow import SettingsWindow
 
 from config import _short_ver, _ver, _vername, _iconpath, _base_numbers ,_excluded_numbers
+from Resolver import Resolver
 
 class WishWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -24,12 +25,30 @@ class WishWindow(MovableWindow):
         self.is_in_guarantee = False
         self.is_information_shown = False
         self.history_all, self.history_last_60 = [], []
-        self.tie_list, self.separate_list, self.last_pick_tied = [19, 40], [], False
-        self.supportable_numbers = [_i for _i in _base_numbers if _i not in _excluded_numbers]
-        self.pick_num, self.pick_num_rest, self.last_pick, self.last_8_picks, self.lucky_rest = 0, 60, 0, [], self.supportable_numbers.copy()
+        self.tie_list, self.separate_list, self.last_pick_tied = [], [], False
+
+        try:
+            with open('自定义祈愿学号池.txt', 'r', encoding='utf-8') as file:
+                get_content = [line.strip() for line in file][1]
+                resolved_list = Resolver.resolve(get_content)
+                print(get_content,resolved_list)
+                if resolved_list == [-1]:
+                    self.supportable_numbers = [_i for _i in _base_numbers if _i not in _excluded_numbers]
+                    self.GUARANTEE = [8, 60]
+                    SettingsWindow.show_messagebox(self,f"自定义祈愿学号池中存在输入错误，请检查：\n\n    {get_content}\n\n当前学号池及保底机制已重置为默认。")
+                else:
+                    self.supportable_numbers = resolved_list
+                    length = len(self.supportable_numbers)
+                    self.GUARANTEE = [int(length/5 + 1) if length < 20 else 8, (int(length*1.5) // 10 + 1) * 10]
+        except (FileNotFoundError, IndexError):
+            self.supportable_numbers = [_i for _i in _base_numbers if _i not in _excluded_numbers]
+            self.GUARANTEE = [8, 60]
+            
+
+        self.pick_num, self.pick_num_rest, self.last_pick, self.last_some_picks, self.lucky_rest = 0, self.GUARANTEE[1], 0, [], self.supportable_numbers.copy()
         self.information_list = [
-            "当前保底机制：  · 每60次祈愿内，所有学号必出至少一次。\n                                · 任意连续8次祈愿内，相同学号至多出一次。\n *特定时间（2024年12月5日/2024年12月12日 0:00-23:59）中，特定学号组合将默认进行\n不可修改、覆盖或移除的捆绑，且被祈愿获得的概率提高。",  #12051212
-            "当前保底机制：  无保底全随机\n *特定时间（2024年12月5日/2024年12月12日 0:00-23:59）中，特定学号组合将默认进行\n不可修改、覆盖或移除的捆绑，且被祈愿获得的概率提高。"]  #12051212
+            f"当前保底机制：  · 每{self.GUARANTEE[1]}次祈愿内，所有学号必出至少一次。\n                                · 任意连续{self.GUARANTEE[0]}次祈愿内，相同学号至多出一次。",
+            "当前保底机制：  无保底全随机"]
         self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
@@ -122,17 +141,17 @@ class WishWindow(MovableWindow):
         if self.guarantee_mode == 0: ############################################## 8-60保底模式 ###############
             if self.pick_num_rest == 0:
                 self.reset_guarantee()
-            if len(self.last_8_picks) > 7:
-                self.last_8_picks.remove(self.last_8_picks[0])
+            if len(self.last_some_picks) > self.GUARANTEE[0]:
+                self.last_some_picks.remove(self.last_some_picks[0])
             self.is_in_guarantee = len(self.lucky_rest) >= self.pick_num_rest ##### 60抽保底
             while True:
                 if self.is_in_guarantee:
                     lucky_person = random.choice(self.lucky_rest)
                 else:
                     lucky_person = random.choice(self.supportable_numbers)
-                if lucky_person not in self.last_8_picks: ######################### 8抽保底
+                if lucky_person not in self.last_some_picks: ######################### 8抽保底
                     break
-            self.last_8_picks.append(lucky_person)
+            self.last_some_picks.append(lucky_person)
             if lucky_person not in self.history_last_60: 
                 self.history_last_60.append(lucky_person)
                 self.lucky_rest.remove(lucky_person)
@@ -155,14 +174,6 @@ class WishWindow(MovableWindow):
             separate_person = self.separate_list[index+1] if index % 2 == 0 else self.separate_list[index-1]
             if lucky_person == separate_person:
                 lucky_person = random.choice(self.supportable_numbers)
-
-        if self.pick_num == 1: lucky_person = random.choice([19,40])  #12051212
-        if 3 <= self.pick_num <= 8: 
-            if lucky_person in [19, 40]:
-                lucky_person = random.choice(self.supportable_numbers)
-        if self.pick_num >= 9:   #12051212
-            if random.randint(1,10) == 1:   #12051212
-                lucky_person = random.choice([19,40])  #12051212
 
         self.history_all.append(lucky_person)
         self.last_pick = lucky_person
