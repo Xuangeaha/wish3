@@ -5,7 +5,7 @@ Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO)
 
 """
 
-from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout
+from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox
 from PyQt5.QtGui import QFont, QFontDatabase, QIcon
 from PyQt5.QtCore import Qt, QTimer
 import random
@@ -27,16 +27,17 @@ class WishWindow(MovableWindow):
         self.history_all, self.history_last_60 = [], []
         self.tie_list, self.separate_list, self.last_pick_tied = [], [], False
 
-        try:  # 「自定义祈愿学号池」自定义祈愿学号
+        try:  # 「自定义祈愿学号池」自定义祈愿学号解析加载
             with open('「自定义祈愿学号池」.txt', 'r', encoding='utf-8') as file:
                 get_content = [line.strip() for line in file][1]
                 resolved_list = Resolver.resolve(get_content)
-                print(get_content,resolved_list)
-                if resolved_list == [-1]:
+                if resolved_list in [[-1],[]]:
                     self.supportable_numbers = [_i for _i in _base_numbers if _i not in _excluded_numbers]
                     self.GUARANTEE = [8, 60]
-                    SettingsWindow.show_messagebox(self,f"「自定义祈愿学号池」中存在输入错误，请检查：\n\n    {get_content}\n\n当前学号池及保底机制已重置为默认（学号1-40，8-60保底）。")
+                    SettingsWindow.show_messagebox(self,f"「自定义祈愿学号池」中存在输入错误，请检查：\n\n        {get_content}\n\n  当前学号池及保底机制已重置为默认（学号1-40，8-60保底）。", type=QMessageBox.Critical)
                 else:
+                    if len(resolved_list) == 1:
+                        SettingsWindow.show_messagebox(self,f"「自定义祈愿学号池」中仅有一个学号： {resolved_list[0]}\n\n  这将导致祈愿的结果都为该学号。")
                     self.supportable_numbers = resolved_list
                     length = len(self.supportable_numbers)
                     self.GUARANTEE = [int(length/5 + 1) if length < 20 else 8, (int(length*1.5) // 10 + 1) * 10]
@@ -142,8 +143,11 @@ class WishWindow(MovableWindow):
                 self.reset_guarantee()
             if len(self.last_some_picks) > self.GUARANTEE[0]:
                 self.last_some_picks.remove(self.last_some_picks[0])
-            self.is_in_guarantee = len(self.lucky_rest) >= self.pick_num_rest ##### 60抽保底
+            self.is_in_guarantee = len(self.lucky_rest) >= self.pick_num_rest ####### 60抽保底
             while True:
+                if len(self.supportable_numbers) == 1:
+                    lucky_person = self.supportable_numbers[0]
+                    break
                 if self.is_in_guarantee:
                     lucky_person = random.choice(self.lucky_rest)
                 else:
@@ -194,6 +198,9 @@ class WishWindow(MovableWindow):
     
     def draw_once(self):  # 抽 1 次
         self.label_number.setText(f'{self.get_lucky()}')
+        self.label_number.setFixedWidth(650+(len(self.label_number.text())-40)*15 if len(self.label_number.text()) > 40 else 650)  # 过长抽取结果显示适应
+        self.adjustSize()
+        self.adjustSize()  # CPU算力限制 需再次调整
 
     def draw_ten(self):  # 抽 10 次
         self.update_label_index = 0
@@ -206,9 +213,7 @@ class WishWindow(MovableWindow):
         if self.update_label_index < len(self.numbers):
             self.label_number.setText(' '.join(f'{num}' for num in self.numbers[:self.update_label_index + 1]))
             self.update_label_index += 1
-            if len(self.label_number.text()) > 40:  # 过长抽取结果显示适应
-                self.label_number.setFixedWidth(650+(len(self.label_number.text())-40)*10)
-            else:
-                self.label_number.setFixedWidth(650)
+            self.label_number.setFixedWidth(650+(len(self.label_number.text())-40)*15 if len(self.label_number.text()) > 40 else 650)  # 过长抽取结果显示适应
+            self.adjustSize()
         else:
             self.update_label_timer.stop()

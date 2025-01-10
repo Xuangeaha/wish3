@@ -5,8 +5,8 @@ Copyright © 2024-2025 XuangeAha(轩哥啊哈OvO)
 
 """
 
-_short_ver = '3.2-rc1'
-_ver = '3.2.0-releasecandidate1'
+_short_ver = '3.2-rc2'
+_ver = '3.2.0-releasecandidate2'
 _vername = '发布候选版本'
 _iconpath = r'wish.ico'
 _base_numbers = list(range(1, 41))
