@@ -28,6 +28,8 @@ A Qt-based desktop gadget for randomly selecting student numbers.
     ||| 修改 |||
 
     · 更好的全局异常崩溃警告处理。
+
+    · 极大地压缩了包体体积。
     
 ## 祈愿 · 幸运观众 3.1：「心之捆绑」与「心之隔离」机制与自定义图片背景（2024年10月20日）
     ||| 新增 |||
