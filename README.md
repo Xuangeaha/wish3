@@ -4,13 +4,13 @@
 
 A Qt-based desktop gadget for randomly selecting student numbers.
 
-**当前正式版：**`3.1.1` &emsp;&emsp;**当前开发版本：**`3.2.0-rc2`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
+**当前正式版：**`3.2` &emsp;&emsp;**当前开发版本：**`3.2.0-Release`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
 
 > “无论当下的境遇如何，属于幸运观众们的星空中将永远闪耀着你的位置。”
 >
 > "No matter the present, your place will forever shine in the starry sky of the luckiest ones."
 
-## 祈愿 · 幸运观众 3.2 （预计2025年）
+## 祈愿 · 幸运观众 3.2：「自定义祈愿学号池」（2025年1月10日）
 
     ||| 新增 |||
 
@@ -22,6 +22,12 @@ A Qt-based desktop gadget for randomly selecting student numbers.
             · 如未填写或格式错误，学号池及保底机制将设置为默认。
 
         >>> 该机制于「祈愿 · 幸运观众」开发版本 3.2.0-pre1 后加入。
+
+    ——————————————————————————————— ————————— ——————————————————————————————— ————————— 
+
+    ||| 修改 |||
+
+    · 更好的全局异常崩溃警告处理。
     
 ## 祈愿 · 幸运观众 3.1：「心之捆绑」与「心之隔离」机制与自定义图片背景（2024年10月20日）
     ||| 新增 |||

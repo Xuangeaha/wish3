@@ -13,6 +13,10 @@ from PyQt5.QtWidgets import QApplication
 import sys
 
 from WishWindow import WishWindow
+from exceptionHandler import handle_exception
+
+
+sys.excepthook = handle_exception
 
 
 def run():
