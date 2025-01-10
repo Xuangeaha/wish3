@@ -4,7 +4,7 @@
 
 A Qt-based desktop gadget for randomly selecting student numbers.
 
-**当前正式版：**`3.1.1` &emsp;&emsp;**当前开发版本：**`3.2.0-pre1`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
+**当前正式版：**`3.1.1` &emsp;&emsp;**当前开发版本：**`3.2.0-rc1`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
 
 > “无论当下的境遇如何，属于幸运观众们的星空中将永远闪耀着你的位置。”
 >
@@ -14,9 +14,10 @@ A Qt-based desktop gadget for randomly selecting student numbers.
 
     ||| 新增 |||
 
-    · 自定义祈愿学号池
+    · 「自定义祈愿学号池」
         现在可通过根目录下“自定义祈愿学号池.txt”文件自定义祈愿学号范围。
-        · 系统将自动调整保底机制以适应自定义学号情况。
+        · 自适应保底
+            系统将自动调整保底机制以适应自定义学号情况。
         · 格式示例：“1-50 76-88 -10 -21 +66 +94”。
             · 如未填写或格式错误，学号池及保底机制将设置为默认。
 

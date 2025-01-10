@@ -27,15 +27,15 @@ class WishWindow(MovableWindow):
         self.history_all, self.history_last_60 = [], []
         self.tie_list, self.separate_list, self.last_pick_tied = [], [], False
 
-        try:
-            with open('自定义祈愿学号池.txt', 'r', encoding='utf-8') as file:
+        try:  # 「自定义祈愿学号池」自定义祈愿学号
+            with open('「自定义祈愿学号池」.txt', 'r', encoding='utf-8') as file:
                 get_content = [line.strip() for line in file][1]
                 resolved_list = Resolver.resolve(get_content)
                 print(get_content,resolved_list)
                 if resolved_list == [-1]:
                     self.supportable_numbers = [_i for _i in _base_numbers if _i not in _excluded_numbers]
                     self.GUARANTEE = [8, 60]
-                    SettingsWindow.show_messagebox(self,f"自定义祈愿学号池中存在输入错误，请检查：\n\n    {get_content}\n\n当前学号池及保底机制已重置为默认。")
+                    SettingsWindow.show_messagebox(self,f"「自定义祈愿学号池」中存在输入错误，请检查：\n\n    {get_content}\n\n当前学号池及保底机制已重置为默认（学号1-40，8-60保底）。")
                 else:
                     self.supportable_numbers = resolved_list
                     length = len(self.supportable_numbers)
@@ -43,7 +43,6 @@ class WishWindow(MovableWindow):
         except (FileNotFoundError, IndexError):
             self.supportable_numbers = [_i for _i in _base_numbers if _i not in _excluded_numbers]
             self.GUARANTEE = [8, 60]
-            
 
         self.pick_num, self.pick_num_rest, self.last_pick, self.last_some_picks, self.lucky_rest = 0, self.GUARANTEE[1], 0, [], self.supportable_numbers.copy()
         self.information_list = [
@@ -56,9 +55,9 @@ class WishWindow(MovableWindow):
 
         self.root_settings = SettingsWindow(self)
         self.main_layout = QVBoxLayout(self)
-        self.header_layout = QHBoxLayout()  # 标题栏
+        self.header_layout = QHBoxLayout()
 
-        title = f'祈愿·幸运观众 {_short_ver}（{_vername}）{_ver}' if _vername != '正式版' else f'祈愿·幸运观众 {_short_ver}'
+        title = f'祈愿·幸运观众 {_short_ver}（{_vername}）{_ver}' if _vername != '正式版' else f'祈愿·幸运观众 {_short_ver}'  # 标题栏
         self.title_label = QLabel(title, self)
         self.title_label.setFont(QFont(_global_font, 11))
 
@@ -207,6 +206,9 @@ class WishWindow(MovableWindow):
         if self.update_label_index < len(self.numbers):
             self.label_number.setText(' '.join(f'{num}' for num in self.numbers[:self.update_label_index + 1]))
             self.update_label_index += 1
+            if len(self.label_number.text()) > 40:  # 过长抽取结果显示适应
+                self.label_number.setFixedWidth(650+(len(self.label_number.text())-40)*10)
+            else:
+                self.label_number.setFixedWidth(650)
         else:
             self.update_label_timer.stop()
-            

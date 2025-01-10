@@ -126,7 +126,7 @@ class SettingsWindow(MovableWindow):
         self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(200, 200, 360, 350)
     
-    def show_messagebox(self, message, type=QMessageBox.Warning):
+    def show_messagebox(self, message, type=QMessageBox.Warning):  # 弹出消息框
         msg = QMessageBox()  
         msg.setIcon(type)
         msg.setWindowIcon(QIcon(_iconpath))
@@ -197,7 +197,7 @@ class SettingsWindow(MovableWindow):
             self.show_messagebox("「心之隔离」与「心之捆绑」已更新。\n", QMessageBox.Information)
             break
     
-    def toggle_onfront(self):
+    def toggle_onfront(self):  # 窗口置顶切换
         if self.onfront_checkbox.isChecked():
             self.wish_window.setWindowFlags(self.wish_window.windowFlags() | Qt.WindowStaysOnTopHint)
             self.wish_window.show()
