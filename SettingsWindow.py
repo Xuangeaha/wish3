@@ -15,7 +15,7 @@ from MovableWindow import MovableWindow
 from LogWindow import LogWindow
 from AboutWindow import AboutWindow
 
-from config import _iconpath
+from config import _short_ver, _ver, _vername, _iconpath
 from i18n import STRINGS
 
 class SettingsWindow(MovableWindow):
@@ -28,7 +28,9 @@ class SettingsWindow(MovableWindow):
         self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
-        _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0]  
+        _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0] 
+
+        self.LANGUAGE_INDEX = 0 
 
         self.settings_layout = QVBoxLayout(self)
 
@@ -145,8 +147,14 @@ class SettingsWindow(MovableWindow):
         msg.exec_() 
 
     def toggle_language(self, index):  # 1 语言切换
-        lang_text = STRINGS[str(index)]
-        self.wish_window.title_label.setText(lang_text['title'])
+        self.LANGUAGE_INDEX = index
+        lang_text = STRINGS[str(self.LANGUAGE_INDEX)]
+        self.wish_window.setWindowTitle(lang_text['title'])
+        newtitle = f'{lang_text["title"]} {_short_ver}（{_vername}）{_ver}' if _vername != '正式版' else f'{lang_text["title"]} {_short_ver}'
+        self.wish_window.title_label.setText(newtitle)
+        self.wish_window.information_button.setText(lang_text['information_button'])
+        self.wish_window.button_once.setText(lang_text['button_once'])
+        self.wish_window.button_ten.setText(lang_text['button_ten'])
 
     def toggle_theme(self, index):  # 2 主题配色切换
         colour, picture = None, None

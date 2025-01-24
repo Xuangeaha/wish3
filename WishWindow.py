@@ -193,7 +193,10 @@ class WishWindow(MovableWindow):
     def toggle_information(self):  # 信息显示及按钮文字切换
         visible = not self.information.isVisible()
         self.information.setVisible(visible)
-        self.information_button.setText('∧祈愿详情∧' if visible else '∨祈愿详情∨')
+        if self.root_settings.LANGUAGE_INDEX == 0:
+            self.information_button.setText('∧祈愿详情∧' if visible else '∨祈愿详情∨')
+        else:
+            self.information_button.setText('∧Details∧' if visible else '∨Details∨')
         self.adjustSize()
     
     def draw_once(self):  # 抽 1 次
