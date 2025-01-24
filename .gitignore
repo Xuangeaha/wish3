@@ -6,3 +6,5 @@ dist
 
 *.lnk
 *.spec
+
+a.py
