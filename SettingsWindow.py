@@ -16,6 +16,7 @@ from LogWindow import LogWindow
 from AboutWindow import AboutWindow
 
 from config import _iconpath
+from i18n import STRINGS
 
 class SettingsWindow(MovableWindow):
     def __init__(self, wish_window, parent=None):
@@ -46,7 +47,15 @@ class SettingsWindow(MovableWindow):
 
         self.settings_main_layout = QGridLayout()
 
-        self.theme_label = QLabel('主题配色：', self)  # 设置窗口：1 主题配色设置
+        self.languages_label = QLabel('语言/Languages：', self)  # 设置窗口：1 语言
+        self.languages_label.setFont(QFont(_global_font, 12))
+        self.languages_combo = QComboBox(self)
+        self.languages_combo.setFont(QFont(_global_font, 12))
+        for _item in ["中文", "English"]:
+            self.languages_combo.addItem(_item)
+        self.languages_combo.currentIndexChanged.connect(self.toggle_language)
+
+        self.theme_label = QLabel('主题配色：', self)  # 设置窗口：2 主题配色设置
         self.theme_label.setFont(QFont(_global_font, 12))
         self.theme_combo = QComboBox(self)
         self.theme_combo.setFont(QFont(_global_font, 12))
@@ -54,7 +63,7 @@ class SettingsWindow(MovableWindow):
             self.theme_combo.addItem(_item)
         self.theme_combo.currentIndexChanged.connect(self.toggle_theme)
 
-        self.guarantee_label = QLabel('保底机制：', self)  # 设置窗口：2 保底机制
+        self.guarantee_label = QLabel('保底机制：', self)  # 设置窗口：3 保底机制
         self.guarantee_label.setFont(QFont(_global_font, 12))
         self.guarantee_combo = QComboBox(self)
         self.guarantee_combo.setFont(QFont(_global_font, 12))
@@ -63,7 +72,7 @@ class SettingsWindow(MovableWindow):
         self.guarantee_combo.addItem("无保底")
         self.guarantee_combo.currentIndexChanged.connect(self.toggle_guarantee)
 
-        self.tie_label = QLabel('「心之捆绑」：', self)  # 设置窗口：3 「心之捆绑」
+        self.tie_label = QLabel('「心之捆绑」：', self)  # 设置窗口：4.1 「心之捆绑」
         self.tie_label.setFont(QFont(_global_font, 12))
         self.tie_lineedit = QLineEdit(self)
         self.tie_lineedit.setFixedWidth(160)
@@ -71,7 +80,7 @@ class SettingsWindow(MovableWindow):
         self.tie_lineedit.setText(''.join([str(item) + '-' if index % 2 == 0 else str(item) + ' ' for index, item in enumerate(self.wish_window.tie_list)]))
         self.tie_lineedit.setToolTip("强制使两学号在两次连续祈愿中依次抽出。通过该方式祈愿获得的学号不计入保底。示例：“5-32 23-24”")
 
-        self.separate_label = QLabel('「心之隔离」：', self)  # 设置窗口：4 「心之隔离」
+        self.separate_label = QLabel('「心之隔离」：', self)  # 设置窗口：4.2 「心之隔离」
         self.separate_label.setFont(QFont(_global_font, 12))
         self.separate_lineedit = QLineEdit(self)
         self.separate_lineedit.setFixedWidth(160)
@@ -84,11 +93,12 @@ class SettingsWindow(MovableWindow):
         self.apply_tie_separate_button.setFixedWidth(100)
         self.apply_tie_separate_button.clicked.connect(self.apply_tie_separate)
 
-        for _widget in [[self.theme_label, 0, 0], [self.theme_combo, 0, 1],  # 设置窗口中心布局
-                        [self.guarantee_label, 1, 0], [self.guarantee_combo, 1, 1], 
-                        [self.tie_label, 3, 0], [self.tie_lineedit, 3, 1],
-                        [self.separate_label, 4, 0], [self.separate_lineedit, 4, 1], 
-                        [self.apply_tie_separate_button, 5, 1]]:
+        for _widget in [[self.languages_label, 0, 0], [self.languages_combo, 0, 1],  # 设置窗口中心布局
+                        [self.theme_label, 1, 0], [self.theme_combo, 1, 1], 
+                        [self.guarantee_label, 2, 0], [self.guarantee_combo, 2, 1], 
+                        [self.tie_label, 4, 0], [self.tie_lineedit, 4, 1],
+                        [self.separate_label, 5, 0], [self.separate_lineedit, 5, 1], 
+                        [self.apply_tie_separate_button, 6, 1]]:
             self.settings_main_layout.addWidget(_widget[0], _widget[1], _widget[2])
 
         self.settings_main_layout.setContentsMargins(30, 0, 30, 0)
@@ -134,7 +144,11 @@ class SettingsWindow(MovableWindow):
         msg.setText(message)
         msg.exec_() 
 
-    def toggle_theme(self, index):  # 1 主题配色切换
+    def toggle_language(self, index):  # 1 语言切换
+        lang_text = STRINGS[str(index)]
+        self.wish_window.title_label.setText(lang_text['title'])
+
+    def toggle_theme(self, index):  # 2 主题配色切换
         colour, picture = None, None
         if index == 1:
             colour = QColor(0, 165, 0)
@@ -162,14 +176,14 @@ class SettingsWindow(MovableWindow):
         self.wish_window.round_shadow.set_background(colour=colour, picture=picture)
         self.wish_window.setStyleSheet(stylesheet)
 
-    def toggle_guarantee(self, index):  # 2 保底机制切换
+    def toggle_guarantee(self, index):  # 3 保底机制切换
         self.wish_window.reset_guarantee()
         self.wish_window.guarantee_mode = index
         self.wish_window.information.setText(self.wish_window.information_list[index])
         self.wish_window.information.setFixedSize(950, [100, 60][index])
         self.wish_window.adjustSize()
    
-    def apply_tie_separate(self):  # 3 / 4「心之捆绑」与「心之隔离」应用 
+    def apply_tie_separate(self):  # 4.1 / 4.2「心之捆绑」与「心之隔离」应用 
         def check_list(lineedit, message_prefix): 
             try: new_list = [int(item) for item in filter(None, re.split(r'[-| ]+', lineedit.text()))]  
             except ValueError: self.show_messagebox(f"「{message_prefix}」存在错误输入，请检查。\n", QMessageBox.Critical); return None  

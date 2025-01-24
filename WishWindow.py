@@ -203,7 +203,6 @@ class WishWindow(MovableWindow):
         self.adjustSize()  # CPU算力限制 需再次调整
 
     def draw_ten(self):  # 抽 10 次
-        raise Exception('顾望嘉太好看了，导致祈愿·幸运观众崩溃。')
         self.update_label_index = 0
         self.update_label_timer = QTimer(self)
         self.numbers = [self.get_lucky() for _ in range(10)]
