@@ -30,7 +30,7 @@ class SettingsWindow(MovableWindow):
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
         _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0] 
 
-        self.LANGUAGE_INDEX = 0 
+        self.LANGUAGE_INDEX = 1
 
         self.settings_layout = QVBoxLayout(self)
 
@@ -61,7 +61,9 @@ class SettingsWindow(MovableWindow):
         self.theme_label.setFont(QFont(_global_font, 12))
         self.theme_combo = QComboBox(self)
         self.theme_combo.setFont(QFont(_global_font, 12))
-        for _item in ["默认", "轴月", "谢不开朗鸡罗", "（自定义图片）"]:
+        self.example_theme_list_zh = ["默认", "轴月", "谢不开朗鸡罗", "（自定义图片）"]
+        self.example_theme_list_en = ["Default", "AxisMoon", "Shaybuklangiro", "(Customed Image)"]
+        for _item in self.example_theme_list_zh:
             self.theme_combo.addItem(_item)
         self.theme_combo.currentIndexChanged.connect(self.toggle_theme)
 
@@ -107,7 +109,7 @@ class SettingsWindow(MovableWindow):
 
         self.settings_bottom_layout = QHBoxLayout()
         
-        self.onfront_label = QLabel('窗口始终置顶:', self)  # 窗口置顶设置
+        self.onfront_label = QLabel('窗口始终置顶：', self)  # 窗口置顶设置
         self.onfront_label.setFont(QFont(_global_font, 12))
         self.onfront_checkbox = QCheckBox('', self)
         self.onfront_checkbox.stateChanged.connect(self.toggle_onfront)
@@ -149,12 +151,29 @@ class SettingsWindow(MovableWindow):
     def toggle_language(self, index):  # 1 语言切换
         self.LANGUAGE_INDEX = index
         lang_text = STRINGS[str(self.LANGUAGE_INDEX)]
+
         self.wish_window.setWindowTitle(lang_text['title'])
         newtitle = f'{lang_text["title"]} {_short_ver}（{_vername}）{_ver}' if _vername != '正式版' else f'{lang_text["title"]} {_short_ver}'
         self.wish_window.title_label.setText(newtitle)
         self.wish_window.information_button.setText(lang_text['information_button'])
         self.wish_window.button_once.setText(lang_text['button_once'])
         self.wish_window.button_ten.setText(lang_text['button_ten'])
+
+        self.settings_title_label.setText(lang_text['settings_title'])
+        self.theme_label.setText(lang_text['settings_theme'])
+        self.guarantee_label.setText(lang_text['settings_guarantee'])
+        self.tie_label.setText(lang_text['settings_tie'])
+        self.separate_label.setText(lang_text['settings_separate'])
+        self.apply_tie_separate_button.setText(lang_text['settings_apply'])
+        self.onfront_label.setText(lang_text['settings_onfront'])
+        self.about_button.setText(lang_text['settings_about'])
+        self.log_button.setText(lang_text['settings_log'])
+
+        self.theme_combo.removeItem(3)
+        if self.LANGUAGE_INDEX == 1:
+            self.wish_window.information.setText(self.wish_window.information_list_en[self.wish_window.guarantee_mode])
+        else:
+            self.wish_window.information.setText(self.wish_window.information_list_zh[self.wish_window.guarantee_mode])
 
     def toggle_theme(self, index):  # 2 主题配色切换
         colour, picture = None, None
@@ -187,7 +206,10 @@ class SettingsWindow(MovableWindow):
     def toggle_guarantee(self, index):  # 3 保底机制切换
         self.wish_window.reset_guarantee()
         self.wish_window.guarantee_mode = index
-        self.wish_window.information.setText(self.wish_window.information_list[index])
+        if self.LANGUAGE_INDEX == 0:
+            self.wish_window.information.setText(self.wish_window.information_list_zh[index])
+        else:
+            self.wish_window.information.setText(self.wish_window.information_list_en[index])
         self.wish_window.information.setFixedSize(950, [100, 60][index])
         self.wish_window.adjustSize()
    

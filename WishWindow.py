@@ -46,9 +46,12 @@ class WishWindow(MovableWindow):
             self.GUARANTEE = [8, 60]
 
         self.pick_num, self.pick_num_rest, self.last_pick, self.last_some_picks, self.lucky_rest = 0, self.GUARANTEE[1], 0, [], self.supportable_numbers.copy()
-        self.information_list = [
+        self.information_list_zh = [
             f"当前保底机制：  · 每{self.GUARANTEE[1]}次祈愿内，所有学号必出至少一次。\n                                · 任意连续{self.GUARANTEE[0]}次祈愿内，相同学号至多出一次。",
             "当前保底机制：  无保底全随机"]
+        self.information_list_en = [
+            f"Current Mechanism of Guarantee:                                           \n        Each student ID is guaranteed to appear at least once within {self.GUARANTEE[1]} wishes.\n                 The same student ID can appear at most once within any consecutive {self.GUARANTEE[0]} wishes.",
+            "Current Mechanism of Guarantee:    Completely random with no guarantee"]
         self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
@@ -86,7 +89,7 @@ class WishWindow(MovableWindow):
             try: self.header_layout.addWidget(_widget)
             except TypeError: self.header_layout.addStretch(_widget)
 
-        self.information = QLabel(self.information_list[0], self)  # 信息
+        self.information = QLabel(self.information_list_zh[0], self)  # 信息
         self.information.setFont(QFont(_global_font, 14))
         self.information.setAlignment(Qt.AlignCenter)
         self.information.setFixedSize(950, 100)
@@ -120,6 +123,8 @@ class WishWindow(MovableWindow):
         self.setWindowTitle("祈愿 · 幸运观众")
         self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(100, 100, 950, 60)
+
+        self.root_settings.toggle_language(self.root_settings.LANGUAGE_INDEX)
 
     def set_widget_style(self, widget, background_color, color, sizex, sizey, tooltip):  # 元件格式包装
         widget.setFixedSize(sizex, sizey)
