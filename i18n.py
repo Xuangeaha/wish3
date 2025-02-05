@@ -1,5 +1,11 @@
+"""
+祈愿 · 幸运观众：本地化静态字符串
 
-STRINGS = {
+Copyright © 2025 XuangeAha(轩哥啊哈OvO)
+
+"""
+
+STATIC_STRINGS = {
     '0': {
         'title': '祈愿·幸运观众',
         'information_button': '∨祈愿详情∨',

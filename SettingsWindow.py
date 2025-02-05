@@ -16,7 +16,7 @@ from LogWindow import LogWindow
 from AboutWindow import AboutWindow
 
 from config import _short_ver, _ver, _vername, _iconpath
-from i18n import STRINGS
+from i18n import STATIC_STRINGS
 
 class SettingsWindow(MovableWindow):
     def __init__(self, wish_window, parent=None):
@@ -31,7 +31,7 @@ class SettingsWindow(MovableWindow):
         _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0] 
 
         self.LANGUAGE_INDEX = 1
-        self.lang_text = STRINGS[str(self.LANGUAGE_INDEX)]
+        self.lang_text = STATIC_STRINGS[str(self.LANGUAGE_INDEX)]
 
         self.settings_layout = QVBoxLayout(self)
 
@@ -73,8 +73,9 @@ class SettingsWindow(MovableWindow):
         self.guarantee_label.setFont(QFont(_global_font, 12))
         self.guarantee_combo = QComboBox(self)
         self.guarantee_combo.setFont(QFont(_global_font, 12))
-        guarantee_item_name = "8-60保底" if wish_window.GUARANTEE == [8,60] else f"自适应保底（当前{wish_window.GUARANTEE[0]}-{wish_window.GUARANTEE[1]}）"
-        self.guarantee_combo.addItem(guarantee_item_name)
+        self.guarantee_item_name_zh = "8-60保底" if wish_window.GUARANTEE == [8,60] else f"自适应保底（当前{wish_window.GUARANTEE[0]}-{wish_window.GUARANTEE[1]}）"
+        self.guarantee_item_name_en = "8-60 Guarantee" if wish_window.GUARANTEE == [8,60] else f"Auto Adaptive Guarantee (Currently{wish_window.GUARANTEE[0]}-{wish_window.GUARANTEE[1]})"
+        self.guarantee_combo.addItem(self.guarantee_item_name_zh)
         self.guarantee_combo.addItem("无保底")
         self.guarantee_combo.currentIndexChanged.connect(self.toggle_guarantee)
 
@@ -152,7 +153,7 @@ class SettingsWindow(MovableWindow):
 
     def toggle_language(self, index):  # 1 语言切换
         self.LANGUAGE_INDEX = index
-        self.lang_text = STRINGS[str(self.LANGUAGE_INDEX)]
+        self.lang_text = STATIC_STRINGS[str(self.LANGUAGE_INDEX)]
         self.wish_window.setWindowTitle(self.lang_text['title'])
         newtitle = f'{self.lang_text["title"]} {_short_ver}（{_vername}）{_ver}' if _vername != '正式版' else f'{self.lang_text["title"]} {_short_ver}'
         self.wish_window.title_label.setText(newtitle)
@@ -175,11 +176,17 @@ class SettingsWindow(MovableWindow):
             self.theme_combo.clear()
             for _item in self.example_theme_list_en:
                 self.theme_combo.addItem(_item)
+            self.guarantee_combo.clear()
+            self.guarantee_combo.addItem(self.guarantee_item_name_en)
+            self.guarantee_combo.addItem("No Guarantee")
         else:
             self.wish_window.information.setText(self.wish_window.information_list_zh[self.wish_window.guarantee_mode])
             self.theme_combo.clear()
             for _item in self.example_theme_list_zh:
                 self.theme_combo.addItem(_item)
+            self.guarantee_combo.clear()
+            self.guarantee_combo.addItem(self.guarantee_item_name_zh)
+            self.guarantee_combo.addItem("无保底")
 
     def toggle_theme(self, index):  # 2 主题配色切换
         colour, picture, stylesheet = None, None, None
