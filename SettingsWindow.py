@@ -31,6 +31,7 @@ class SettingsWindow(MovableWindow):
         _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0] 
 
         self.LANGUAGE_INDEX = 1
+        self.lang_text = STRINGS[str(self.LANGUAGE_INDEX)]
 
         self.settings_layout = QVBoxLayout(self)
 
@@ -55,6 +56,7 @@ class SettingsWindow(MovableWindow):
         self.languages_combo.setFont(QFont(_global_font, 12))
         for _item in ["中文", "English"]:
             self.languages_combo.addItem(_item)
+        self.languages_combo.setCurrentIndex(self.LANGUAGE_INDEX)
         self.languages_combo.currentIndexChanged.connect(self.toggle_language)
 
         self.theme_label = QLabel('主题配色：', self)  # 设置窗口：2 主题配色设置
@@ -150,56 +152,58 @@ class SettingsWindow(MovableWindow):
 
     def toggle_language(self, index):  # 1 语言切换
         self.LANGUAGE_INDEX = index
-        lang_text = STRINGS[str(self.LANGUAGE_INDEX)]
-
-        self.wish_window.setWindowTitle(lang_text['title'])
-        newtitle = f'{lang_text["title"]} {_short_ver}（{_vername}）{_ver}' if _vername != '正式版' else f'{lang_text["title"]} {_short_ver}'
+        self.lang_text = STRINGS[str(self.LANGUAGE_INDEX)]
+        self.wish_window.setWindowTitle(self.lang_text['title'])
+        newtitle = f'{self.lang_text["title"]} {_short_ver}（{_vername}）{_ver}' if _vername != '正式版' else f'{self.lang_text["title"]} {_short_ver}'
         self.wish_window.title_label.setText(newtitle)
-        self.wish_window.information_button.setText(lang_text['information_button'])
-        self.wish_window.button_once.setText(lang_text['button_once'])
-        self.wish_window.button_ten.setText(lang_text['button_ten'])
+        self.wish_window.information_button.setText(self.lang_text['information_button'])
+        self.wish_window.button_once.setText(self.lang_text['button_once'])
+        self.wish_window.button_ten.setText(self.lang_text['button_ten'])
 
-        self.settings_title_label.setText(lang_text['settings_title'])
-        self.theme_label.setText(lang_text['settings_theme'])
-        self.guarantee_label.setText(lang_text['settings_guarantee'])
-        self.tie_label.setText(lang_text['settings_tie'])
-        self.separate_label.setText(lang_text['settings_separate'])
-        self.apply_tie_separate_button.setText(lang_text['settings_apply'])
-        self.onfront_label.setText(lang_text['settings_onfront'])
-        self.about_button.setText(lang_text['settings_about'])
-        self.log_button.setText(lang_text['settings_log'])
-
-        self.theme_combo.removeItem(3)
+        self.settings_title_label.setText(self.lang_text['settings_title'])
+        self.theme_label.setText(self.lang_text['settings_theme'])
+        self.guarantee_label.setText(self.lang_text['settings_guarantee'])
+        self.tie_label.setText(self.lang_text['settings_tie'])
+        self.separate_label.setText(self.lang_text['settings_separate'])
+        self.apply_tie_separate_button.setText(self.lang_text['settings_apply'])
+        self.onfront_label.setText(self.lang_text['settings_onfront'])
+        self.about_button.setText(self.lang_text['settings_about'])
+        self.log_button.setText(self.lang_text['settings_log'])
+        
         if self.LANGUAGE_INDEX == 1:
             self.wish_window.information.setText(self.wish_window.information_list_en[self.wish_window.guarantee_mode])
+            self.theme_combo.clear()
+            for _item in self.example_theme_list_en:
+                self.theme_combo.addItem(_item)
         else:
             self.wish_window.information.setText(self.wish_window.information_list_zh[self.wish_window.guarantee_mode])
+            self.theme_combo.clear()
+            for _item in self.example_theme_list_zh:
+                self.theme_combo.addItem(_item)
 
     def toggle_theme(self, index):  # 2 主题配色切换
-        colour, picture = None, None
+        colour, picture, stylesheet = None, None, None
+        if index == 0:
+            colour = Qt.white
+            self.wish_window.setStyleSheet("")
         if index == 1:
             colour = QColor(0, 165, 0)
             stylesheet = "QWidget {background-color: #00a500; color: white}"
         elif index == 2:
             colour = QColor(255, 184, 198)
             stylesheet = "QWidget {background-color: #ffb8c6; color: white}"
-        elif index == 3:
-            options = QFileDialog.Options()  
-            fileName, _ = QFileDialog.getOpenFileName(None, "选择背景图片（推荐大小：1050x210）", r".wish\themes", "图片文件 (*.jpg *.png)", options=options)  
+        elif index == 3:   
+            options = QFileDialog.Options()
+            fileName, _ = QFileDialog.getOpenFileName(None, self.lang_text['settings_filedialog_title'], r".wish\themes", self.lang_text['settings_filedialog_filetype'], options=options)  
             if fileName:  
                 picture = fileName  
                 stylesheet = "QLabel {color: white}"
                 try:
                     file_name_split = fileName.split('/')[-1].split(', ')
-                    file_infomation = f"照片标题：{file_name_split[0]}\n拍摄者：{file_name_split[1]}\n拍摄时间：{file_name_split[2].split('.')[0]}"
+                    file_infomation = f"{self.lang_text['settings_file_information_1']}{file_name_split[0]}\n{self.lang_text['settings_file_information_2']}{file_name_split[1]}\n{self.lang_text['settings_file_information_3']}{file_name_split[2].split('.')[0]}"
                 except IndexError:
-                    file_infomation = f"照片信息：{fileName}"
-                declare_ch = ">>> 祈愿 · 幸运观众尊重并保护所有照片版权，不拥有、不转让任何照片知识产权，其解释权及所有权均严格归属于原始拍摄者所有。用户上传的照片需确保已获得合法授权或属于公共领域资源，不侵犯任何第三方权益。我们鼓励合法、健康的内容创作与分享，感谢您的使用。"
-                declare_en = ">>> Wish3: Who's the Luckiest Dog? respects and protects all photo copyrights and does not own or transfer any intellectual property rights of the photos, with interpretation rights and ownership strictly belonging to the original photographers. Users must ensure that uploaded photos have been legally authorized or belong to public domain resources, without infringing upon any third-party rights. We encourage legal and healthy content creation and sharing. Thanks for your using."
-                self.show_messagebox(f"自定义图片背景已应用。\n\n{file_infomation}\n\n{declare_ch}\n\n{declare_en}", QMessageBox.Information)
-        else:
-            colour = Qt.white
-            stylesheet = "QWidget {background-color: white; color: black}"
+                    file_infomation = f"{self.lang_text['settings_file_information_4']}{fileName}"
+                self.show_messagebox(f"{self.lang_text['settings_file_applied']}\n\n{file_infomation}\n\n{self.lang_text['settings_file_declare']}", QMessageBox.Information)
         self.wish_window.round_shadow.set_background(colour=colour, picture=picture)
         self.wish_window.setStyleSheet(stylesheet)
 
