@@ -15,7 +15,6 @@ from MovableWindow import MovableWindow
 from SettingsWindow import SettingsWindow
 
 from config import _short_ver, _ver, _vername, _iconpath, _base_numbers ,_excluded_numbers
-from Resolver import Resolver
 
 class WishWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -30,7 +29,7 @@ class WishWindow(MovableWindow):
         try:  # 「自定义祈愿学号池」自定义祈愿学号解析加载
             with open('「自定义祈愿学号池」.txt', 'r', encoding='utf-8') as file:
                 get_content = [line.strip() for line in file][1]
-                resolved_list = Resolver.resolve(get_content)
+                resolved_list = self.Resolver.resolve(get_content)
                 if resolved_list in [[-1],[]]:
                     self.supportable_numbers = [_i for _i in _base_numbers if _i not in _excluded_numbers]
                     self.GUARANTEE = [8, 60]
@@ -68,22 +67,22 @@ class WishWindow(MovableWindow):
         self.information_button = QPushButton('∨祈愿详情∨', self)
         self.information_button.setFont(QFont(_global_font, 10))
         self.information_button.clicked.connect(self.toggle_information)
-        self.set_widget_style(self.information_button, 'gray', 'white', 150, 26, '祈愿详情')
+        self.set_widget_style(self.information_button, 'gray', 'white', 150, 26)
 
         self.minimize_button = QPushButton('', self)
         self.minimize_button.setIcon(QIcon(r'.wish\assets\icon\minimize.png'))
         self.minimize_button.clicked.connect(self.showMinimized)
-        self.set_widget_style(self.minimize_button, 'blue', 'white', 30, 30, '最小化')
+        self.set_widget_style(self.minimize_button, 'blue', 'white', 30, 30)
 
         self.settings_button = QPushButton('', self)
         self.settings_button.setIcon(QIcon(r'.wish\assets\icon\settings.png'))
         self.settings_button.clicked.connect(self.root_settings.show)
-        self.set_widget_style(self.settings_button, 'blue', 'white', 30, 30, '设置')
+        self.set_widget_style(self.settings_button, 'blue', 'white', 30, 30)
 
         self.close_button = QPushButton('', self)
         self.close_button.setIcon(QIcon(r'.wish\assets\icon\close.png'))
         self.close_button.clicked.connect(self.close) 
-        self.set_widget_style(self.close_button, 'red', 'white', 30, 30, '关闭')
+        self.set_widget_style(self.close_button, 'red', 'white', 30, 30)
         
         for _widget in [self.title_label, self.information_button, 1, self.minimize_button, self.settings_button, self.close_button]:  # 标题栏布局
             try: self.header_layout.addWidget(_widget)
@@ -126,14 +125,32 @@ class WishWindow(MovableWindow):
 
         self.root_settings.toggle_language(self.root_settings.LANGUAGE_INDEX)
 
-    def set_widget_style(self, widget, background_color, color, sizex, sizey, tooltip):  # 元件格式包装
+    def set_widget_style(self, widget, background_color, color, sizex, sizey):  # 元件格式包装
         widget.setFixedSize(sizex, sizey)
-        widget.setToolTip(tooltip)
         widget.setStyleSheet(f"""
             QPushButton:hover {{
                 border-radius: 5px;
                 background-color: {background_color};
                 color: {color}; }} """)
+        
+    class Resolver:
+        def resolve(input_str):
+            result = []
+            exclude_set = set()
+            parts = input_str.split()
+            try:
+                for part in parts:
+                    if part.startswith('-'):
+                        exclude_set.update(map(int, part[1:].split('-')))
+                    elif part.startswith('+'):
+                        result.extend(map(int, part[1:].split('-')))
+                    else:
+                        start, end = map(int, part.split('-'))
+                        result.extend(range(start, end + 1))
+            except ValueError:
+                result = [-1]
+            result = list(set([num for num in result if num not in exclude_set]))
+            return sorted(result)
 
     ##############################################################################################################
     ############################################## 抽学号逻辑核心 #################################################
