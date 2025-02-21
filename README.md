@@ -10,7 +10,7 @@ A Qt-based desktop gadget for randomly selecting student numbers.
 >
 > "No matter the present, your place will forever shine in the starry sky of the luckiest ones."
 
-## 祈愿 · 幸运观众 3.3：「本地化的幸运」（2025年1月10日）
+## 祈愿 · 幸运观众 3.3：「全球幸运共鸣」（Boundless Luck）（2025年2月23日）
 
     ||| 新增 |||
 
