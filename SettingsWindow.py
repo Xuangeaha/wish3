@@ -30,7 +30,7 @@ class SettingsWindow(MovableWindow):
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
         _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0] 
 
-        self.LANGUAGE_INDEX = 1
+        self.LANGUAGE_INDEX = 0
         self.lang_text = STATIC_STRINGS[str(self.LANGUAGE_INDEX)]
 
         self.settings_layout = QVBoxLayout(self)
@@ -74,7 +74,7 @@ class SettingsWindow(MovableWindow):
         self.guarantee_combo = QComboBox(self)
         self.guarantee_combo.setFont(QFont(_global_font, 12))
         self.guarantee_item_name_zh = "8-60保底" if wish_window.GUARANTEE == [8,60] else f"自适应保底（当前{wish_window.GUARANTEE[0]}-{wish_window.GUARANTEE[1]}）"
-        self.guarantee_item_name_en = "8-60 Guarantee" if wish_window.GUARANTEE == [8,60] else f"Auto Adaptive Guarantee (Currently{wish_window.GUARANTEE[0]}-{wish_window.GUARANTEE[1]})"
+        self.guarantee_item_name_en = "8-60 Guarantee" if wish_window.GUARANTEE == [8,60] else f"Auto Adaptive Guarantee (Currently {wish_window.GUARANTEE[0]}-{wish_window.GUARANTEE[1]})"
         self.guarantee_combo.addItem(self.guarantee_item_name_zh)
         self.guarantee_combo.addItem("无保底")
         self.guarantee_combo.currentIndexChanged.connect(self.toggle_guarantee)
@@ -82,14 +82,12 @@ class SettingsWindow(MovableWindow):
         self.tie_label = QLabel('「心之捆绑」：', self)  # 设置窗口：4.1 「心之捆绑」
         self.tie_label.setFont(QFont(_global_font, 12))
         self.tie_lineedit = QLineEdit(self)
-        self.tie_lineedit.setFixedWidth(160)
         self.tie_lineedit.setFont(QFont(_global_font, 12))
         self.tie_lineedit.setText(''.join([str(item) + '-' if index % 2 == 0 else str(item) + ' ' for index, item in enumerate(self.wish_window.tie_list)]))
 
         self.separate_label = QLabel('「心之隔离」：', self)  # 设置窗口：4.2 「心之隔离」
         self.separate_label.setFont(QFont(_global_font, 12))
         self.separate_lineedit = QLineEdit(self)
-        self.separate_lineedit.setFixedWidth(160)
         self.separate_lineedit.setFont(QFont(_global_font, 12))
         self.separate_lineedit.setText(''.join([str(item) + '|' if index % 2 == 0 else str(item) + ' ' for index, item in enumerate(self.wish_window.separate_list)]))
 
@@ -127,6 +125,7 @@ class SettingsWindow(MovableWindow):
 
         self.settings_bottom_layout.addWidget(self.onfront_label)
         self.settings_bottom_layout.addWidget(self.onfront_checkbox)
+        self.settings_bottom_layout.addStretch(1)
         self.settings_bottom_layout.addWidget(self.about_button)
         self.settings_bottom_layout.addWidget(self.log_button)
 
@@ -167,6 +166,7 @@ class SettingsWindow(MovableWindow):
         self.about_button.setText(self.lang_text['settings_about'])
         self.log_button.setText(self.lang_text['settings_log'])
         
+        self.activateWindow()  # 激活以刷新文字 避免 UpdateLayeredWindowIndirect
         self.wish_window.activateWindow()
         
         if self.LANGUAGE_INDEX == 1:
@@ -185,6 +185,7 @@ class SettingsWindow(MovableWindow):
             self.guarantee_combo.clear()
             self.guarantee_combo.addItem(self.guarantee_item_name_zh)
             self.guarantee_combo.addItem("无保底")
+
 
     def toggle_theme(self, index):  # 2 主题配色切换
         colour, picture, stylesheet = None, None, None
