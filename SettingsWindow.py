@@ -231,7 +231,7 @@ class SettingsWindow(MovableWindow):
         self.wish_window.adjustSize()
    
     def apply_tie_separate(self):  # 4.1 / 4.2「心之捆绑」与「心之隔离」应用 
-        detailed_message = ['存在错误输入，请检查。', '存在输入格式错误，请检查。', '存在不支持的学号，请检查。', '学号不得捆绑或隔离自身，请检查。', '「心之隔离」与「心之捆绑」已更新。'] if self.LANGUAGE_INDEX == 0 else ['There are errors in the input, please check.', 'There are input format errors, please check.', 'There are unsupported student numbers, please check.', 'Student number cannot be tied or separated with itself, please check.', '「THE TIED」and「THE SEPARATED」have been updated.']
+        detailed_message = ['存在错误输入，请检查。', '存在输入格式错误，请检查。', '存在不支持的学号，请检查。', '学号不得捆绑或隔离自身，请检查。', '「心之隔离」与「心之捆绑」已更新。'] if self.LANGUAGE_INDEX == 0 else ['There are errors in the input, please check.', 'There are input format errors, please check.', 'There are unsupported student numbers, please check.', 'Student number cannot be tied or separated with itself, please check.', '「the Tied」and「the Separated」have been updated.']
         def check_list(lineedit, message_prefix): 
             try: new_list = [int(item) for item in filter(None, re.split(r'[-| ]+', lineedit.text()))]  
             except ValueError: self.show_messagebox(f"「{message_prefix}」{detailed_message[0]}\n", QMessageBox.Critical); return None  
@@ -252,7 +252,7 @@ class SettingsWindow(MovableWindow):
             return new_list
             
         while True:  
-            message_prefix = ["心之捆绑", "心之隔离"] if self.LANGUAGE_INDEX == 0 else ["THE TIED", "THE SEPARATED"]
+            message_prefix = ["心之捆绑", "心之隔离"] if self.LANGUAGE_INDEX == 0 else ["the Tied", "the Separated"]
             new_tie_list = check_list(self.tie_lineedit, message_prefix[0])  
             new_separate_list = check_list(self.separate_lineedit, message_prefix[1]) 
             if new_tie_list is None or new_separate_list is None: break
