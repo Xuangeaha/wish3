@@ -38,7 +38,7 @@ STATIC_STRINGS = {
         'settings_theme': 'Theme Color: ',
         'settings_guarantee': 'Guarantee Mode: ',
         'settings_tie': '「The TIED」: ',
-        'settings_separate': '「The SEPERATED」: ',
+        'settings_separate': '「The SEPARATED」: ',
         'settings_apply': 'Apply',
         'settings_onfront': 'Pin on top: ',
         'settings_about': 'About..',

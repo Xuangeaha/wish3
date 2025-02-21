@@ -142,7 +142,8 @@ class SettingsWindow(MovableWindow):
         msg = QMessageBox()  
         msg.setIcon(type)
         msg.setWindowIcon(QIcon(_iconpath))
-        msg.setWindowTitle("祈愿 · 幸运观众")
+        messagebox_title = "祈愿 · 幸运观众" if self.LANGUAGE_INDEX == 0 else "Wish3: Who's the Luckiest Dog?"
+        msg.setWindowTitle(messagebox_title)
         msg.setText(message)
         msg.exec_() 
 
