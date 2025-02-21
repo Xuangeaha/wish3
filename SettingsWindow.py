@@ -230,31 +230,33 @@ class SettingsWindow(MovableWindow):
         self.wish_window.adjustSize()
    
     def apply_tie_separate(self):  # 4.1 / 4.2「心之捆绑」与「心之隔离」应用 
+        detailed_message = ['存在错误输入，请检查。', '存在输入格式错误，请检查。', '存在不支持的学号，请检查。', '学号不得捆绑或隔离自身，请检查。', '「心之隔离」与「心之捆绑」已更新。'] if self.LANGUAGE_INDEX == 0 else ['There are errors in the input, please check.', 'There are input format errors, please check.', 'There are unsupported student numbers, please check.', 'Student number cannot be tied or separated with itself, please check.', '「THE TIED」and「THE SEPARATED」have been updated.']
         def check_list(lineedit, message_prefix): 
             try: new_list = [int(item) for item in filter(None, re.split(r'[-| ]+', lineedit.text()))]  
-            except ValueError: self.show_messagebox(f"「{message_prefix}」存在错误输入，请检查。\n", QMessageBox.Critical); return None  
+            except ValueError: self.show_messagebox(f"「{message_prefix}」{detailed_message[0]}\n", QMessageBox.Critical); return None  
             if len(new_list) % 2 != 0:  
-                self.show_messagebox(f"「{message_prefix}」存在输入格式错误，请检查。\n", QMessageBox.Critical); return None  
+                self.show_messagebox(f"「{message_prefix}」{detailed_message[1]}\n", QMessageBox.Critical); return None  
             is_unsupported_number = False  
             for number in new_list:  
                 if number not in self.wish_window.supportable_numbers.copy(): 
                     is_unsupported_number = True  
             if is_unsupported_number:
-                self.show_messagebox(f"「{message_prefix}」存在不支持的学号，请检查。\n", QMessageBox.Warning); return None 
+                self.show_messagebox(f"「{message_prefix}」{detailed_message[2]}\n", QMessageBox.Warning); return None 
             is_selfed = False
             for number in range(len(new_list)-1):
                 if number % 2 == 0 and new_list[number] == new_list[number + 1]:
                     is_selfed = True
             if is_selfed:
-                self.show_messagebox(f"学号不得捆绑或隔离自身，请检查。\n", QMessageBox.Warning); return None  
+                self.show_messagebox(f"{detailed_message[3]}\n", QMessageBox.Warning); return None  
             return new_list
             
         while True:  
-            new_tie_list = check_list(self.tie_lineedit, "心之捆绑")  
-            new_separate_list = check_list(self.separate_lineedit, "心之隔离") 
+            message_prefix = ["心之捆绑", "心之隔离"] if self.LANGUAGE_INDEX == 0 else ["THE TIED", "THE SEPARATED"]
+            new_tie_list = check_list(self.tie_lineedit, message_prefix[0])  
+            new_separate_list = check_list(self.separate_lineedit, message_prefix[1]) 
             if new_tie_list is None or new_separate_list is None: break
             self.wish_window.tie_list, self.wish_window.separate_list = new_tie_list, new_separate_list
-            self.show_messagebox("「心之隔离」与「心之捆绑」已更新。\n", QMessageBox.Information)
+            self.show_messagebox(f"{detailed_message[4]}", QMessageBox.Information)
             break
     
     def toggle_onfront(self):  # 窗口置顶切换
