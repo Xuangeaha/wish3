@@ -177,6 +177,7 @@ class SettingsWindow(MovableWindow):
             self.guarantee_combo.clear()
             self.guarantee_combo.addItem(self.guarantee_item_name_en)
             self.guarantee_combo.addItem("No Guarantee")
+            self.guarantee_combo.setFixedWidth(350)
         else:
             self.wish_window.information.setText(self.wish_window.information_list_zh[self.wish_window.guarantee_mode])
             self.theme_combo.clear()
@@ -185,7 +186,12 @@ class SettingsWindow(MovableWindow):
             self.guarantee_combo.clear()
             self.guarantee_combo.addItem(self.guarantee_item_name_zh)
             self.guarantee_combo.addItem("无保底")
+            self.guarantee_combo.setFixedWidth(200)
+        self.adjustSize()
+        self.adjustSize()
 
+        self.activateWindow()  # 激活以刷新文字 避免 UpdateLayeredWindowIndirect
+        self.wish_window.activateWindow()
 
     def toggle_theme(self, index):  # 2 主题配色切换
         colour, picture, stylesheet = None, None, None
