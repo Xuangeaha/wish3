@@ -27,7 +27,7 @@ class WishWindow(MovableWindow):
         self.tie_list, self.separate_list, self.last_pick_tied = [], [], False
 
         try:  # 「自定义祈愿学号池」自定义祈愿学号解析加载
-            with open('「自定义祈愿学号池」.txt', 'r', encoding='utf-8') as file:
+            with open('lucky.txt', 'r', encoding='utf-8') as file:
                 get_content = [line.strip() for line in file][1]
                 resolved_list = self.Resolver.resolve(get_content)
                 if resolved_list in [[-1],[]]:
