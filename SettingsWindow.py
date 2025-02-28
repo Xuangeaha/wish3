@@ -30,7 +30,7 @@ class SettingsWindow(MovableWindow):
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
         _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0] 
 
-        self.LANGUAGE_INDEX = 0
+        self.LANGUAGE_INDEX = 1
         self.lang_text = STATIC_STRINGS[str(self.LANGUAGE_INDEX)]
 
         self.settings_layout = QVBoxLayout(self)
@@ -109,19 +109,19 @@ class SettingsWindow(MovableWindow):
         self.settings_bottom_layout = QHBoxLayout()
         
         self.onfront_label = QLabel('窗口始终置顶：', self)  # 窗口置顶设置
-        self.onfront_label.setFont(QFont(_global_font, 12))
+        self.onfront_label.setFont(QFont(_global_font, 11))
         self.onfront_checkbox = QCheckBox('', self)
         self.onfront_checkbox.stateChanged.connect(self.toggle_onfront)
 
         self.about_button = QPushButton('关于..', self)  # 设置窗口底栏
-        self.about_button.setFont(QFont(_global_font, 10))
+        self.about_button.setFont(QFont(_global_font, 9))
         self.about_button.clicked.connect(self.root_about.show)
-        self.about_button.setFixedSize(120, 30)
+        self.about_button.setFixedSize(160, 35)
 
         self.log_button = QPushButton('更新说明..', self)
-        self.log_button.setFont(QFont(_global_font, 10))
+        self.log_button.setFont(QFont(_global_font, 9))
         self.log_button.clicked.connect(self.root_log.show)
-        self.log_button.setFixedSize(120, 30)
+        self.log_button.setFixedSize(160, 35)
 
         self.settings_bottom_layout.addWidget(self.onfront_label)
         self.settings_bottom_layout.addWidget(self.onfront_checkbox)
@@ -138,11 +138,14 @@ class SettingsWindow(MovableWindow):
         self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(200, 200, 360, 350)
     
-    def show_messagebox(self, message, type=QMessageBox.Warning):  # 弹出消息框
+    def show_messagebox(self, message:str, language:int=1, type=QMessageBox.Warning):  # 弹出消息框
         msg = QMessageBox()  
         msg.setIcon(type)
         msg.setWindowIcon(QIcon(_iconpath))
-        messagebox_title = "祈愿 · 幸运观众" if self.LANGUAGE_INDEX == 0 else "Wish3: Who's the Luckiest Dog?"
+        if language == 0:
+            messagebox_title = "祈愿 · 幸运观众"
+        else:
+            messagebox_title = "Wish3: Who's the Luckiest Dog?"
         msg.setWindowTitle(messagebox_title)
         msg.setText(message)
         msg.exec_() 
@@ -187,7 +190,7 @@ class SettingsWindow(MovableWindow):
             self.guarantee_combo.clear()
             self.guarantee_combo.addItem(self.guarantee_item_name_zh)
             self.guarantee_combo.addItem("无保底")
-            self.guarantee_combo.setFixedWidth(200)
+            self.guarantee_combo.setFixedWidth(300)
         self.adjustSize()
         self.adjustSize()
 

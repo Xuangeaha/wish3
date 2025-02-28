@@ -14,7 +14,7 @@ from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 from SettingsWindow import SettingsWindow
 
-from config import _short_ver, _ver, _vername, _iconpath, _base_numbers ,_excluded_numbers
+from config import _short_ver, _ver, _vername, _iconpath, _base_numbers ,_EVER_excluded_numbers
 
 class WishWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -31,7 +31,7 @@ class WishWindow(MovableWindow):
                 get_content = [line.strip() for line in file][1]
                 resolved_list = self.Resolver.resolve(get_content)
                 if resolved_list in [[-1],[]]:
-                    self.supportable_numbers = [_i for _i in _base_numbers if _i not in _excluded_numbers]
+                    self.supportable_numbers = [_i for _i in _base_numbers if _i not in _EVER_excluded_numbers]
                     self.GUARANTEE = [8, 60]
                     SettingsWindow.show_messagebox(self,f"「自定义祈愿学号池」中存在输入错误，请检查：\n\n        {get_content}\n\n  当前学号池及保底机制已重置为默认（学号1-40，8-60保底）。", type=QMessageBox.Critical)
                 else:
@@ -41,7 +41,7 @@ class WishWindow(MovableWindow):
                     length = len(self.supportable_numbers)
                     self.GUARANTEE = [int(length/5 + 1) if length < 20 else 8, (int(length*1.5) // 10 + 1) * 10]
         except (FileNotFoundError, IndexError):
-            self.supportable_numbers = [_i for _i in _base_numbers if _i not in _excluded_numbers]
+            self.supportable_numbers = [_i for _i in _base_numbers if _i not in _EVER_excluded_numbers]
             self.GUARANTEE = [8, 60]
 
         self.pick_num, self.pick_num_rest, self.last_pick, self.last_some_picks, self.lucky_rest = 0, self.GUARANTEE[1], 0, [], self.supportable_numbers.copy()
@@ -49,7 +49,7 @@ class WishWindow(MovableWindow):
             f"当前保底机制：  · 每{self.GUARANTEE[1]}次祈愿内，所有学号必出至少一次。\n                                · 任意连续{self.GUARANTEE[0]}次祈愿内，相同学号至多出一次。",
             "当前保底机制：  无保底全随机"]
         self.information_list_en = [
-            f"Current Mechanism of Guarantee:                                           \n        Each student ID is guaranteed to appear at least once within {self.GUARANTEE[1]} wishes.\n                 The same student ID can appear at most once within any consecutive {self.GUARANTEE[0]} wishes.",
+            f"Current Mechanism of Guarantee: \n  Each student ID is guaranteed to appear at least once within {self.GUARANTEE[1]} wishes.\n   The same student ID can appear at most once within any consecutive {self.GUARANTEE[0]} wishes.",
             "Current Mechanism of Guarantee:    Completely random with no guarantee"]
         self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
@@ -65,7 +65,7 @@ class WishWindow(MovableWindow):
         self.title_label.setFont(QFont(_global_font, 11))
 
         self.information_button = QPushButton('∨祈愿详情∨', self)
-        self.information_button.setFont(QFont(_global_font, 10))
+        self.information_button.setFont(QFont(_global_font, 9))
         self.information_button.clicked.connect(self.toggle_information)
         self.set_widget_style(self.information_button, 'gray', 'white', 150, 26)
 
@@ -89,9 +89,9 @@ class WishWindow(MovableWindow):
             except TypeError: self.header_layout.addStretch(_widget)
 
         self.information = QLabel(self.information_list_zh[0], self)  # 信息
-        self.information.setFont(QFont(_global_font, 14))
+        self.information.setFont(QFont(_global_font, 12))
         self.information.setAlignment(Qt.AlignCenter)
-        self.information.setFixedSize(950, 100)
+        self.information.setFixedSize(1000, 100)
         self.information.setVisible(False)
 
         self.bottom_layout = QHBoxLayout()  # 底部栏
@@ -102,14 +102,14 @@ class WishWindow(MovableWindow):
         self.label_number.setFixedWidth(650)
 
         self.button_once = QPushButton('抽 1 次', self)
-        self.button_once.setFont(QFont(_global_font, 14))
+        self.button_once.setFont(QFont(_global_font, 13))
         self.button_once.clicked.connect(self.draw_once)
-        self.button_once.setFixedSize(150, 60)
+        self.button_once.setFixedSize(160, 60)
 
         self.button_ten = QPushButton('抽 10 次', self)
-        self.button_ten.setFont(QFont(_global_font, 14))
+        self.button_ten.setFont(QFont(_global_font, 13))
         self.button_ten.clicked.connect(self.draw_ten)
-        self.button_ten.setFixedSize(150, 60)
+        self.button_ten.setFixedSize(160, 60)
 
         for _widget in [self.label_number, self.button_once, self.button_ten]:
             self.bottom_layout.addWidget(_widget)
@@ -223,7 +223,7 @@ class WishWindow(MovableWindow):
     
     def draw_once(self):  # 抽 1 次
         self.label_number.setText(f'{self.get_lucky()}')
-        self.label_number.setFixedWidth(650+(len(self.label_number.text())-40)*15 if len(self.label_number.text()) > 40 else 650)  # 过长抽取结果显示适应
+        self.label_number.setFixedWidth(650+(len(self.label_number.text())-30)*20 if len(self.label_number.text()) > 30 else 650)  # 过长抽取结果显示适应
         self.adjustSize()
         self.adjustSize()  # CPU算力限制 需再次调整
 
@@ -238,7 +238,7 @@ class WishWindow(MovableWindow):
         if self.update_label_index < len(self.numbers):
             self.label_number.setText(' '.join(f'{num}' for num in self.numbers[:self.update_label_index + 1]))
             self.update_label_index += 1
-            self.label_number.setFixedWidth(650+(len(self.label_number.text())-40)*15 if len(self.label_number.text()) > 40 else 650)  # 过长抽取结果显示适应
+            self.label_number.setFixedWidth(650+(len(self.label_number.text())-30)*20 if len(self.label_number.text()) > 30 else 650)  # 过长抽取结果显示适应
             self.adjustSize()
         else:
             self.update_label_timer.stop()
