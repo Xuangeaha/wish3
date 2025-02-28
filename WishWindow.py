@@ -14,7 +14,7 @@ from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 from SettingsWindow import SettingsWindow
 
-from config import _short_ver, _ver, _vername, _iconpath, _base_numbers ,_EVER_excluded_numbers
+from config import _short_ver, _ver, _vername, _iconpath, _base_numbers, _default_lang , _EVER_excluded_numbers
 
 class WishWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -33,10 +33,16 @@ class WishWindow(MovableWindow):
                 if resolved_list in [[-1],[]]:
                     self.supportable_numbers = [_i for _i in _base_numbers if _i not in _EVER_excluded_numbers]
                     self.GUARANTEE = [8, 60]
-                    SettingsWindow.show_messagebox(self,f"「自定义祈愿学号池」中存在输入错误，请检查：\n\n        {get_content}\n\n  当前学号池及保底机制已重置为默认（学号1-40，8-60保底）。", type=QMessageBox.Critical)
+                    if _default_lang == 0:
+                        SettingsWindow.show_messagebox(self, f"「自定义祈愿学号池」中存在输入错误，请检查：\n\n        {get_content}\n\n  当前学号池及保底机制已重置为默认（学号1-40，8-60保底）。", lang=0, type=QMessageBox.Critical)
+                    else:
+                        SettingsWindow.show_messagebox(self, f"There are errors in the「Customed Lucky Number Pool」input, please check.\n\n        {get_content}\n\nThe current student number pool and guarantee mode have been reset to default (numbers 1-40, with 8-60 guarantee).", lang=1, type=QMessageBox.Critical)
                 else:
                     if len(resolved_list) == 1:
-                        SettingsWindow.show_messagebox(self,f"「自定义祈愿学号池」中仅有一个学号： {resolved_list[0]}\n\n  这将导致祈愿的结果都为该学号。")
+                        if _default_lang == 0:
+                            SettingsWindow.show_messagebox(self, f"「自定义祈愿学号池」中仅有一个学号： {resolved_list[0]}\n\n  这将导致祈愿的结果都为该学号。", lang=0)
+                        else:
+                            SettingsWindow.show_messagebox(self, f"There is only one student number in「Customed Lucky Number Pool」:  {resolved_list[0]}\n\n  This will result in all wishes being the same student number.", lang=1)
                     self.supportable_numbers = resolved_list
                     length = len(self.supportable_numbers)
                     self.GUARANTEE = [int(length/5 + 1) if length < 20 else 8, (int(length*1.5) // 10 + 1) * 10]
@@ -49,7 +55,7 @@ class WishWindow(MovableWindow):
             f"当前保底机制：  · 每{self.GUARANTEE[1]}次祈愿内，所有学号必出至少一次。\n                                · 任意连续{self.GUARANTEE[0]}次祈愿内，相同学号至多出一次。",
             "当前保底机制：  无保底全随机"]
         self.information_list_en = [
-            f"Current Mechanism of Guarantee: \n  Each student ID is guaranteed to appear at least once within {self.GUARANTEE[1]} wishes.\n   The same student ID can appear at most once within any consecutive {self.GUARANTEE[0]} wishes.",
+            f"Current Mechanism of Guarantee: \n  Each student number is guaranteed to appear at least once within {self.GUARANTEE[1]} wishes.\n   The same student number can appear at most once within any consecutive {self.GUARANTEE[0]} wishes.",
             "Current Mechanism of Guarantee:    Completely random with no guarantee"]
         self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)

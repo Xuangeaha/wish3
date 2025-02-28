@@ -15,7 +15,7 @@ from MovableWindow import MovableWindow
 from LogWindow import LogWindow
 from AboutWindow import AboutWindow
 
-from config import _short_ver, _ver, _vername, _iconpath
+from config import _short_ver, _ver, _vername, _iconpath, _default_lang
 from i18n import STATIC_STRINGS
 
 class SettingsWindow(MovableWindow):
@@ -30,7 +30,7 @@ class SettingsWindow(MovableWindow):
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
         _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0] 
 
-        self.LANGUAGE_INDEX = 1
+        self.LANGUAGE_INDEX = _default_lang
         self.lang_text = STATIC_STRINGS[str(self.LANGUAGE_INDEX)]
 
         self.settings_layout = QVBoxLayout(self)
@@ -138,11 +138,11 @@ class SettingsWindow(MovableWindow):
         self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(200, 200, 360, 350)
     
-    def show_messagebox(self, message:str, language:int=1, type=QMessageBox.Warning):  # 弹出消息框
+    def show_messagebox(self, message:str, lang=int, type=QMessageBox.Warning):  # 弹出消息框
         msg = QMessageBox()  
         msg.setIcon(type)
         msg.setWindowIcon(QIcon(_iconpath))
-        if language == 0:
+        if lang == 0:
             messagebox_title = "祈愿 · 幸运观众"
         else:
             messagebox_title = "Wish3: Who's the Luckiest Dog?"
@@ -219,7 +219,7 @@ class SettingsWindow(MovableWindow):
                     file_infomation = f"{self.lang_text['settings_file_information_1']}{file_name_split[0]}\n{self.lang_text['settings_file_information_2']}{file_name_split[1]}\n{self.lang_text['settings_file_information_3']}{file_name_split[2].split('.')[0]}"
                 except IndexError:
                     file_infomation = f"{self.lang_text['settings_file_information_4']}{fileName}"
-                self.show_messagebox(f"{self.lang_text['settings_file_applied']}\n\n{file_infomation}\n\n{self.lang_text['settings_file_declare']}", QMessageBox.Information)
+                self.show_messagebox(f"{self.lang_text['settings_file_applied']}\n\n{file_infomation}\n\n{self.lang_text['settings_file_declare']}", lang=self.LANGUAGE_INDEX, type=QMessageBox.Information)
         self.wish_window.round_shadow.set_background(colour=colour, picture=picture)
         self.wish_window.setStyleSheet(stylesheet)
 
@@ -234,33 +234,33 @@ class SettingsWindow(MovableWindow):
         self.wish_window.adjustSize()
    
     def apply_tie_separate(self):  # 4.1 / 4.2「心之捆绑」与「心之隔离」应用 
-        detailed_message = ['存在错误输入，请检查。', '存在输入格式错误，请检查。', '存在不支持的学号，请检查。', '学号不得捆绑或隔离自身，请检查。', '「心之隔离」与「心之捆绑」已更新。'] if self.LANGUAGE_INDEX == 0 else ['There are errors in the input, please check.', 'There are input format errors, please check.', 'There are unsupported student numbers, please check.', 'Student number cannot be tied or separated with itself, please check.', '「the Tied」and「the Separated」have been updated.']
+        detailed_message = ['存在错误输入，请检查。', '存在输入格式错误，请检查。', '存在不支持的学号，请检查。', '学号不得捆绑或隔离自身，请检查。', '「心之隔离」与「心之捆绑」已更新。'] if self.LANGUAGE_INDEX == 0 else ['There are errors in the input, please check.', 'There are input format errors, please check.', 'There are unsupported student numbers, please check.', 'Student number cannot be tied or separated with itself, please check.', '「The Tied」and「The Separated」have been updated.']
         def check_list(lineedit, message_prefix): 
             try: new_list = [int(item) for item in filter(None, re.split(r'[-| ]+', lineedit.text()))]  
-            except ValueError: self.show_messagebox(f"「{message_prefix}」{detailed_message[0]}\n", QMessageBox.Critical); return None  
+            except ValueError: self.show_messagebox(f"「{message_prefix}」{detailed_message[0]}\n", lang=self.LANGUAGE_INDEX, type=QMessageBox.Critical); return None  
             if len(new_list) % 2 != 0:  
-                self.show_messagebox(f"「{message_prefix}」{detailed_message[1]}\n", QMessageBox.Critical); return None  
+                self.show_messagebox(f"「{message_prefix}」{detailed_message[1]}\n", lang=self.LANGUAGE_INDEX, type=QMessageBox.Critical); return None  
             is_unsupported_number = False  
             for number in new_list:  
                 if number not in self.wish_window.supportable_numbers.copy(): 
                     is_unsupported_number = True  
             if is_unsupported_number:
-                self.show_messagebox(f"「{message_prefix}」{detailed_message[2]}\n", QMessageBox.Warning); return None 
+                self.show_messagebox(f"「{message_prefix}」{detailed_message[2]}\n", lang=self.LANGUAGE_INDEX, type=QMessageBox.Warning); return None 
             is_selfed = False
             for number in range(len(new_list)-1):
                 if number % 2 == 0 and new_list[number] == new_list[number + 1]:
                     is_selfed = True
             if is_selfed:
-                self.show_messagebox(f"{detailed_message[3]}\n", QMessageBox.Warning); return None  
+                self.show_messagebox(f"{detailed_message[3]}\n", lang=self.LANGUAGE_INDEX, type=QMessageBox.Warning); return None  
             return new_list
             
         while True:  
-            message_prefix = ["心之捆绑", "心之隔离"] if self.LANGUAGE_INDEX == 0 else ["the Tied", "the Separated"]
+            message_prefix = ["心之捆绑", "心之隔离"] if self.LANGUAGE_INDEX == 0 else ["The Tied", "The Separated"]
             new_tie_list = check_list(self.tie_lineedit, message_prefix[0])  
             new_separate_list = check_list(self.separate_lineedit, message_prefix[1]) 
             if new_tie_list is None or new_separate_list is None: break
             self.wish_window.tie_list, self.wish_window.separate_list = new_tie_list, new_separate_list
-            self.show_messagebox(f"{detailed_message[4]}", QMessageBox.Information)
+            self.show_messagebox(f"{detailed_message[4]}", lang=self.LANGUAGE_INDEX, type=QMessageBox.Information)
             break
     
     def toggle_onfront(self):  # 窗口置顶切换
