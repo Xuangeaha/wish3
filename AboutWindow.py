@@ -55,9 +55,9 @@ class AboutWindow(MovableWindow):
         self.wish_copyright.setFont(QFont('Arial', 10))
         self.wish_copyright.setAlignment(Qt.AlignCenter)
 
-        self.call_github = QPushButton('Github(Xuangeaha) ↗', self)  # 关于窗口：外链按钮
+        self.call_github = QPushButton('祈愿·幸运观众 官方网站 ↗', self)  # 关于窗口：外链按钮
         self.call_github.setFont(QFont('等线', 10))
-        self.call_wishsite = QPushButton('祈愿·幸运观众 官方网站 ↗', self)
+        self.call_wishsite = QPushButton('源代码仓库 ↗', self)
         self.call_wishsite.setFont(QFont('等线', 10))
         self.call_github.clicked.connect(self.call_github_broser)
         self.call_wishsite.clicked.connect(self.call_wishsite_broser)
@@ -74,9 +74,9 @@ class AboutWindow(MovableWindow):
 
     def call_github_broser(self):  # 外链调用
         import webbrowser
-        webbrowser.open('https://github.com/xuangeaha/wish3') 
+        webbrowser.open('https://xuangeaha.github.io/wishsite') 
         
     def call_wishsite_broser(self): 
         import webbrowser
-        webbrowser.open('https://xuangeaha.github.io/wishsite')
+        webbrowser.open('https://github.com/xuangeaha/wish3')
     

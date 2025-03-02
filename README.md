@@ -4,13 +4,13 @@
 
 A Qt-based desktop gadget for randomly selecting student numbers.
 
-**当前正式版：**`3.2` &emsp;&emsp;**当前开发版本：**`3.3.0-pre8`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
+**当前正式版：**`3.2` &emsp;&emsp;**当前开发版本：**`3.3.0-rc1`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
 
 > “无论当下的境遇如何，属于幸运观众们的星空中将永远闪耀着你的位置。”
 >
 > "No matter the present, your place will forever shine in the starry sky of the luckiest ones."
 
-## 祈愿 · 幸运观众 3.3：「全球幸运共鸣」（Boundless Luck）：多语言支持（预计2025年3月）
+## 祈愿 · 幸运观众 3.3：「全球幸运共鸣」（Boundless Luck）：多语言支持（预计2025年3月7日）
 
     ||| 新增 |||
 

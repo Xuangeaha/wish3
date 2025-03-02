@@ -92,7 +92,7 @@ class SettingsWindow(MovableWindow):
         self.separate_lineedit.setText(''.join([str(item) + '|' if index % 2 == 0 else str(item) + ' ' for index, item in enumerate(self.wish_window.separate_list)]))
 
         self.apply_tie_separate_button = QPushButton('应用', self)
-        self.apply_tie_separate_button.setFont(QFont(_global_font, 12))
+        self.apply_tie_separate_button.setFont(QFont(_global_font, 11))
         self.apply_tie_separate_button.setFixedWidth(100)
         self.apply_tie_separate_button.clicked.connect(self.apply_tie_separate)
 
