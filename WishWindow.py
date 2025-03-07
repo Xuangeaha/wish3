@@ -230,6 +230,7 @@ class WishWindow(MovableWindow):
                 index = self.tie_list.index(self.last_pick)
                 lucky_person = self.tie_list[index+1] if index % 2 == 0 else self.tie_list[index-1]
                 self.last_pick_tied = True
+                self.send_newspaper('「心之捆绑」已生效..')
         else:
             self.last_pick_tied = False
 
@@ -239,6 +240,7 @@ class WishWindow(MovableWindow):
             separate_person = self.separate_list[index+1] if index % 2 == 0 else self.separate_list[index-1]
             if lucky_person == separate_person:
                 lucky_person = random.choice(self.supportable_numbers)
+                self.send_newspaper('「心之隔离」已生效..')
 
         self.history_all.append(lucky_person)
         self.last_pick = lucky_person
