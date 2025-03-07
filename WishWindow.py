@@ -211,7 +211,10 @@ class WishWindow(MovableWindow):
                     break
                 if self.is_in_guarantee:
                     lucky_person = random.choice(self.lucky_rest)
-                    self.send_newspaper('保底生效中..')
+                    if self.root_settings.LANGUAGE_INDEX == 0:
+                        self.send_newspaper('保底生效中..')
+                    else:
+                        self.send_newspaper('Guarantee is activated..')
                 else:
                     lucky_person = random.choice(self.supportable_numbers)
                 if lucky_person not in self.last_some_picks: ######################### 8抽保底
@@ -230,7 +233,10 @@ class WishWindow(MovableWindow):
                 index = self.tie_list.index(self.last_pick)
                 lucky_person = self.tie_list[index+1] if index % 2 == 0 else self.tie_list[index-1]
                 self.last_pick_tied = True
-                self.send_newspaper('「心之捆绑」已生效..')
+                if self.root_settings.LANGUAGE_INDEX == 0:
+                    self.send_newspaper('「心之捆绑」生效中..')
+                else:
+                    self.send_newspaper('「The Tied」is activated..')
         else:
             self.last_pick_tied = False
 
@@ -240,7 +246,10 @@ class WishWindow(MovableWindow):
             separate_person = self.separate_list[index+1] if index % 2 == 0 else self.separate_list[index-1]
             if lucky_person == separate_person:
                 lucky_person = random.choice(self.supportable_numbers)
-                self.send_newspaper('「心之隔离」已生效..')
+                if self.root_settings.LANGUAGE_INDEX == 0:
+                    self.send_newspaper('「心之隔离」生效中..')
+                else:
+                    self.send_newspaper('「The Separated」is activated..')
 
         self.history_all.append(lucky_person)
         self.last_pick = lucky_person
@@ -253,7 +262,10 @@ class WishWindow(MovableWindow):
         self.history_last_60 = []
         self.lucky_rest = self.supportable_numbers.copy()
         self.pick_num, self.pick_num_rest, self.is_in_guarantee = 0, 60, False
-        self.send_newspaper('保底已重置..')
+        if self.root_settings.LANGUAGE_INDEX == 0:
+            self.send_newspaper('保底已重置..')
+        else:
+            self.send_newspaper('Guarantee resetted..')
 
     def toggle_information(self):  # 信息显示及按钮文字切换
         visible = not self.information.isVisible()
