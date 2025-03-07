@@ -265,7 +265,7 @@ class WishWindow(MovableWindow):
         if self.root_settings.LANGUAGE_INDEX == 0:
             self.send_newspaper('保底已重置..')
         else:
-            self.send_newspaper('Guarantee resetted..')
+            self.send_newspaper('Guarantee reset..')
 
     def toggle_information(self):  # 信息显示及按钮文字切换
         visible = not self.information.isVisible()
