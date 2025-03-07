@@ -5,9 +5,9 @@ Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO)
 
 """
 
-from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox
+from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox, QGraphicsOpacityEffect
 from PyQt5.QtGui import QFont, QFontDatabase, QIcon
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation
 import random
 
 from RoundShadow import RoundShadow
@@ -75,6 +75,9 @@ class WishWindow(MovableWindow):
         self.information_button.clicked.connect(self.toggle_information)
         self.set_widget_style(self.information_button, 'gray', 'white', 150, 26)
 
+        self.newspaper = QLabel('', self)  # 报纸
+        self.newspaper.setFont(QFont(_global_font, 11))
+
         self.minimize_button = QPushButton('', self)
         self.minimize_button.setIcon(QIcon(r'.wish\assets\icon\minimize.png'))
         self.minimize_button.clicked.connect(self.showMinimized)
@@ -90,7 +93,7 @@ class WishWindow(MovableWindow):
         self.close_button.clicked.connect(self.close) 
         self.set_widget_style(self.close_button, 'red', 'white', 30, 30)
         
-        for _widget in [self.title_label, self.information_button, 1, self.minimize_button, self.settings_button, self.close_button]:  # 标题栏布局
+        for _widget in [self.title_label, self.information_button, 1, self.newspaper, 1, self.minimize_button, self.settings_button, self.close_button]:  # 标题栏布局
             try: self.header_layout.addWidget(_widget)
             except TypeError: self.header_layout.addStretch(_widget)
 
@@ -130,6 +133,36 @@ class WishWindow(MovableWindow):
         self.setGeometry(100, 100, 950, 60)
 
         self.root_settings.toggle_language(self.root_settings.LANGUAGE_INDEX)
+    
+    def send_newspaper(self, news):
+        if news != self.newspaper.text():
+            self.newspaper.setText(news)
+            self.newspaper.setVisible(True)
+            self.adjustSize()
+            self.adjustSize()
+            
+            # 重置计时器
+            if hasattr(self, 'fade_timer') and self.fade_timer.isActive():
+                self.fade_timer.stop()
+            
+            self.fade_timer = QTimer(self)
+            self.fade_timer.setSingleShot(True)
+            self.fade_timer.timeout.connect(self.fade_out_newspaper)
+            self.fade_timer.start(3000)  # 显示时间
+
+    def fade_out_newspaper(self):
+        self.opacity_effect = QGraphicsOpacityEffect(self.newspaper)
+        self.newspaper.setGraphicsEffect(self.opacity_effect)
+        self.animation = QPropertyAnimation(self.opacity_effect, b"opacity")
+        self.animation.setDuration(500)  # 淡出时间
+        self.animation.setStartValue(1.0)
+        self.animation.setEndValue(0.0)
+        self.animation.finished.connect(self.hide_newspaper)
+        self.animation.start()
+
+    def hide_newspaper(self):
+        self.newspaper.setVisible(False)
+        self.newspaper.setGraphicsEffect(None)
 
     def set_widget_style(self, widget, background_color, color, sizex, sizey):  # 元件格式包装
         widget.setFixedSize(sizex, sizey)
@@ -178,6 +211,7 @@ class WishWindow(MovableWindow):
                     break
                 if self.is_in_guarantee:
                     lucky_person = random.choice(self.lucky_rest)
+                    self.send_newspaper('保底生效中..')
                 else:
                     lucky_person = random.choice(self.supportable_numbers)
                 if lucky_person not in self.last_some_picks: ######################### 8抽保底
@@ -217,6 +251,7 @@ class WishWindow(MovableWindow):
         self.history_last_60 = []
         self.lucky_rest = self.supportable_numbers.copy()
         self.pick_num, self.pick_num_rest, self.is_in_guarantee = 0, 60, False
+        self.send_newspaper('保底已重置..')
 
     def toggle_information(self):  # 信息显示及按钮文字切换
         visible = not self.information.isVisible()
