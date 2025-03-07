@@ -12,7 +12,7 @@ from PyQt5.QtCore import Qt
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 
-from config import _short_ver, _ver, _iconpath
+from config import _short_ver, _ver, _iconpath, _default_lang
 
 class AboutWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -25,7 +25,8 @@ class AboutWindow(MovableWindow):
         self.about_layout = QVBoxLayout(self)
 
         self.about_header_layout = QHBoxLayout()  # 关于窗口标题栏
-        self.about_title_label = QLabel('关于 祈愿·幸运观众', self)
+        title_label = '关于 祈愿·幸运观众' if _default_lang == 0 else 'About Wish3: Who\'s the Luckiest Dog?'
+        self.about_title_label = QLabel(title_label, self)
         self.about_title_label.setFont(QFont(_global_font, 11))
         self.about_close_button = QPushButton('', self)
         self.about_close_button.setIcon(QIcon(r'.wish\assets\icon\close.png'))

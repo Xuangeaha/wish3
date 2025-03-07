@@ -12,7 +12,7 @@ from PyQt5.QtCore import Qt
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 
-from config import _iconpath
+from config import _iconpath, _default_lang
 
 class LogWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -25,7 +25,8 @@ class LogWindow(MovableWindow):
         self.log_layout = QVBoxLayout(self)
 
         self.log_header_layout = QHBoxLayout()  # 更新说明窗口：标题栏
-        self.log_title_label = QLabel('更新说明', self)
+        title_label = '更新说明' if _default_lang == 0 else 'Release Notes'
+        self.log_title_label = QLabel(title_label, self)
         self.log_title_label.setFont(QFont(_global_font, 11))
         self.log_close_button = QPushButton('', self)
         self.log_close_button.setIcon(QIcon(r'.wish\assets\icon\close.png'))
