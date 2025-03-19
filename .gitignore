@@ -1,6 +1,7 @@
 .idea
 __pycache__
 .wish/themes
+.wish/profilephoto
 build
 dist
 

@@ -6,7 +6,7 @@ Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO)
 """
 
 from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox, QGraphicsOpacityEffect
-from PyQt5.QtGui import QFont, QFontDatabase, QIcon
+from PyQt5.QtGui import QFont, QFontDatabase, QIcon, QPixmap
 from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation
 import random
 
@@ -277,8 +277,12 @@ class WishWindow(MovableWindow):
         self.adjustSize()
     
     def draw_once(self):  # 抽 1 次
-        self.label_number.setText(f'{self.get_lucky()}')
-        self.label_number.setFixedWidth(650+(len(self.label_number.text())-30)*20 if len(self.label_number.text()) > 30 else 650)  # 过长抽取结果显示适应
+        lucky_one = self.get_lucky()
+        profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'
+        pixmap = QPixmap(profile_photo_path).scaled(50, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        
+        
+
         self.adjustSize()
         self.adjustSize()  # CPU算力限制 需再次调整
 
