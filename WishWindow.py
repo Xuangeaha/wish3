@@ -288,6 +288,9 @@ class WishWindow(MovableWindow):
         self.adjustSize()
     
     def draw_once(self):  # 抽 1 次
+        if hasattr(self, 'update_label_timer') and self.update_label_timer.isActive(): # 避免10抽1抽连续抽取
+            return
+        
         lucky_one = self.get_lucky()
         profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'
         pixmap = QPixmap(profile_photo_path).scaled(50, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)
@@ -295,6 +298,7 @@ class WishWindow(MovableWindow):
         self.label_number_avatar.setPixmap(pixmap)
         self.label_number_text.setFixedWidth(600)
         self.label_number_text.setText(str(lucky_one))
+
         self.adjustSize()
         self.adjustSize()  # CPU算力限制 需再次调整
 
@@ -312,6 +316,7 @@ class WishWindow(MovableWindow):
             self.label_number_text.setText(' '.join(f'{num}' for num in self.numbers[:self.update_label_index + 1]))
             self.update_label_index += 1
             self.label_number_text.setFixedWidth(650+(len(self.label_number_text.text())-30)*20 if len(self.label_number_text.text()) > 30 else 650)  # 过长抽取结果显示适应
+            self.adjustSize()
             self.adjustSize()
         else:
             self.update_label_timer.stop()
