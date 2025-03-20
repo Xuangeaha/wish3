@@ -108,14 +108,13 @@ class WishWindow(MovableWindow):
         self.label_number_layout = QHBoxLayout()
 
         self.label_number_avatar = QLabel(self)
-        self.label_number_avatar.setFixedSize(60, 60)
-        self.label_number_avatar.setAlignment(Qt.AlignCenter)
-        self.label_number_avatar.setFixedWidth(60)
+        self.label_number_avatar.setFixedWidth(300)
+        self.label_number_avatar.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
 
         self.label_number_text = QLabel('', self)
         self.label_number_text.setFont(QFont(_global_font, 19))
-        self.label_number_text.setAlignment(Qt.AlignCenter)
-        self.label_number_text.setFixedWidth(600)
+        self.label_number_text.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        self.label_number_text.setFixedWidth(300)
 
         self.label_number_layout.addWidget(self.label_number_avatar)
         self.label_number_layout.addWidget(self.label_number_text)
@@ -294,17 +293,20 @@ class WishWindow(MovableWindow):
         lucky_one = self.get_lucky()
         profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'
         pixmap = QPixmap(profile_photo_path).scaled(50, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        self.label_number_avatar.setFixedWidth(60)
+        self.label_number_avatar.setFixedWidth(300)
         self.label_number_avatar.setPixmap(pixmap)
-        self.label_number_text.setFixedWidth(600)
-        self.label_number_text.setText(str(lucky_one))
+        self.label_number_text.setFixedWidth(300)
+        self.label_number_text.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        self.label_number_text.setText(" "+str(lucky_one))
 
         self.adjustSize()
         self.adjustSize()  # CPU算力限制 需再次调整
 
     def draw_ten(self):  # 抽 10 次
-        self.label_number_avatar.clear()  # 清除头像
-        self.label_number_avatar.setFixedWidth(10)
+        self.label_number_avatar.setFixedWidth(0)
+        self.label_number_avatar.clear()
+        self.label_number_text.setFixedWidth(600)
+        self.label_number_text.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
         self.update_label_index = 0
         self.update_label_timer = QTimer(self)
         self.numbers = [self.get_lucky() for _ in range(10)]
@@ -315,7 +317,7 @@ class WishWindow(MovableWindow):
         if self.update_label_index < len(self.numbers):
             self.label_number_text.setText(' '.join(f'{num}' for num in self.numbers[:self.update_label_index + 1]))
             self.update_label_index += 1
-            self.label_number_text.setFixedWidth(650+(len(self.label_number_text.text())-30)*20 if len(self.label_number_text.text()) > 30 else 650)  # 过长抽取结果显示适应
+            self.label_number_text.setFixedWidth(600+(len(self.label_number_text.text())-30)*20 if len(self.label_number_text.text()) > 30 else 600)  # 过长抽取结果显示适应
             self.adjustSize()
             self.adjustSize()
         else:
