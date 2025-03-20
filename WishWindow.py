@@ -8,7 +8,9 @@ Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO)
 from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox, QGraphicsOpacityEffect
 from PyQt5.QtGui import QFont, QFontDatabase, QIcon, QPixmap
 from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation
+import time
 import random
+import pyperclip
 
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
@@ -78,6 +80,11 @@ class WishWindow(MovableWindow):
         self.newspaper = QLabel('', self)  # 报纸
         self.newspaper.setFont(QFont(_global_font, 11))
 
+        self.history_button = QPushButton('', self)
+        self.history_button.setIcon(QIcon(r'.wish\assets\icon\history.png'))
+        self.history_button.clicked.connect(self.show_history)
+        self.set_widget_style(self.history_button, 'blue', 'white', 30, 30)
+
         self.minimize_button = QPushButton('', self)
         self.minimize_button.setIcon(QIcon(r'.wish\assets\icon\minimize.png'))
         self.minimize_button.clicked.connect(self.showMinimized)
@@ -93,7 +100,7 @@ class WishWindow(MovableWindow):
         self.close_button.clicked.connect(self.close) 
         self.set_widget_style(self.close_button, 'red', 'white', 30, 30)
         
-        for _widget in [self.title_label, self.information_button, 1, self.newspaper, 1, self.minimize_button, self.settings_button, self.close_button]:  # 标题栏布局
+        for _widget in [self.title_label, self.information_button, 1, self.newspaper, 1, self.history_button, self.minimize_button, self.settings_button, self.close_button]:  # 标题栏布局
             try: self.header_layout.addWidget(_widget)
             except TypeError: self.header_layout.addStretch(_widget)
 
@@ -151,8 +158,7 @@ class WishWindow(MovableWindow):
             self.adjustSize()
             self.adjustSize()
             
-            # 重置计时器
-            if hasattr(self, 'fade_timer') and self.fade_timer.isActive():
+            if hasattr(self, 'fade_timer') and self.fade_timer.isActive(): # 重置计时器
                 self.fade_timer.stop()
             
             self.fade_timer = QTimer(self)
@@ -293,6 +299,7 @@ class WishWindow(MovableWindow):
         lucky_one = self.get_lucky()
         profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'
         pixmap = QPixmap(profile_photo_path).scaled(50, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+
         self.label_number_avatar.setFixedWidth(300)
         self.label_number_avatar.setPixmap(pixmap)
         self.label_number_text.setFixedWidth(300)
@@ -322,4 +329,14 @@ class WishWindow(MovableWindow):
             self.adjustSize()
         else:
             self.update_label_timer.stop()
+
+    def show_history(self):  # 历史记录
+        ticktime = time.asctime(time.localtime(time.time()))
+        if self.root_settings.LANGUAGE_INDEX == 0:
+            pyperclip.copy(f'{self.history_all}（祈愿记录导出于 {ticktime}）')
+            SettingsWindow.show_messagebox(self, f"祈愿历史记录（{ticktime}）共{len(self.history_all)}次祈愿：\n\n{self.history_all}\n\n已复制至剪贴板。", lang=0)
+        else:
+            pyperclip.copy(f'{self.history_all}（Wish record exported at {ticktime}）')
+            SettingsWindow.show_messagebox(self, f"Wish History ({ticktime})Total {len(self.history_all)} wishes: \n\n{self.history_all}\n\nCopied to clipboard.", lang=1)
+        
 
