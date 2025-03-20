@@ -107,7 +107,7 @@ class WishWindow(MovableWindow):
         self.information = QLabel(self.information_list_zh[0], self)  # 信息
         self.information.setFont(QFont(_global_font, 12))
         self.information.setAlignment(Qt.AlignCenter)
-        self.information.setFixedSize(1000, 100)
+        self.information.setFixedSize(600, 100)
         self.information.setVisible(False)
 
         self.bottom_layout = QHBoxLayout()  # 底部栏
@@ -334,9 +334,8 @@ class WishWindow(MovableWindow):
         ticktime = time.asctime(time.localtime(time.time()))
         if self.root_settings.LANGUAGE_INDEX == 0:
             pyperclip.copy(f'{self.history_all}（祈愿记录导出于 {ticktime}）')
-            SettingsWindow.show_messagebox(self, f"祈愿历史记录（{ticktime}）共{len(self.history_all)}次祈愿：\n\n{self.history_all}\n\n已复制至剪贴板。", lang=0)
+            SettingsWindow.show_messagebox(self, f"祈愿历史记录（{ticktime}）共 {len(self.history_all)} 次祈愿：\n\n{self.history_all}\n\n已复制至剪贴板。", lang=0, type=QMessageBox.Information)
         else:
             pyperclip.copy(f'{self.history_all}（Wish record exported at {ticktime}）')
-            SettingsWindow.show_messagebox(self, f"Wish History ({ticktime})Total {len(self.history_all)} wishes: \n\n{self.history_all}\n\nCopied to clipboard.", lang=1)
+            SettingsWindow.show_messagebox(self, f"Wish History ({ticktime})Total {len(self.history_all)} wishes: \n\n{self.history_all}\n\nCopied to clipboard.", lang=1, type=QMessageBox.Information)
         
-
