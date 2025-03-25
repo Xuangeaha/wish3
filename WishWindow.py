@@ -25,6 +25,7 @@ class WishWindow(MovableWindow):
         self.guarantee_mode = 0
         self.is_in_guarantee = False
         self.is_information_shown = False
+        self.is_avatar_shown = True
         self.history_all, self.history_last_60 = [], []
         self.tie_list, self.separate_list, self.last_pick_tied = [], [], False
 
@@ -297,14 +298,21 @@ class WishWindow(MovableWindow):
             return
         
         lucky_one = self.get_lucky()
-        profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'
-        pixmap = QPixmap(profile_photo_path).scaled(50, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)
 
-        self.label_number_avatar.setFixedWidth(300)
-        self.label_number_avatar.setPixmap(pixmap)
-        self.label_number_text.setFixedWidth(300)
-        self.label_number_text.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        self.label_number_text.setText(" "+str(lucky_one))
+        if self.is_avatar_shown:
+            profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'
+            pixmap = QPixmap(profile_photo_path).scaled(50, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            self.label_number_avatar.setFixedWidth(300)
+            self.label_number_avatar.setPixmap(pixmap)
+            self.label_number_text.setFixedWidth(300)
+            self.label_number_text.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+            self.label_number_text.setText(" "+str(lucky_one))
+        else:
+            self.label_number_avatar.setFixedWidth(0)
+            self.label_number_avatar.clear()
+            self.label_number_text.setFixedWidth(600)
+            self.label_number_text.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+            self.label_number_text.setText(str(lucky_one))
 
         self.adjustSize()
         self.adjustSize()  # CPU算力限制 需再次调整

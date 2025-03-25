@@ -69,6 +69,19 @@ class SettingsWindow(MovableWindow):
             self.theme_combo.addItem(_item)
         self.theme_combo.currentIndexChanged.connect(self.toggle_theme)
 
+        self.avatar_label = QLabel('头像显示：', self)
+        self.avatar_label.setFont(QFont(_global_font, 12))
+        self.avatar_checkbox = QCheckBox('', self)
+        self.avatar_checkbox.stateChanged.connect(self.toggle_avatar)
+
+        self.line_left = QLabel('', self)
+        self.line_left.setFixedHeight(1)
+        self.line_left.setStyleSheet("background-color: #000000")
+
+        self.line_right = QLabel('', self)
+        self.line_right.setFixedHeight(1)
+        self.line_right.setStyleSheet("background-color: #000000")
+
         self.guarantee_label = QLabel('保底机制：', self)  # 设置窗口：3 保底机制
         self.guarantee_label.setFont(QFont(_global_font, 12))
         self.guarantee_combo = QComboBox(self)
@@ -98,10 +111,12 @@ class SettingsWindow(MovableWindow):
 
         for _widget in [[self.languages_label, 0, 0], [self.languages_combo, 0, 1],  # 设置窗口中心布局
                         [self.theme_label, 1, 0], [self.theme_combo, 1, 1], 
-                        [self.guarantee_label, 2, 0], [self.guarantee_combo, 2, 1], 
-                        [self.tie_label, 4, 0], [self.tie_lineedit, 4, 1],
-                        [self.separate_label, 5, 0], [self.separate_lineedit, 5, 1], 
-                        [self.apply_tie_separate_button, 6, 1]]:
+                        [self.avatar_label, 2, 0], [self.avatar_checkbox, 2, 1],
+                        [self.line_left, 4, 0], [self.line_right, 4, 1],
+                        [self.guarantee_label, 6, 0], [self.guarantee_combo, 6, 1], 
+                        [self.tie_label, 7, 0], [self.tie_lineedit, 7, 1],
+                        [self.separate_label, 8, 0], [self.separate_lineedit, 8, 1], 
+                        [self.apply_tie_separate_button, 9, 1]]:
             self.settings_main_layout.addWidget(_widget[0], _widget[1], _widget[2])
 
         self.settings_main_layout.setContentsMargins(30, 0, 30, 0)
@@ -159,6 +174,7 @@ class SettingsWindow(MovableWindow):
 
         self.settings_title_label.setText(self.lang_text['settings_title'])
         self.theme_label.setText(self.lang_text['settings_theme'])
+        self.avatar_label.setText(self.lang_text['settings_avatar'])
         self.guarantee_label.setText(self.lang_text['settings_guarantee'])
         self.tie_label.setText(self.lang_text['settings_tie'])
         self.separate_label.setText(self.lang_text['settings_separate'])
@@ -219,6 +235,12 @@ class SettingsWindow(MovableWindow):
                 self.show_messagebox(f"{self.lang_text['settings_file_applied']}\n\n{file_infomation}\n\n{self.lang_text['settings_file_declare']}", lang=self.LANGUAGE_INDEX, type=QMessageBox.Information)
         self.wish_window.round_shadow.set_background(colour=colour, picture=picture)
         self.wish_window.setStyleSheet(stylesheet)
+
+    def toggle_avatar(self):  # 头像显示切换
+        if self.avatar_checkbox.isChecked():
+            self.wish_window.is_avatar_shown = True
+        else:
+            self.wish_window.is_avatar_shown = False
 
     def toggle_guarantee(self, index):  # 3 保底机制切换
         self.wish_window.reset_guarantee()
