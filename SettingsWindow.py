@@ -72,6 +72,7 @@ class SettingsWindow(MovableWindow):
         self.avatar_label = QLabel('头像显示：', self)
         self.avatar_label.setFont(QFont(_global_font, 12))
         self.avatar_checkbox = QCheckBox('', self)
+        self.avatar_checkbox.setChecked(wish_window.is_avatar_shown)
         self.avatar_checkbox.stateChanged.connect(self.toggle_avatar)
 
         self.line_left = QLabel('', self)
