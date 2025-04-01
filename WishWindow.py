@@ -58,7 +58,7 @@ class WishWindow(MovableWindow):
             f"当前保底机制：  · 每{self.GUARANTEE[1]}次祈愿内，所有学号必出至少一次。\n                                · 任意连续{self.GUARANTEE[0]}次祈愿内，相同学号至多出一次。",
             "当前保底机制：  无保底全随机"]
         self.information_list_en = [
-            f"Current Mechanism of Guarantee: \n  Each student number is guaranteed to appear at least once within {self.GUARANTEE[1]} wishes.\n   The same student number can appear at most once within any consecutive {self.GUARANTEE[0]} wishes.",
+            f"Current Mechanism of Guarantee: \n  Each number is guaranteed to appear at least once within {self.GUARANTEE[1]} wishes.\n   The same number can appear at most once within any consecutive {self.GUARANTEE[0]} wishes.",
             "Current Mechanism of Guarantee:    Completely random with no guarantee"]
         self.round_shadow = RoundShadow(self)
         self.setAttribute(Qt.WA_TranslucentBackground)
@@ -108,7 +108,7 @@ class WishWindow(MovableWindow):
         self.information = QLabel(self.information_list_zh[0], self)  # 信息
         self.information.setFont(QFont(_global_font, 12))
         self.information.setAlignment(Qt.AlignCenter)
-        self.information.setFixedSize(600, 100)
+        self.information.setWordWrap(True)
         self.information.setVisible(False)
 
         self.bottom_layout = QHBoxLayout()  # 底部栏
@@ -116,13 +116,13 @@ class WishWindow(MovableWindow):
         self.label_number_layout = QHBoxLayout()
 
         self.label_number_avatar = QLabel(self)
-        self.label_number_avatar.setFixedWidth(300)
+        self.label_number_avatar.setFixedWidth(310)
         self.label_number_avatar.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
 
         self.label_number_text = QLabel('', self)
         self.label_number_text.setFont(QFont(_global_font, 19))
         self.label_number_text.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
-        self.label_number_text.setFixedWidth(300)
+        self.label_number_text.setFixedWidth(310)
 
         self.label_number_layout.addWidget(self.label_number_avatar)
         self.label_number_layout.addWidget(self.label_number_text)
@@ -148,7 +148,7 @@ class WishWindow(MovableWindow):
 
         self.setWindowTitle("祈愿 · 幸运观众")
         self.setWindowIcon(QIcon(_iconpath))
-        self.setGeometry(100, 100, 950, 60)
+        self.setGeometry(100, 100, 900, 600)
 
         self.root_settings.toggle_language(self.root_settings.LANGUAGE_INDEX)
     
@@ -292,6 +292,8 @@ class WishWindow(MovableWindow):
         else:
             self.information_button.setText('∧Details∧' if visible else '∨Details∨')
         self.adjustSize()
+        size = self.size()
+        print(f"当前窗口大小：宽度 {size.width()}，高度 {size.height()}")
     
     def draw_once(self):  # 抽 1 次
         if hasattr(self, 'update_label_timer') and self.update_label_timer.isActive(): # 避免10抽1抽连续抽取
@@ -302,15 +304,15 @@ class WishWindow(MovableWindow):
         if self.is_avatar_shown:
             profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'
             pixmap = QPixmap(profile_photo_path).scaled(50, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-            self.label_number_avatar.setFixedWidth(300)
+            self.label_number_avatar.setFixedWidth(310)
             self.label_number_avatar.setPixmap(pixmap)
-            self.label_number_text.setFixedWidth(300)
+            self.label_number_text.setFixedWidth(310)
             self.label_number_text.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
             self.label_number_text.setText(" "+str(lucky_one))
         else:
             self.label_number_avatar.setFixedWidth(0)
             self.label_number_avatar.clear()
-            self.label_number_text.setFixedWidth(600)
+            self.label_number_text.setFixedWidth(620)
             self.label_number_text.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
             self.label_number_text.setText(str(lucky_one))
 
@@ -320,7 +322,7 @@ class WishWindow(MovableWindow):
     def draw_ten(self):  # 抽 10 次
         self.label_number_avatar.setFixedWidth(0)
         self.label_number_avatar.clear()
-        self.label_number_text.setFixedWidth(600)
+        self.label_number_text.setFixedWidth(620)
         self.label_number_text.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
         self.update_label_index = 0
         self.update_label_timer = QTimer(self)
@@ -332,7 +334,7 @@ class WishWindow(MovableWindow):
         if self.update_label_index < len(self.numbers):
             self.label_number_text.setText(' '.join(f'{num}' for num in self.numbers[:self.update_label_index + 1]))
             self.update_label_index += 1
-            self.label_number_text.setFixedWidth(600+(len(self.label_number_text.text())-30)*20 if len(self.label_number_text.text()) > 30 else 600)  # 过长抽取结果显示适应
+            self.label_number_text.setFixedWidth(620+(len(self.label_number_text.text())-30)*20 if len(self.label_number_text.text()) > 30 else 620)  # 过长抽取结果显示适应
             self.adjustSize()
             self.adjustSize()
         else:
@@ -345,5 +347,5 @@ class WishWindow(MovableWindow):
             SettingsWindow.show_messagebox(self, f"祈愿历史记录（{ticktime}）共 {len(self.history_all)} 次祈愿：\n\n{self.history_all}\n\n已复制至剪贴板。", lang=0, type=QMessageBox.Information)
         else:
             pyperclip.copy(f'{self.history_all}（Wish record exported at {ticktime}）')
-            SettingsWindow.show_messagebox(self, f"Wish History ({ticktime})Total {len(self.history_all)} wishes: \n\n{self.history_all}\n\nCopied to clipboard.", lang=1, type=QMessageBox.Information)
+            SettingsWindow.show_messagebox(self, f"Wish History ({ticktime}) Total {len(self.history_all)} wishes: \n\n{self.history_all}\n\nCopied to clipboard.", lang=1, type=QMessageBox.Information)
         

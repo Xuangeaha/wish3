@@ -120,7 +120,7 @@ class SettingsWindow(MovableWindow):
                         [self.apply_tie_separate_button, 9, 1]]:
             self.settings_main_layout.addWidget(_widget[0], _widget[1], _widget[2])
 
-        self.settings_main_layout.setContentsMargins(30, 0, 30, 0)
+        self.settings_main_layout.setContentsMargins(30, 8, 30, 15)
 
         self.settings_bottom_layout = QHBoxLayout()
         
