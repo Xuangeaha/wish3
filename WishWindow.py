@@ -84,17 +84,17 @@ class WishWindow(MovableWindow):
         self.history_button = QPushButton('', self)
         self.history_button.setIcon(QIcon(r'.wish\assets\icon\history.png'))
         self.history_button.clicked.connect(self.show_history)
-        self.set_widget_style(self.history_button, 'blue', 'white', 30, 30)
+        self.set_widget_style(self.history_button, 'gray', 'white', 30, 30)
 
         self.minimize_button = QPushButton('', self)
         self.minimize_button.setIcon(QIcon(r'.wish\assets\icon\minimize.png'))
         self.minimize_button.clicked.connect(self.showMinimized)
-        self.set_widget_style(self.minimize_button, 'blue', 'white', 30, 30)
+        self.set_widget_style(self.minimize_button, 'gray', 'white', 30, 30)
 
         self.settings_button = QPushButton('', self)
         self.settings_button.setIcon(QIcon(r'.wish\assets\icon\settings.png'))
         self.settings_button.clicked.connect(self.root_settings.show)
-        self.set_widget_style(self.settings_button, 'blue', 'white', 30, 30)
+        self.set_widget_style(self.settings_button, 'gray', 'white', 30, 30)
 
         self.close_button = QPushButton('', self)
         self.close_button.setIcon(QIcon(r'.wish\assets\icon\close.png'))
@@ -151,12 +151,13 @@ class WishWindow(MovableWindow):
         self.setGeometry(100, 100, 900, 600)
 
         self.root_settings.toggle_language(self.root_settings.LANGUAGE_INDEX)
+
+        self.send_newspaper('3.4版本「可视化心愿」即将开启！')
     
     def send_newspaper(self, news):
         if news != self.newspaper.text():
             self.newspaper.setText(news)
             self.newspaper.setVisible(True)
-            self.adjustSize()
             self.adjustSize()
             
             if hasattr(self, 'fade_timer') and self.fade_timer.isActive(): # 重置计时器
@@ -165,7 +166,7 @@ class WishWindow(MovableWindow):
             self.fade_timer = QTimer(self)
             self.fade_timer.setSingleShot(True)
             self.fade_timer.timeout.connect(self.fade_out_newspaper)
-            self.fade_timer.start(3000)  # 显示时间
+            self.fade_timer.start(4000)  # 显示时间
 
     def fade_out_newspaper(self):
         self.opacity_effect = QGraphicsOpacityEffect(self.newspaper)
@@ -292,8 +293,6 @@ class WishWindow(MovableWindow):
         else:
             self.information_button.setText('∧Details∧' if visible else '∨Details∨')
         self.adjustSize()
-        size = self.size()
-        print(f"当前窗口大小：宽度 {size.width()}，高度 {size.height()}")
     
     def draw_once(self):  # 抽 1 次
         if hasattr(self, 'update_label_timer') and self.update_label_timer.isActive(): # 避免10抽1抽连续抽取
@@ -316,7 +315,6 @@ class WishWindow(MovableWindow):
             self.label_number_text.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
             self.label_number_text.setText(str(lucky_one))
 
-        self.adjustSize()
         self.adjustSize()  # CPU算力限制 需再次调整
 
     def draw_ten(self):  # 抽 10 次
@@ -336,7 +334,6 @@ class WishWindow(MovableWindow):
             self.update_label_index += 1
             self.label_number_text.setFixedWidth(620+(len(self.label_number_text.text())-30)*20 if len(self.label_number_text.text()) > 30 else 620)  # 过长抽取结果显示适应
             self.adjustSize()
-            self.adjustSize()
         else:
             self.update_label_timer.stop()
 
@@ -344,8 +341,14 @@ class WishWindow(MovableWindow):
         ticktime = time.asctime(time.localtime(time.time()))
         if self.root_settings.LANGUAGE_INDEX == 0:
             pyperclip.copy(f'{self.history_all}（祈愿记录导出于 {ticktime}）')
-            SettingsWindow.show_messagebox(self, f"祈愿历史记录（{ticktime}）共 {len(self.history_all)} 次祈愿：\n\n{self.history_all}\n\n已复制至剪贴板。", lang=0, type=QMessageBox.Information)
+            if len(self.history_all) < 500:
+                SettingsWindow.show_messagebox(self, f"祈愿历史记录（{ticktime}）共 {len(self.history_all)} 次祈愿：\n\n{self.history_all}\n\n已复制至剪贴板。", lang=0, type=QMessageBox.Information)
+            else:
+                SettingsWindow.show_messagebox(self, f"祈愿历史记录（{ticktime}）共 {len(self.history_all)} 次祈愿，最近 500 次祈愿：\n\n...{self.history_all[-500:]}\n\n所有祈愿记录已复制至剪贴板。", lang=0, type=QMessageBox.Information)
         else:
             pyperclip.copy(f'{self.history_all}（Wish record exported at {ticktime}）')
-            SettingsWindow.show_messagebox(self, f"Wish History ({ticktime}) Total {len(self.history_all)} wishes: \n\n{self.history_all}\n\nCopied to clipboard.", lang=1, type=QMessageBox.Information)
-        
+            if len(self.history_all) < 500:
+                SettingsWindow.show_messagebox(self, f"Wish History ({ticktime}) Total {len(self.history_all)} wishes: \n\n{self.history_all}\n\nCopied to clipboard.", lang=1, type=QMessageBox.Information)
+            else:
+                SettingsWindow.show_messagebox(self, f"Wish History ({ticktime}) Total {len(self.history_all)} wishes, recent 500 wishes: \n\n...{self.history_all[-500:]}\n\nAll wish records copied to clipboard.", lang=1, type=QMessageBox.Information)
+
