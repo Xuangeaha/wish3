@@ -77,11 +77,11 @@ class SettingsWindow(MovableWindow):
 
         self.line_left = QLabel('', self)
         self.line_left.setFixedHeight(1)
-        self.line_left.setStyleSheet("background-color: #000000")
+        self.line_left.setStyleSheet("background-color: #696969")
 
         self.line_right = QLabel('', self)
         self.line_right.setFixedHeight(1)
-        self.line_right.setStyleSheet("background-color: #000000")
+        self.line_right.setStyleSheet("background-color: #696969")
 
         self.guarantee_label = QLabel('保底机制：', self)  # 设置窗口：3 保底机制
         self.guarantee_label.setFont(QFont(_global_font, 12))
@@ -224,7 +224,7 @@ class SettingsWindow(MovableWindow):
             stylesheet = "QWidget {background-color: #ffb8c6; color: white}"
         elif index == 3:   
             options = QFileDialog.Options()
-            fileName, _ = QFileDialog.getOpenFileName(None, self.lang_text['settings_filedialog_title'], r".wish\themes", self.lang_text['settings_filedialog_filetype'], options=options)  
+            fileName, _ = QFileDialog.getOpenFileName(self, self.lang_text['settings_filedialog_title'], r".wish\themes", self.lang_text['settings_filedialog_filetype'], options=options)  
             if fileName:  
                 picture = fileName  
                 stylesheet = "QLabel {color: white}"
