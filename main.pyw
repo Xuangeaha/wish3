@@ -13,19 +13,19 @@ from PyQt5.QtWidgets import QApplication
 import sys
 
 from WishWindow import WishWindow
-# from ProfilephotoUpdateWindow import ProfilephotoUpdateWindow
+from ProfilephotoUpdateWindow import ProfilephotoUpdateWindow
 
-# from exceptionHandler import handle_exception
+from exceptionHandler import handle_exception
 
-# sys.excepthook = handle_exception
+sys.excepthook = handle_exception
 
 
 def run():
     app = QApplication(sys.argv)
     root = WishWindow()
     root.show()
-    # profile_photo_window = ProfilephotoUpdateWindow()
-    # profile_photo_window.show()
+    profile_photo_window = ProfilephotoUpdateWindow()
+    profile_photo_window.show()
     app.exec_()
 
 

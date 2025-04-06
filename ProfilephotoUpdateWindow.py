@@ -44,14 +44,12 @@ class ProfilephotoUpdateWindow(MovableWindow):
 
         self.pfpu_table = QGridLayout()  # 更新说明窗口：更新说明表格
 
-        update_info_label = QLabel("    以下学号及命名空间对应头像已随祈愿·幸运观众 3.4.0devApril\nScTest1 版本（2025-04-01）自动更新：\n", self)
+        update_info_label = QLabel("    以下学号及命名空间对应头像已自动更新：\n", self)
         update_info_label.setFont(QFont(_global_font, 13))
         self.pfpu_table.addWidget(update_info_label, 0, 0, 1, 3)
 
         updates = [
-            {"id": "9", "namespace": "@student.global.9"},
-            {"id": "10", "namespace": "@student.global.10"},
-            {"id": "18", "namespace": "@student.global.18"}
+            {"id": "38", "namespace": "@student.global.38"}
         ]
 
         for row, update in enumerate(updates, start=1):
@@ -72,11 +70,11 @@ class ProfilephotoUpdateWindow(MovableWindow):
             self.pfpu_table.addWidget(arrow_label, row * 2, 1)  # 添加箭头
             self.pfpu_table.addWidget(new_photo, row * 2, 2)  # 添加新头像
 
-        self.pfpu_table.setContentsMargins(30, 10, 30, 30)
+        self.pfpu_table.setContentsMargins(20, 10, 30, 30)
         self.pfpu_layout.addLayout(self.pfpu_header_layout)  # 更新说明窗口布局
         self.pfpu_layout.addLayout(self.pfpu_table)
         self.pfpu_layout.setContentsMargins(30, 25, 30, 25)
 
         self.setWindowTitle("祈愿 · 幸运观众 - 更新说明")
         self.setWindowIcon(QIcon(_iconpath))
-        self.setGeometry(200, 200, 400, 400)
+        self.setGeometry(250, 250, 440, 250)

@@ -6,7 +6,7 @@ Copyright © 2024-2025 XuangeAha(轩哥啊哈OvO)
 """
 
 _short_ver = '3.4'
-_ver = '3.4.0-pre1'
+_ver = '3.4.0-pre2'
 _vername = '预发布版本'
 _default_lang = 0
 _iconpath = r'wish.ico'
