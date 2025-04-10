@@ -150,8 +150,13 @@ class WishWindow(MovableWindow):
 
         self.root_settings.toggle_language(self.root_settings.LANGUAGE_INDEX)
 
-        self.send_newspaper('3.4版本「可视化心愿」即将开启！')  # 初始报纸
-    
+        self.send_newspaper('感谢 2200+ 次下载！')  # 初始报纸
+
+        self.label_number_avatar.setFixedWidth(0)
+        self.label_number_text.setFixedWidth(620)
+        self.label_number_text.setText('3.4版本「可视化心愿」 |  4月12日 全球发布')
+        self.label_number_text.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+        
     def set_widget_style(self, widget, background_color, color, sizex, sizey):  # 元件格式包装
         widget.setFixedSize(sizex, sizey)
         widget.setStyleSheet(f"""
@@ -318,7 +323,7 @@ class WishWindow(MovableWindow):
             self.fade_timer = QTimer(self)
             self.fade_timer.setSingleShot(True)
             self.fade_timer.timeout.connect(self.fade_out_newspaper)
-            self.fade_timer.start(4000)  # 报纸显示时间
+            self.fade_timer.start(10000)  # 报纸显示时间
 
     def fade_out_newspaper(self):  # 渐隐报纸
         self.opacity_effect = QGraphicsOpacityEffect(self.newspaper)
