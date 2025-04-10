@@ -48,9 +48,9 @@ class SettingsWindow(MovableWindow):
         self.settings_header_layout.addStretch(1)
         self.settings_header_layout.addWidget(self.settings_close_button)
 
-        self.settings_main_layout = QGridLayout()
+        self.settings_main_layout = QGridLayout()  # 设置栏面板
 
-        self.languages_label = QLabel('语言/Languages：', self)  # 设置窗口：1 语言
+        self.languages_label = QLabel('语言/Languages：', self)  # 1 语言
         self.languages_label.setFont(QFont(_global_font, 12))
         self.languages_combo = QComboBox(self)
         self.languages_combo.setFont(QFont(_global_font, 12))
@@ -59,7 +59,7 @@ class SettingsWindow(MovableWindow):
         self.languages_combo.setCurrentIndex(self.LANGUAGE_INDEX)
         self.languages_combo.currentIndexChanged.connect(self.toggle_language)
 
-        self.theme_label = QLabel('主题配色：', self)  # 设置窗口：2 主题配色设置
+        self.theme_label = QLabel('主题配色：', self)  # 2 主题配色
         self.theme_label.setFont(QFont(_global_font, 12))
         self.theme_combo = QComboBox(self)
         self.theme_combo.setFont(QFont(_global_font, 12))
@@ -69,13 +69,13 @@ class SettingsWindow(MovableWindow):
             self.theme_combo.addItem(_item)
         self.theme_combo.currentIndexChanged.connect(self.toggle_theme)
 
-        self.avatar_label = QLabel('头像显示：', self)
+        self.avatar_label = QLabel('头像显示：', self)  # 3 头像显示
         self.avatar_label.setFont(QFont(_global_font, 12))
         self.avatar_checkbox = QCheckBox('', self)
         self.avatar_checkbox.setChecked(wish_window.is_avatar_shown)
         self.avatar_checkbox.stateChanged.connect(self.toggle_avatar)
 
-        self.line_left = QLabel('', self)
+        self.line_left = QLabel('', self)  # 分割线
         self.line_left.setFixedHeight(1)
         self.line_left.setStyleSheet("background-color: #696969")
 
@@ -83,7 +83,7 @@ class SettingsWindow(MovableWindow):
         self.line_right.setFixedHeight(1)
         self.line_right.setStyleSheet("background-color: #696969")
 
-        self.guarantee_label = QLabel('保底机制：', self)  # 设置窗口：3 保底机制
+        self.guarantee_label = QLabel('保底机制：', self)  # 4 保底机制
         self.guarantee_label.setFont(QFont(_global_font, 12))
         self.guarantee_combo = QComboBox(self)
         self.guarantee_combo.setFont(QFont(_global_font, 12))
@@ -93,24 +93,24 @@ class SettingsWindow(MovableWindow):
         self.guarantee_combo.addItem("无保底")
         self.guarantee_combo.currentIndexChanged.connect(self.toggle_guarantee)
 
-        self.tie_label = QLabel('「心之捆绑」：', self)  # 设置窗口：4.1 「心之捆绑」
+        self.tie_label = QLabel('「心之捆绑」：', self)  # 5.1 「心之捆绑」
         self.tie_label.setFont(QFont(_global_font, 12))
         self.tie_lineedit = QLineEdit(self)
         self.tie_lineedit.setFont(QFont(_global_font, 12))
         self.tie_lineedit.setText(''.join([str(item) + '-' if index % 2 == 0 else str(item) + ' ' for index, item in enumerate(self.wish_window.tie_list)]))
 
-        self.separate_label = QLabel('「心之隔离」：', self)  # 设置窗口：4.2 「心之隔离」
+        self.separate_label = QLabel('「心之隔离」：', self)  # 5.2 「心之隔离」
         self.separate_label.setFont(QFont(_global_font, 12))
         self.separate_lineedit = QLineEdit(self)
         self.separate_lineedit.setFont(QFont(_global_font, 12))
         self.separate_lineedit.setText(''.join([str(item) + '|' if index % 2 == 0 else str(item) + ' ' for index, item in enumerate(self.wish_window.separate_list)]))
 
-        self.apply_tie_separate_button = QPushButton('应用', self)
+        self.apply_tie_separate_button = QPushButton('应用', self)  # 5.3 「心之捆绑」&「心之隔离」应用
         self.apply_tie_separate_button.setFont(QFont(_global_font, 11))
         self.apply_tie_separate_button.setFixedWidth(100)
         self.apply_tie_separate_button.clicked.connect(self.apply_tie_separate)
 
-        for _widget in [[self.languages_label, 0, 0], [self.languages_combo, 0, 1],  # 设置窗口中心布局
+        for _widget in [[self.languages_label, 0, 0], [self.languages_combo, 0, 1],  # 设置栏面板布局
                         [self.theme_label, 1, 0], [self.theme_combo, 1, 1], 
                         [self.avatar_label, 2, 0], [self.avatar_checkbox, 2, 1],
                         [self.line_left, 4, 0], [self.line_right, 4, 1],
@@ -122,24 +122,24 @@ class SettingsWindow(MovableWindow):
 
         self.settings_main_layout.setContentsMargins(30, 8, 30, 15)
 
-        self.settings_bottom_layout = QHBoxLayout()
+        self.settings_bottom_layout = QHBoxLayout()  # 设置底栏
         
-        self.onfront_label = QLabel('窗口始终置顶：', self)  # 窗口置顶设置
+        self.onfront_label = QLabel('窗口始终置顶：', self)  # 窗口始终置顶
         self.onfront_label.setFont(QFont(_global_font, 11))
         self.onfront_checkbox = QCheckBox('', self)
         self.onfront_checkbox.stateChanged.connect(self.toggle_onfront)
 
-        self.about_button = QPushButton('关于..', self)  # 设置窗口底栏
+        self.about_button = QPushButton('关于..', self)  # 关于
         self.about_button.setFont(QFont(_global_font, 9))
         self.about_button.clicked.connect(self.root_about.show)
         self.about_button.setFixedSize(160, 35)
 
-        self.log_button = QPushButton('更新说明..', self)
+        self.log_button = QPushButton('更新说明..', self)  # 更新说明
         self.log_button.setFont(QFont(_global_font, 9))
         self.log_button.clicked.connect(self.root_log.show)
         self.log_button.setFixedSize(160, 35)
 
-        self.settings_bottom_layout.addWidget(self.onfront_label)
+        self.settings_bottom_layout.addWidget(self.onfront_label)  # 设置底栏布局
         self.settings_bottom_layout.addWidget(self.onfront_checkbox)
         self.settings_bottom_layout.addStretch(1)
         self.settings_bottom_layout.addWidget(self.about_button)
@@ -153,15 +153,6 @@ class SettingsWindow(MovableWindow):
         self.setWindowTitle("祈愿 · 幸运观众 - 设置")
         self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(200, 200, 360, 350)
-    
-    def show_messagebox(self, message:str, lang=int, type=QMessageBox.Warning):  # 弹出消息框
-        msg = QMessageBox()  
-        msg.setIcon(type)
-        msg.setWindowIcon(QIcon(_iconpath))
-        msg_title = "祈愿 · 幸运观众" if lang == 0 else "Wish3: Who's the Luckiest Dog?"
-        msg.setWindowTitle(msg_title)
-        msg.setText(message)
-        msg.exec_() 
 
     def toggle_language(self, index):  # 1 语言切换
         self.LANGUAGE_INDEX = index
@@ -237,13 +228,13 @@ class SettingsWindow(MovableWindow):
         self.wish_window.round_shadow.set_background(colour=colour, picture=picture)
         self.wish_window.setStyleSheet(stylesheet)
 
-    def toggle_avatar(self):  # 头像显示切换
+    def toggle_avatar(self):  # 3 头像显示切换
         if self.avatar_checkbox.isChecked():
             self.wish_window.is_avatar_shown = True
         else:
             self.wish_window.is_avatar_shown = False
 
-    def toggle_guarantee(self, index):  # 3 保底机制切换
+    def toggle_guarantee(self, index):  # 4 保底机制切换
         self.wish_window.reset_guarantee()
         self.wish_window.guarantee_mode = index
         if self.LANGUAGE_INDEX == 0:
@@ -253,7 +244,7 @@ class SettingsWindow(MovableWindow):
         self.wish_window.information.setFixedSize(950, [100, 60][index])
         self.wish_window.adjustSize()
    
-    def apply_tie_separate(self):  # 4.1 / 4.2「心之捆绑」与「心之隔离」应用 
+    def apply_tie_separate(self):  # 5.1 / 5.2「心之捆绑」与「心之隔离」应用 
         detailed_message = ['存在错误输入，请检查。', '存在输入格式错误，请检查。', '存在不支持的学号，请检查。', '学号不得捆绑或隔离自身，请检查。', '「心之隔离」与「心之捆绑」已更新。'] if self.LANGUAGE_INDEX == 0 else ['There are errors in the input, please check.', 'There are input format errors, please check.', 'There are unsupported student numbers, please check.', 'Student number cannot be tied or separated with itself, please check.', '「The Tied」and「The Separated」have been updated.']
         def check_list(lineedit, message_prefix): 
             try: new_list = [int(item) for item in filter(None, re.split(r'[-| ]+', lineedit.text()))]  
@@ -291,3 +282,12 @@ class SettingsWindow(MovableWindow):
             self.wish_window.setWindowFlags(self.wish_window.windowFlags() & ~Qt.WindowStaysOnTopHint)
             self.wish_window.show()
         pass
+
+    def show_messagebox(self, message:str, lang=int, type=QMessageBox.Warning):  # 消息框弹出
+        msg = QMessageBox()  
+        msg.setIcon(type)
+        msg.setWindowIcon(QIcon(_iconpath))
+        msg_title = "祈愿 · 幸运观众" if lang == 0 else "Wish3: Who's the Luckiest Dog?"
+        msg.setWindowTitle(msg_title)
+        msg.setText(message)
+        msg.exec_() 

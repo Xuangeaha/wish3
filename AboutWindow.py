@@ -24,7 +24,7 @@ class AboutWindow(MovableWindow):
 
         self.about_layout = QVBoxLayout(self)
 
-        self.about_header_layout = QHBoxLayout()  # 关于窗口标题栏
+        self.about_header_layout = QHBoxLayout()  # 标题栏
         title_label = '关于 祈愿·幸运观众' if _default_lang == 0 else 'About Wish3: Who\'s the Luckiest Dog?'
         self.about_title_label = QLabel(title_label, self)
         self.about_title_label.setFont(QFont(_global_font, 11))
@@ -42,21 +42,21 @@ class AboutWindow(MovableWindow):
         self.about_header_layout.addStretch(1)
         self.about_header_layout.addWidget(self.about_close_button)
 
-        self.wish_icon = QLabel(self)  # 关于窗口：祈愿·幸运观众图标
+        self.wish_icon = QLabel(self)  # 祈愿·幸运观众图标
         self.wish_icon.setPixmap(QIcon(r'.wish\assets\wish\wish.png').pixmap(100, 100))
         self.wish_icon.setAlignment(Qt.AlignCenter)
 
-        self.wish_title = QLabel('祈愿·幸运观众 '+_short_ver, self)  # 关于窗口：祈愿·幸运观众标题
+        self.wish_title = QLabel('祈愿·幸运观众 '+_short_ver, self)  # 祈愿·幸运观众标题
         self.wish_title.setFont(QFont(_global_font, 18))
         self.wish_title.setAlignment(Qt.AlignCenter)
         self.wish_subtitle = QLabel(_ver, self)
         self.wish_subtitle.setFont(QFont(_global_font, 12))
         self.wish_subtitle.setAlignment(Qt.AlignCenter)
-        self.wish_copyright = QLabel('Copyright © 2023-2024 XuangeAha(轩哥啊哈OvO), \nAll rights reserved. | MIT License', self)
+        self.wish_copyright = QLabel('Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO), \nAll rights reserved. | MIT License', self)
         self.wish_copyright.setFont(QFont('Arial', 10))
         self.wish_copyright.setAlignment(Qt.AlignCenter)
 
-        self.call_github = QPushButton('祈愿·幸运观众 官方网站 ↗', self)  # 关于窗口：外链按钮
+        self.call_github = QPushButton('祈愿·幸运观众 官方网站 ↗', self)  # 外链按钮
         self.call_github.setFont(QFont('等线', 10))
         self.call_wishsite = QPushButton('源代码仓库 ↗', self)
         self.call_wishsite.setFont(QFont('等线', 10))

@@ -5,7 +5,7 @@
 > "No matter the present, your place will forever shine in the starry sky of the luckiest ones."
 
 Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO)
-All rights reserved. | MIT License
+MIT License | All rights reserved.
 
 """
 
@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import QApplication
 import sys
 
 from WishWindow import WishWindow
-from ProfilephotoUpdateWindow import ProfilephotoUpdateWindow
+# from ProfilephotoUpdateWindow import ProfilephotoUpdateWindow
 
 from exceptionHandler import handle_exception
 
@@ -24,10 +24,11 @@ def run():
     app = QApplication(sys.argv)
     root = WishWindow()
     root.show()
-    profile_photo_window = ProfilephotoUpdateWindow()
-    profile_photo_window.show()
+    # profile_photo_window = ProfilephotoUpdateWindow()
+    # profile_photo_window.show()
     app.exec_()
 
 
 if __name__ == '__main__':
     run()
+

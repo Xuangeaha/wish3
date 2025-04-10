@@ -24,7 +24,7 @@ class LogWindow(MovableWindow):
 
         self.log_layout = QVBoxLayout(self)
 
-        self.log_header_layout = QHBoxLayout()  # 更新说明窗口：标题栏
+        self.log_header_layout = QHBoxLayout()  # 标题栏
         title_label = '更新说明' if _default_lang == 0 else 'Release Notes'
         self.log_title_label = QLabel(title_label, self)
         self.log_title_label.setFont(QFont(_global_font, 11))
@@ -42,7 +42,7 @@ class LogWindow(MovableWindow):
         self.log_header_layout.addStretch(1)
         self.log_header_layout.addWidget(self.log_close_button)
 
-        self.log_table = QGridLayout()  # 更新说明窗口：更新说明表格
+        self.log_table = QGridLayout()  # 更新说明表格
 
         with open('CHANGELOG.txt', 'r', encoding='utf-8') as file:  # 更新说明文档读取
             content_list = [line.strip() for line in file]

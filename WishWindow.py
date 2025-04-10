@@ -67,36 +67,37 @@ class WishWindow(MovableWindow):
 
         self.root_settings = SettingsWindow(self)
         self.main_layout = QVBoxLayout(self)
-        self.header_layout = QHBoxLayout()
 
-        title = f'祈愿·幸运观众 {_short_ver}（{_vername}）{_ver}' if _vername != '正式版' else f'祈愿·幸运观众 {_short_ver}'  # 标题栏
-        self.title_label = QLabel(title, self)
+        self.header_layout = QHBoxLayout()  # 标题栏
+
+        self.title = f'祈愿·幸运观众 {_short_ver}（{_vername}）{_ver}' if _vername != '正式版' else f'祈愿·幸运观众 {_short_ver}'  # 标题
+        self.title_label = QLabel(self.title, self)
         self.title_label.setFont(QFont(_global_font, 11))
 
-        self.information_button = QPushButton('∨祈愿详情∨', self)
+        self.information_button = QPushButton('∨祈愿详情∨', self)  # 祈愿详情按钮
         self.information_button.setFont(QFont(_global_font, 9))
         self.information_button.clicked.connect(self.toggle_information)
         self.set_widget_style(self.information_button, 'gray', 'white', 150, 26)
 
-        self.newspaper = QLabel('', self)  # 报纸
+        self.newspaper = QLabel('', self)  # 动态信息报纸
         self.newspaper.setFont(QFont(_global_font, 11))
 
-        self.history_button = QPushButton('', self)
+        self.history_button = QPushButton('', self)  # 历史记录按钮
         self.history_button.setIcon(QIcon(r'.wish\assets\icon\history.png'))
         self.history_button.clicked.connect(self.show_history)
         self.set_widget_style(self.history_button, 'gray', 'white', 30, 30)
 
-        self.minimize_button = QPushButton('', self)
+        self.minimize_button = QPushButton('', self)  # 最小化按钮
         self.minimize_button.setIcon(QIcon(r'.wish\assets\icon\minimize.png'))
         self.minimize_button.clicked.connect(self.showMinimized)
         self.set_widget_style(self.minimize_button, 'gray', 'white', 30, 30)
 
-        self.settings_button = QPushButton('', self)
+        self.settings_button = QPushButton('', self)  # 设置按钮
         self.settings_button.setIcon(QIcon(r'.wish\assets\icon\settings.png'))
         self.settings_button.clicked.connect(self.root_settings.show)
         self.set_widget_style(self.settings_button, 'gray', 'white', 30, 30)
 
-        self.close_button = QPushButton('', self)
+        self.close_button = QPushButton('', self)  # 关闭按钮
         self.close_button.setIcon(QIcon(r'.wish\assets\icon\close.png'))
         self.close_button.clicked.connect(self.close) 
         self.set_widget_style(self.close_button, 'red', 'white', 30, 30)
@@ -105,7 +106,7 @@ class WishWindow(MovableWindow):
             try: self.header_layout.addWidget(_widget)
             except TypeError: self.header_layout.addStretch(_widget)
 
-        self.information = QLabel(self.information_list_zh[0], self)  # 信息
+        self.information = QLabel(self.information_list_zh[0], self)  # 祈愿详情信息
         self.information.setFont(QFont(_global_font, 12))
         self.information.setAlignment(Qt.AlignCenter)
         self.information.setWordWrap(True)
@@ -113,31 +114,28 @@ class WishWindow(MovableWindow):
 
         self.bottom_layout = QHBoxLayout()  # 底部栏
 
-        self.label_number_layout = QHBoxLayout()
-
-        self.label_number_avatar = QLabel(self)
+        self.label_number_layout = QHBoxLayout()  # 头像+学号显示
+        self.label_number_avatar = QLabel(self)  # 头像显示
         self.label_number_avatar.setFixedWidth(310)
         self.label_number_avatar.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
-
-        self.label_number_text = QLabel('', self)
+        self.label_number_text = QLabel('', self)  # 学号显示
         self.label_number_text.setFont(QFont(_global_font, 19))
         self.label_number_text.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self.label_number_text.setFixedWidth(310)
-
         self.label_number_layout.addWidget(self.label_number_avatar)
         self.label_number_layout.addWidget(self.label_number_text)
 
-        self.button_once = QPushButton('抽 1 次', self)
+        self.button_once = QPushButton('抽 1 次', self)  # 抽 1 次按钮
         self.button_once.setFont(QFont(_global_font, 13))
         self.button_once.clicked.connect(self.draw_once)
         self.button_once.setFixedSize(160, 60)
 
-        self.button_ten = QPushButton('抽 10 次', self)
+        self.button_ten = QPushButton('抽 10 次', self)  # 抽 10 次按钮
         self.button_ten.setFont(QFont(_global_font, 13))
         self.button_ten.clicked.connect(self.draw_ten)
         self.button_ten.setFixedSize(160, 60)
 
-        self.bottom_layout.addLayout(self.label_number_layout)
+        self.bottom_layout.addLayout(self.label_number_layout)  # 底部栏布局
         self.bottom_layout.addWidget(self.button_once)
         self.bottom_layout.addWidget(self.button_ten)
 
@@ -152,36 +150,8 @@ class WishWindow(MovableWindow):
 
         self.root_settings.toggle_language(self.root_settings.LANGUAGE_INDEX)
 
-        self.send_newspaper('3.4版本「可视化心愿」即将开启！')
+        self.send_newspaper('3.4版本「可视化心愿」即将开启！')  # 初始报纸
     
-    def send_newspaper(self, news):
-        if news != self.newspaper.text():
-            self.newspaper.setText(news)
-            self.newspaper.setVisible(True)
-            self.adjustSize()
-            
-            if hasattr(self, 'fade_timer') and self.fade_timer.isActive(): # 重置计时器
-                self.fade_timer.stop()
-            
-            self.fade_timer = QTimer(self)
-            self.fade_timer.setSingleShot(True)
-            self.fade_timer.timeout.connect(self.fade_out_newspaper)
-            self.fade_timer.start(4000)  # 显示时间
-
-    def fade_out_newspaper(self):
-        self.opacity_effect = QGraphicsOpacityEffect(self.newspaper)
-        self.newspaper.setGraphicsEffect(self.opacity_effect)
-        self.animation = QPropertyAnimation(self.opacity_effect, b"opacity")
-        self.animation.setDuration(500)  # 淡出时间
-        self.animation.setStartValue(1.0)
-        self.animation.setEndValue(0.0)
-        self.animation.finished.connect(self.hide_newspaper)
-        self.animation.start()
-
-    def hide_newspaper(self):
-        self.newspaper.setVisible(False)
-        self.newspaper.setGraphicsEffect(None)
-
     def set_widget_style(self, widget, background_color, color, sizex, sizey):  # 元件格式包装
         widget.setFixedSize(sizex, sizey)
         widget.setStyleSheet(f"""
@@ -189,25 +159,6 @@ class WishWindow(MovableWindow):
                 border-radius: 5px;
                 background-color: {background_color};
                 color: {color}; }} """)
-        
-    class Resolver:
-        def resolve(input_str):
-            result = []
-            exclude_set = set()
-            parts = input_str.split()
-            try:
-                for part in parts:
-                    if part.startswith('-'):
-                        exclude_set.update(map(int, part[1:].split('-')))
-                    elif part.startswith('+'):
-                        result.extend(map(int, part[1:].split('-')))
-                    else:
-                        start, end = map(int, part.split('-'))
-                        result.extend(range(start, end + 1))
-            except ValueError:
-                result = [-1]
-            result = list(set([num for num in result if num not in exclude_set]))
-            return sorted(result)
 
     ##############################################################################################################
     ############################################## 抽学号逻辑核心 #################################################
@@ -258,8 +209,7 @@ class WishWindow(MovableWindow):
         else:
             self.last_pick_tied = False
 
-        ###########################################################################「心之隔离」###################
-        if self.last_pick in self.separate_list:
+        if self.last_pick in self.separate_list: ##################################「心之隔离」####################
             index = self.separate_list.index(self.last_pick)
             separate_person = self.separate_list[index+1] if index % 2 == 0 else self.separate_list[index-1]
             if lucky_person == separate_person:
@@ -275,24 +225,6 @@ class WishWindow(MovableWindow):
     ##############################################################################################################
     ##############################################################################################################
     ##############################################################################################################
-
-    def reset_guarantee(self):  # 重置保底
-        self.history_last_60 = []
-        self.lucky_rest = self.supportable_numbers.copy()
-        self.pick_num, self.pick_num_rest, self.is_in_guarantee = 0, 60, False
-        if self.root_settings.LANGUAGE_INDEX == 0:
-            self.send_newspaper('保底已重置..')
-        else:
-            self.send_newspaper('Guarantee reset..')
-
-    def toggle_information(self):  # 信息显示及按钮文字切换
-        visible = not self.information.isVisible()
-        self.information.setVisible(visible)
-        if self.root_settings.LANGUAGE_INDEX == 0:
-            self.information_button.setText('∧祈愿详情∧' if visible else '∨祈愿详情∨')
-        else:
-            self.information_button.setText('∧Details∧' if visible else '∨Details∨')
-        self.adjustSize()
     
     def draw_once(self):  # 抽 1 次
         if hasattr(self, 'update_label_timer') and self.update_label_timer.isActive(): # 避免10抽1抽连续抽取
@@ -300,7 +232,7 @@ class WishWindow(MovableWindow):
         
         lucky_one = self.get_lucky()
 
-        if self.is_avatar_shown:
+        if self.is_avatar_shown:  # 显示头像
             profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'
             pixmap = QPixmap(profile_photo_path).scaled(50, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.label_number_avatar.setFixedWidth(310)
@@ -308,14 +240,14 @@ class WishWindow(MovableWindow):
             self.label_number_text.setFixedWidth(310)
             self.label_number_text.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
             self.label_number_text.setText(" "+str(lucky_one))
-        else:
+        else:  # 不显示头像
             self.label_number_avatar.setFixedWidth(0)
             self.label_number_avatar.clear()
             self.label_number_text.setFixedWidth(620)
             self.label_number_text.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
             self.label_number_text.setText(str(lucky_one))
 
-        self.adjustSize()  # CPU算力限制 需再次调整
+        self.adjustSize()
 
     def draw_ten(self):  # 抽 10 次
         self.label_number_avatar.setFixedWidth(0)
@@ -336,6 +268,71 @@ class WishWindow(MovableWindow):
             self.adjustSize()
         else:
             self.update_label_timer.stop()
+
+    def reset_guarantee(self):  # 重置保底
+        self.history_last_60 = []
+        self.lucky_rest = self.supportable_numbers.copy()
+        self.pick_num, self.pick_num_rest, self.is_in_guarantee = 0, 60, False
+        if self.root_settings.LANGUAGE_INDEX == 0:
+            self.send_newspaper('保底已重置..')
+        else:
+            self.send_newspaper('Guarantee reset..')
+
+    class Resolver:  # 「自定义祈愿学号池」学号解析器
+        def resolve(input_str):
+            result = []
+            exclude_set = set()
+            parts = input_str.split()
+            try:
+                for part in parts:
+                    if part.startswith('-'):
+                        exclude_set.update(map(int, part[1:].split('-')))
+                    elif part.startswith('+'):
+                        result.extend(map(int, part[1:].split('-')))
+                    else:
+                        start, end = map(int, part.split('-'))
+                        result.extend(range(start, end + 1))
+            except ValueError:
+                result = [-1]
+            result = list(set([num for num in result if num not in exclude_set]))
+            return sorted(result)
+
+    def toggle_information(self):  # 信息显示及按钮文字切换
+        visible = not self.information.isVisible()
+        self.information.setVisible(visible)
+        if self.root_settings.LANGUAGE_INDEX == 0:
+            self.information_button.setText('∧祈愿详情∧' if visible else '∨祈愿详情∨')
+        else:
+            self.information_button.setText('∧Details∧' if visible else '∨Details∨')
+        self.adjustSize()
+        
+    def send_newspaper(self, news):  # 发报纸
+        if news != self.newspaper.text():
+            self.newspaper.setText(news)
+            self.newspaper.setVisible(True)
+            self.adjustSize()
+            
+            if hasattr(self, 'fade_timer') and self.fade_timer.isActive():
+                self.fade_timer.stop()
+            
+            self.fade_timer = QTimer(self)
+            self.fade_timer.setSingleShot(True)
+            self.fade_timer.timeout.connect(self.fade_out_newspaper)
+            self.fade_timer.start(4000)  # 报纸显示时间
+
+    def fade_out_newspaper(self):  # 渐隐报纸
+        self.opacity_effect = QGraphicsOpacityEffect(self.newspaper)
+        self.newspaper.setGraphicsEffect(self.opacity_effect)
+        self.animation = QPropertyAnimation(self.opacity_effect, b"opacity")
+        self.animation.setDuration(500)  # 报纸淡出时间
+        self.animation.setStartValue(1.0)
+        self.animation.setEndValue(0.0)
+        self.animation.finished.connect(self.hide_newspaper)
+        self.animation.start()
+
+    def hide_newspaper(self):  # 隐藏报纸
+        self.newspaper.setVisible(False)
+        self.newspaper.setGraphicsEffect(None)
 
     def show_history(self):  # 历史记录
         ticktime = time.asctime(time.localtime(time.time()))
