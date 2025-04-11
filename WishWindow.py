@@ -26,7 +26,7 @@ class WishWindow(MovableWindow):
         self.is_in_guarantee = False
         self.is_information_shown = False
         self.is_avatar_shown = True
-        self.history_all, self.history_last_60 = [], []
+        self.history_all, self.history_last = [], []
         self.tie_list, self.separate_list, self.last_pick_tied = [], [], False
 
         try:  # 「自定义祈愿学号池」自定义祈愿学号解析加载
@@ -190,8 +190,8 @@ class WishWindow(MovableWindow):
                 if lucky_person not in self.last_some_picks: ######################### 8抽保底
                     break
             self.last_some_picks.append(lucky_person)
-            if lucky_person not in self.history_last_60: 
-                self.history_last_60.append(lucky_person)
+            if lucky_person not in self.history_last: 
+                self.history_last.append(lucky_person)
                 self.lucky_rest.remove(lucky_person)
             self.pick_num += 1
             self.pick_num_rest -= 1
@@ -222,6 +222,8 @@ class WishWindow(MovableWindow):
 
         self.history_all.append(lucky_person)
         self.last_pick = lucky_person
+
+        print(lucky_person, self.pick_num_rest, self.last_some_picks, self.lucky_rest)  # 调试信息
         return lucky_person
     ##############################################################################################################
     ##############################################################################################################
@@ -273,9 +275,9 @@ class WishWindow(MovableWindow):
             self.update_label_timer.stop()
 
     def reset_guarantee(self):  # 重置保底
-        self.history_last_60 = []
+        self.history_last = []
         self.lucky_rest = self.supportable_numbers.copy()
-        self.pick_num, self.pick_num_rest, self.is_in_guarantee = 0, 60, False
+        self.pick_num, self.pick_num_rest, self.is_in_guarantee = 0, self.GUARANTEE[1], False
         if self.root_settings.LANGUAGE_INDEX == 0:
             self.send_newspaper('保底已重置..')
         else:
