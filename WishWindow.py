@@ -150,10 +150,10 @@ class WishWindow(MovableWindow):
 
         self.root_settings.toggle_language(self.root_settings.LANGUAGE_INDEX)
 
-        self.send_newspaper('3.4版本「可视化心愿」现已开启！')  # 初始报纸
+        self.send_newspaper('3.4版本「可视化心愿」现已开启！', show_time=10000)  # 初始报纸
 
         
-    def set_widget_style(self, widget, background_color, color, sizex, sizey):  # 元件格式包装
+    def set_widget_style(self, widget, background_color:str, color:str, sizex:int, sizey:int):  # 元件格式包装
         widget.setFixedSize(sizex, sizey)
         widget.setStyleSheet(f"""
             QPushButton:hover {{
@@ -164,7 +164,7 @@ class WishWindow(MovableWindow):
     ##############################################################################################################
     ############################################## 抽学号逻辑核心 #################################################
     ##############################################################################################################
-    def get_lucky(self):  
+    def get_lucky(self) -> int:  # 抽学号逻辑核心
         """
         祈愿 · 幸运观众：抽学号逻辑核心
 
@@ -223,7 +223,7 @@ class WishWindow(MovableWindow):
         self.history_all.append(lucky_person)
         self.last_pick = lucky_person
 
-        print(lucky_person, self.pick_num_rest, self.last_some_picks, self.lucky_rest)  # 调试信息
+        # print(lucky_person, self.pick_num_rest, self.last_some_picks, self.lucky_rest)  # 调试信息
         return lucky_person
     ##############################################################################################################
     ##############################################################################################################
@@ -284,7 +284,7 @@ class WishWindow(MovableWindow):
             self.send_newspaper('Guarantee reset..')
 
     class Resolver:  # 「自定义祈愿学号池」学号解析器
-        def resolve(input_str):
+        def resolve(input_str:str) -> list:
             result = []
             exclude_set = set()
             parts = input_str.split()
@@ -311,7 +311,7 @@ class WishWindow(MovableWindow):
             self.information_button.setText('∧Details∧' if visible else '∨Details∨')
         self.adjustSize()
         
-    def send_newspaper(self, news):  # 发报纸
+    def send_newspaper(self, news:str, show_time:int=5000):  # 发报纸
         if news != self.newspaper.text():
             self.newspaper.setText(news)
             self.newspaper.setVisible(True)
@@ -323,7 +323,7 @@ class WishWindow(MovableWindow):
             self.fade_timer = QTimer(self)
             self.fade_timer.setSingleShot(True)
             self.fade_timer.timeout.connect(self.fade_out_newspaper)
-            self.fade_timer.start(6000)  # 报纸显示时间
+            self.fade_timer.start(show_time)  # 报纸显示时间
 
     def fade_out_newspaper(self):  # 渐隐报纸
         self.opacity_effect = QGraphicsOpacityEffect(self.newspaper)

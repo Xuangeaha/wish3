@@ -154,7 +154,7 @@ class SettingsWindow(MovableWindow):
         self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(200, 200, 360, 350)
 
-    def toggle_language(self, index):  # 1 语言切换
+    def toggle_language(self, index:int):  # 1 语言切换
         self.LANGUAGE_INDEX = index
         self.lang_text = STATIC_STRINGS[str(self.LANGUAGE_INDEX)]
         self.wish_window.setWindowTitle(self.lang_text['title'])
@@ -202,7 +202,7 @@ class SettingsWindow(MovableWindow):
         self.activateWindow()  # 激活以刷新文字 避免 UpdateLayeredWindowIndirect
         self.wish_window.activateWindow()
 
-    def toggle_theme(self, index):  # 2 主题配色切换
+    def toggle_theme(self, index:int):  # 2 主题配色切换
         colour, picture, stylesheet = None, None, None
         if index == 0:
             colour = Qt.white
@@ -234,7 +234,7 @@ class SettingsWindow(MovableWindow):
         else:
             self.wish_window.is_avatar_shown = False
 
-    def toggle_guarantee(self, index):  # 4 保底机制切换
+    def toggle_guarantee(self, index:int):  # 4 保底机制切换
         self.wish_window.reset_guarantee()
         self.wish_window.guarantee_mode = index
         if self.LANGUAGE_INDEX == 0:
@@ -283,7 +283,7 @@ class SettingsWindow(MovableWindow):
             self.wish_window.show()
         pass
 
-    def show_messagebox(self, message:str, lang=int, type=QMessageBox.Warning):  # 消息框弹出
+    def show_messagebox(self, message:str, lang:int=int, type=QMessageBox.Warning):  # 消息框弹出
         msg = QMessageBox()  
         msg.setIcon(type)
         msg.setWindowIcon(QIcon(_iconpath))

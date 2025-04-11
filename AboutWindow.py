@@ -12,7 +12,7 @@ from PyQt5.QtCore import Qt
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 
-from config import _short_ver, _ver, _iconpath, _default_lang
+from config import _short_ver, _ver, _vername, _iconpath, _default_lang
 
 class AboutWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -50,8 +50,11 @@ class AboutWindow(MovableWindow):
         self.wish_title.setFont(QFont(_global_font, 18))
         self.wish_title.setAlignment(Qt.AlignCenter)
         self.wish_subtitle = QLabel(_ver, self)
-        self.wish_subtitle.setFont(QFont(_global_font, 12))
+        self.wish_subtitle.setFont(QFont(_global_font, 13))
         self.wish_subtitle.setAlignment(Qt.AlignCenter)
+        self.wish_subtitlename = QLabel(f'({_vername})', self)
+        self.wish_subtitlename.setFont(QFont(_global_font, 11))
+        self.wish_subtitlename.setAlignment(Qt.AlignCenter)
         self.wish_copyright = QLabel('Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO), \nAll rights reserved. | MIT License', self)
         self.wish_copyright.setFont(QFont('Arial', 10))
         self.wish_copyright.setAlignment(Qt.AlignCenter)
@@ -64,7 +67,7 @@ class AboutWindow(MovableWindow):
         self.call_wishsite.clicked.connect(self.call_wishsite_broser)
         
         self.about_layout.addLayout(self.about_header_layout)  # 关于窗口布局
-        for _widget in [1, self.wish_icon, self.wish_title, self.wish_subtitle, 1, self.wish_copyright, self.call_github, self.call_wishsite]:
+        for _widget in [1, self.wish_icon, self.wish_title, self.wish_subtitle, self.wish_subtitlename, 1, self.wish_copyright, self.call_github, self.call_wishsite]:
             try: self.about_layout.addWidget(_widget)
             except TypeError: self.about_layout.addStretch(_widget)
         self.about_layout.setContentsMargins(30, 25, 30, 25)
