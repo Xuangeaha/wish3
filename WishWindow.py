@@ -235,23 +235,24 @@ class WishWindow(MovableWindow):
         if hasattr(self, 'update_label_timer') and self.update_label_timer.isActive(): # 避免10抽1抽连续抽取
             return
         
-        lucky_one = self.get_lucky()
-
-        if self.is_avatar_shown:  # 显示头像
-            profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'
+        lucky_one = self.get_lucky()  # 抽学号
+        
+        profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'
+        if self.is_avatar_shown and QPixmap(profile_photo_path).isNull() is False:  # 显示头像且头像存在
             pixmap = QPixmap(profile_photo_path).scaled(50, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.label_number_avatar.setFixedWidth(310)
             self.label_number_avatar.setPixmap(pixmap)
             self.label_number_text.setFixedWidth(310)
             self.label_number_text.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
             self.label_number_text.setText(" "+str(lucky_one))
-        else:  # 不显示头像
+        else:  # 不显示头像或头像不存在
             self.label_number_avatar.setFixedWidth(0)
             self.label_number_avatar.clear()
             self.label_number_text.setFixedWidth(620)
             self.label_number_text.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
             self.label_number_text.setText(str(lucky_one))
 
+        self.adjustSize()
         self.adjustSize()
 
     def draw_ten(self):  # 抽 10 次
