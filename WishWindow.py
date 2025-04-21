@@ -150,7 +150,7 @@ class WishWindow(MovableWindow):
 
         self.root_settings.toggle_language(self.root_settings.LANGUAGE_INDEX)
 
-        self.send_newspaper('3.4版本「可视化心愿」现已开启！', show_time=10000)  # 初始报纸
+        self.send_newspaper('感谢 2,300+ 次下载！', show_time=10000)  # 初始报纸
 
         
     def set_widget_style(self, widget, background_color:str, color:str, sizex:int, sizey:int):  # 元件格式包装

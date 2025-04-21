@@ -49,7 +49,7 @@ class ProfilephotoUpdateWindow(MovableWindow):
         self.pfpu_table.addWidget(update_info_label, 0, 0, 1, 3)
 
         updates = [
-            {"id": "38", "namespace": "@student.global.38"}
+            {"id": "18", "namespace": "@student.global.18"}
         ]
 
         for row, update in enumerate(updates, start=1):
@@ -75,6 +75,6 @@ class ProfilephotoUpdateWindow(MovableWindow):
         self.pfpu_layout.addLayout(self.pfpu_table)
         self.pfpu_layout.setContentsMargins(30, 25, 30, 25)
 
-        self.setWindowTitle("祈愿 · 幸运观众 - 更新说明")
+        self.setWindowTitle("祈愿 · 幸运观众头像自动更新提示")
         self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(250, 250, 440, 250)
