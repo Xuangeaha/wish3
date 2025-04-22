@@ -16,7 +16,7 @@ from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 from SettingsWindow import SettingsWindow
 
-from config import _short_ver, _ver, _vername, _iconpath, _base_numbers, _default_lang , _EVER_excluded_numbers
+from config import _ver_short, _ver, _ver_type, _iconpath, _base_numbers, _default_lang , _EVER_excluded_numbers, _morning_newspaper
 
 class WishWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -70,7 +70,7 @@ class WishWindow(MovableWindow):
 
         self.header_layout = QHBoxLayout()  # 标题栏
 
-        self.title = f'祈愿·幸运观众 {_short_ver}（{_vername}）{_ver}' if _vername != '正式版' else f'祈愿·幸运观众 {_short_ver}'  # 标题
+        self.title = f'祈愿·幸运观众 {_ver_short}（{_ver_type}）{_ver}' if _ver_type != '正式版' else f'祈愿·幸运观众 {_ver_short}'  # 标题
         self.title_label = QLabel(self.title, self)
         self.title_label.setFont(QFont(_global_font, 11))
 
@@ -150,7 +150,7 @@ class WishWindow(MovableWindow):
 
         self.root_settings.toggle_language(self.root_settings.LANGUAGE_INDEX)
 
-        self.send_newspaper('感谢 2,300+ 次下载！', show_time=10000)  # 初始报纸
+        self.send_newspaper(_morning_newspaper, show_time=10000)  # 初始报纸
 
         
     def set_widget_style(self, widget, background_color:str, color:str, sizex:int, sizey:int):  # 元件格式包装

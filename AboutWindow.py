@@ -12,7 +12,7 @@ from PyQt5.QtCore import Qt
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 
-from config import _short_ver, _ver, _vername, _iconpath, _default_lang
+from config import _ver_short, _ver, _ver_type, _iconpath, _default_lang
 
 class AboutWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -46,22 +46,22 @@ class AboutWindow(MovableWindow):
         self.wish_icon.setPixmap(QIcon(r'.wish\assets\wish\wish.png').pixmap(100, 100))
         self.wish_icon.setAlignment(Qt.AlignCenter)
 
-        self.wish_title = QLabel('祈愿·幸运观众 '+_short_ver, self)  # 祈愿·幸运观众标题
+        self.wish_title = QLabel('祈愿·幸运观众 '+_ver_short, self)  # 祈愿·幸运观众标题
         self.wish_title.setFont(QFont(_global_font, 18))
         self.wish_title.setAlignment(Qt.AlignCenter)
         self.wish_subtitle = QLabel(_ver, self)
         self.wish_subtitle.setFont(QFont(_global_font, 13))
         self.wish_subtitle.setAlignment(Qt.AlignCenter)
-        self.wish_subtitlename = QLabel(f'({_vername})', self)
+        self.wish_subtitlename = QLabel(f'({_ver_type})', self)
         self.wish_subtitlename.setFont(QFont(_global_font, 11))
         self.wish_subtitlename.setAlignment(Qt.AlignCenter)
         self.wish_copyright = QLabel('Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO), \nAll rights reserved. | MIT License', self)
         self.wish_copyright.setFont(QFont('Arial', 10))
         self.wish_copyright.setAlignment(Qt.AlignCenter)
 
-        self.call_github = QPushButton('祈愿·幸运观众 官方网站 ↗', self)  # 外链按钮
+        self.call_github = QPushButton('祈愿·幸运观众 官方网站 | Wish3 Official Website ↗', self)  # 外链按钮
         self.call_github.setFont(QFont('等线', 10))
-        self.call_wishsite = QPushButton('源代码仓库 ↗', self)
+        self.call_wishsite = QPushButton('源代码仓库 | Source Code ↗', self)
         self.call_wishsite.setFont(QFont('等线', 10))
         self.call_github.clicked.connect(self.call_github_broser)
         self.call_wishsite.clicked.connect(self.call_wishsite_broser)
@@ -78,7 +78,7 @@ class AboutWindow(MovableWindow):
 
     def call_github_broser(self):  # 外链调用
         import webbrowser
-        webbrowser.open('https://xuangeaha.github.io/wishsite') 
+        webbrowser.open('http://wish.xuangeaha.xyz') 
         
     def call_wishsite_broser(self): 
         import webbrowser

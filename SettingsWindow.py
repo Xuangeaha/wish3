@@ -15,7 +15,7 @@ from MovableWindow import MovableWindow
 from LogWindow import LogWindow
 from AboutWindow import AboutWindow
 
-from config import _short_ver, _ver, _vername, _iconpath, _default_lang
+from config import _ver_short, _ver, _ver_type, _iconpath, _default_lang
 from i18n import STATIC_STRINGS
 
 class SettingsWindow(MovableWindow):
@@ -158,7 +158,7 @@ class SettingsWindow(MovableWindow):
         self.LANGUAGE_INDEX = index
         self.lang_text = STATIC_STRINGS[str(self.LANGUAGE_INDEX)]
         self.wish_window.setWindowTitle(self.lang_text['title'])
-        newtitle = f'{self.lang_text["title"]} {_short_ver}（{_vername}）{_ver}' if _vername != '正式版' else f'{self.lang_text["title"]} {_short_ver}'
+        newtitle = f'{self.lang_text["title"]} {_ver_short}（{_ver_type}）{_ver}' if _ver_type != '正式版' else f'{self.lang_text["title"]} {_ver_short}'
         self.wish_window.title_label.setText(newtitle)
         self.wish_window.information_button.setText(self.lang_text['information_button'])
         self.wish_window.button_once.setText(self.lang_text['button_once'])
