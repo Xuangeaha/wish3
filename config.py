@@ -6,10 +6,10 @@ Copyright © 2024-2025 XuangeAha(轩哥啊哈OvO)
 """
 
 _ver_short = '3.4.3'  # 短版本号
-_ver = '3.4.3-Release'  # 版本号
+_ver = '3.4.3-Release-Competition'  # 版本号
 _ver_type = '正式版'  # 版本类型
 
-_morning_newspaper = '感谢 2,300+ 次下载！'  # 晨报
+_morning_newspaper = '感谢使用祈愿·幸运观众！'  # 晨报
 
 _default_lang = 0  # 默认语言
 _iconpath = r'wish.ico'  # 图标路径

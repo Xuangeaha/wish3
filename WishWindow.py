@@ -72,15 +72,18 @@ class WishWindow(MovableWindow):
 
         self.title = f'祈愿·幸运观众 {_ver_short}（{_ver_type}）{_ver}' if _ver_type != '正式版' else f'祈愿·幸运观众 {_ver_short}'  # 标题
         self.title_label = QLabel(self.title, self)
-        self.title_label.setFont(QFont(_global_font, 11))
+        self.title_label.setFont(QFont(_global_font, 12))
+        # self.title_label.setFont(QFont(_global_font, 11))
 
         self.information_button = QPushButton('∨祈愿详情∨', self)  # 祈愿详情按钮
-        self.information_button.setFont(QFont(_global_font, 9))
+        self.information_button.setFont(QFont(_global_font, 11))
+        # self.information_button.setFont(QFont(_global_font, 9))
         self.information_button.clicked.connect(self.toggle_information)
         self.set_widget_style(self.information_button, 'gray', 'white', 150, 26)
 
         self.newspaper = QLabel('', self)  # 动态信息报纸
-        self.newspaper.setFont(QFont(_global_font, 11))
+        self.newspaper.setFont(QFont(_global_font, 13))
+        # self.newspaper.setFont(QFont(_global_font, 11))
 
         self.history_button = QPushButton('', self)  # 历史记录按钮
         self.history_button.setIcon(QIcon(r'.wish\assets\icon\history.png'))
@@ -107,7 +110,8 @@ class WishWindow(MovableWindow):
             except TypeError: self.header_layout.addStretch(_widget)
 
         self.information = QLabel(self.information_list_zh[0], self)  # 祈愿详情信息
-        self.information.setFont(QFont(_global_font, 12))
+        self.information.setFont(QFont(_global_font, 14))
+        # self.information.setFont(QFont(_global_font, 12))
         self.information.setAlignment(Qt.AlignCenter)
         self.information.setWordWrap(True)
         self.information.setVisible(False)
@@ -119,19 +123,22 @@ class WishWindow(MovableWindow):
         self.label_number_avatar.setFixedWidth(310)
         self.label_number_avatar.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
         self.label_number_text = QLabel('', self)  # 学号显示
-        self.label_number_text.setFont(QFont(_global_font, 19))
+        # self.label_number_text.setFont(QFont(_global_font, 19))
+        self.label_number_text.setFont(QFont(_global_font, 22))
         self.label_number_text.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self.label_number_text.setFixedWidth(310)
         self.label_number_layout.addWidget(self.label_number_avatar)
         self.label_number_layout.addWidget(self.label_number_text)
 
         self.button_once = QPushButton('抽 1 次', self)  # 抽 1 次按钮
-        self.button_once.setFont(QFont(_global_font, 13))
+        self.button_once.setFont(QFont(_global_font, 15))
+        # self.button_once.setFont(QFont(_global_font, 13))
         self.button_once.clicked.connect(self.draw_once)
         self.button_once.setFixedSize(160, 60)
 
         self.button_ten = QPushButton('抽 10 次', self)  # 抽 10 次按钮
-        self.button_ten.setFont(QFont(_global_font, 13))
+        self.button_ten.setFont(QFont(_global_font, 15))
+        # self.button_ten.setFont(QFont(_global_font, 13))
         self.button_ten.clicked.connect(self.draw_ten)
         self.button_ten.setFixedSize(160, 60)
 
@@ -153,7 +160,8 @@ class WishWindow(MovableWindow):
         self.send_newspaper(_morning_newspaper, show_time=10000)  # 晨报
 
         
-    def set_widget_style(self, widget, background_color:str, color:str, sizex:int, sizey:int):  # 元件格式包装
+    @staticmethod
+    def set_widget_style(widget, background_color:str, color:str, sizex:int, sizey:int):  # 元件格式包装
         widget.setFixedSize(sizex, sizey)
         widget.setStyleSheet(f"""
             QPushButton:hover {{

@@ -63,8 +63,8 @@ class SettingsWindow(MovableWindow):
         self.theme_label.setFont(QFont(_global_font, 12))
         self.theme_combo = QComboBox(self)
         self.theme_combo.setFont(QFont(_global_font, 12))
-        self.example_theme_list_zh = ["默认", "轴月", "谢不开朗鸡罗", "（自定义图片）"]
-        self.example_theme_list_en = ["Default", "AxisMoon", "Shaybuklangiro", "(Customed Image)"]
+        self.example_theme_list_zh = ["默认", "春日影", "海洋", "（自定义图片）"]
+        self.example_theme_list_en = ["Default", "Spring's in the air", "Ocean Waves", "(Customed Image)"]
         for _item in self.example_theme_list_zh:
             self.theme_combo.addItem(_item)
         self.theme_combo.currentIndexChanged.connect(self.toggle_theme)
@@ -208,11 +208,14 @@ class SettingsWindow(MovableWindow):
             colour = Qt.white
             self.wish_window.setStyleSheet("")
         if index == 1:
-            colour = QColor(0, 165, 0)
-            stylesheet = "QWidget {background-color: #00a500; color: white}"
+            picture = r'.wish\assets\themes\spring.jpg'
+            # colour = QColor(0, 165, 0)
+            # stylesheet = "QWidget {background-color: #00a500; color: white}"
         elif index == 2:
-            colour = QColor(255, 184, 198)
-            stylesheet = "QWidget {background-color: #ffb8c6; color: white}"
+            picture = r'.wish\assets\themes\ocean.png'
+            stylesheet = "QLabel {color: white}"
+            # colour = QColor(255, 184, 198)
+            # stylesheet = "QWidget {background-color: #ffb8c6; color: white}"
         elif index == 3:   
             options = QFileDialog.Options()
             fileName, _ = QFileDialog.getOpenFileName(self, self.lang_text['settings_filedialog_title'], r".wish\themes", self.lang_text['settings_filedialog_filetype'], options=options)  
