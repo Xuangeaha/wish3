@@ -3,6 +3,8 @@ __pycache__
 build
 dist
 
+.wish/profilephoto
+
 *.lnk
 *.spec
 
