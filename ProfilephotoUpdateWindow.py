@@ -75,11 +75,11 @@ class ProfilephotoUpdateWindow(MovableWindow):
         self.pfpu_table.addWidget(new_info_label, row * 2 + 1, 0, 1, 3)
 
         new_updates = [
-            {"id": "41", "namespace": "@student.extra.141 → @student.global.41"},
+            {"id": "41", "namespace": "@undefined(141) → @student.global.41"},
         ]
 
         for row, update in enumerate(new_updates, start=row * 2 + 2):
-            newlabel = QLabel(f"{update['id']} ({update['namespace']})", self)
+            newlabel = QLabel(f"★{update['id']} ({update['namespace']})", self)
             newlabel.setFont(QFont(_global_font, 13))
             newlabel.setContentsMargins(30, 0, 0, 0)
             photo = QLabel(self)

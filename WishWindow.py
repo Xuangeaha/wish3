@@ -72,18 +72,15 @@ class WishWindow(MovableWindow):
 
         self.title = f'祈愿·幸运观众 {_ver_short}（{_ver_type}）{_ver}' if _ver_type != '正式版' else f'祈愿·幸运观众 {_ver_short}'  # 标题
         self.title_label = QLabel(self.title, self)
-        self.title_label.setFont(QFont(_global_font, 12))
-        # self.title_label.setFont(QFont(_global_font, 11))
+        self.title_label.setFont(QFont(_global_font, 11))
 
         self.information_button = QPushButton('∨祈愿详情∨', self)  # 祈愿详情按钮
-        self.information_button.setFont(QFont(_global_font, 11))
-        # self.information_button.setFont(QFont(_global_font, 9))
+        self.information_button.setFont(QFont(_global_font, 9))
         self.information_button.clicked.connect(self.toggle_information)
         self.set_widget_style(self.information_button, 'gray', 'white', 150, 26)
 
         self.newspaper = QLabel('', self)  # 动态信息报纸
-        self.newspaper.setFont(QFont(_global_font, 13))
-        # self.newspaper.setFont(QFont(_global_font, 11))
+        self.newspaper.setFont(QFont(_global_font, 11))
 
         self.history_button = QPushButton('', self)  # 历史记录按钮
         self.history_button.setIcon(QIcon(r'.wish\assets\icon\history.png'))

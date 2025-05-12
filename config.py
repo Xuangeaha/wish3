@@ -9,7 +9,7 @@ _ver_short = '3.4.4'  # 短版本号
 _ver = '3.4.4-pre1'  # 版本号
 _ver_type = '正式版'  # 版本类型
 
-_morning_newspaper = '感谢使用祈愿·幸运观众！'  # 晨报
+_morning_newspaper = '感谢 2,400+ 次下载！'  # 晨报
 
 _default_lang = 0  # 默认语言
 _iconpath = r'wish.ico'  # 图标路径
