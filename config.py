@@ -13,7 +13,7 @@ _morning_newspaper = '感谢使用祈愿·幸运观众！'  # 晨报
 
 _default_lang = 0  # 默认语言
 _iconpath = r'wish.ico'  # 图标路径
-_is_profilephotoupdatewindow_shown = False  # 头像更新窗口
+_is_profilephotoupdatewindow_shown = True  # 头像更新窗口
 
 _base_numbers = list(range(1, 42))  # 默认基础学号
 

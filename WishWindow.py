@@ -37,9 +37,9 @@ class WishWindow(MovableWindow):
                     self.supportable_numbers = [_i for _i in _base_numbers if _i not in _EVER_excluded_numbers]
                     self.GUARANTEE = [8, 60]
                     if _default_lang == 0:
-                        SettingsWindow.show_messagebox(self, f"「自定义祈愿学号池」中存在输入错误，请检查：\n\n        {get_content}\n\n  当前学号池及保底机制已重置为默认（学号1-40，8-60保底）。", lang=0, type=QMessageBox.Critical)
+                        SettingsWindow.show_messagebox(self, f"「自定义祈愿学号池」中存在输入错误，请检查：\n\n        {get_content}\n\n  当前学号池及保底机制已重置为默认（学号1-41，8-60保底）。", lang=0, type=QMessageBox.Critical)
                     else:
-                        SettingsWindow.show_messagebox(self, f"There are errors in the「Customed Lucky Number Pool」input, please check.\n\n        {get_content}\n\nThe current student number pool and guarantee mode have been reset to default (numbers 1-40, with 8-60 guarantee).", lang=1, type=QMessageBox.Critical)
+                        SettingsWindow.show_messagebox(self, f"There are errors in the「Customed Lucky Number Pool」input, please check.\n\n        {get_content}\n\nThe current student number pool and guarantee mode have been reset to default (numbers 1-41, with 8-60 guarantee).", lang=1, type=QMessageBox.Critical)
                 else:
                     if len(resolved_list) == 1:
                         if _default_lang == 0:
@@ -110,8 +110,7 @@ class WishWindow(MovableWindow):
             except TypeError: self.header_layout.addStretch(_widget)
 
         self.information = QLabel(self.information_list_zh[0], self)  # 祈愿详情信息
-        self.information.setFont(QFont(_global_font, 14))
-        # self.information.setFont(QFont(_global_font, 12))
+        self.information.setFont(QFont(_global_font, 12))
         self.information.setAlignment(Qt.AlignCenter)
         self.information.setWordWrap(True)
         self.information.setVisible(False)
@@ -123,22 +122,19 @@ class WishWindow(MovableWindow):
         self.label_number_avatar.setFixedWidth(310)
         self.label_number_avatar.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
         self.label_number_text = QLabel('', self)  # 学号显示
-        # self.label_number_text.setFont(QFont(_global_font, 19))
-        self.label_number_text.setFont(QFont(_global_font, 22))
+        self.label_number_text.setFont(QFont(_global_font, 19))
         self.label_number_text.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         self.label_number_text.setFixedWidth(310)
         self.label_number_layout.addWidget(self.label_number_avatar)
         self.label_number_layout.addWidget(self.label_number_text)
 
         self.button_once = QPushButton('抽 1 次', self)  # 抽 1 次按钮
-        self.button_once.setFont(QFont(_global_font, 15))
-        # self.button_once.setFont(QFont(_global_font, 13))
+        self.button_once.setFont(QFont(_global_font, 13))
         self.button_once.clicked.connect(self.draw_once)
         self.button_once.setFixedSize(160, 60)
 
         self.button_ten = QPushButton('抽 10 次', self)  # 抽 10 次按钮
-        self.button_ten.setFont(QFont(_global_font, 15))
-        # self.button_ten.setFont(QFont(_global_font, 13))
+        self.button_ten.setFont(QFont(_global_font, 13))
         self.button_ten.clicked.connect(self.draw_ten)
         self.button_ten.setFixedSize(160, 60)
 
@@ -243,10 +239,10 @@ class WishWindow(MovableWindow):
         
         lucky_one = self.get_lucky()  # 抽学号
         
-        profile_photo_path = f'.wish/profilephoto/{lucky_one}.png'  # 头像处理
+        profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'  # 头像处理
         
         if self.is_avatar_shown and QPixmap(profile_photo_path).isNull() is False:  # 显示头像且头像存在
-            pixmap = QPixmap(profile_photo_path).scaled(50, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            pixmap = QPixmap(profile_photo_path).scaled(55, 55, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.label_number_avatar.setFixedWidth(310)
             self.label_number_avatar.setPixmap(pixmap)
             self.label_number_text.setFixedWidth(310)

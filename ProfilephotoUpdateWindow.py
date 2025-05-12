@@ -49,7 +49,7 @@ class ProfilephotoUpdateWindow(MovableWindow):
         self.pfpu_table.addWidget(update_info_label, 0, 0, 1, 3)
 
         updates = [
-            {"id": "18", "namespace": "@student.global.18"}
+            {"id": "8", "namespace": "@student.global.8"}
         ]
 
         for row, update in enumerate(updates, start=1):
@@ -69,6 +69,25 @@ class ProfilephotoUpdateWindow(MovableWindow):
             self.pfpu_table.addWidget(old_photo, row * 2, 0)  # 添加旧头像
             self.pfpu_table.addWidget(arrow_label, row * 2, 1)  # 添加箭头
             self.pfpu_table.addWidget(new_photo, row * 2, 2)  # 添加新头像
+
+        new_info_label = QLabel("\n\n★3.4.4版本起，以下命名空间将加入常驻学号池：\n", self)
+        new_info_label.setFont(QFont(_global_font, 13))
+        self.pfpu_table.addWidget(new_info_label, row * 2 + 1, 0, 1, 3)
+
+        new_updates = [
+            {"id": "41", "namespace": "@student.extra.141 → @student.global.41"},
+        ]
+
+        for row, update in enumerate(new_updates, start=row * 2 + 2):
+            newlabel = QLabel(f"{update['id']} ({update['namespace']})", self)
+            newlabel.setFont(QFont(_global_font, 13))
+            newlabel.setContentsMargins(30, 0, 0, 0)
+            photo = QLabel(self)
+            photo.setPixmap(QPixmap(f".wish\\profilephoto\\{update['id']}.jpg").scaled(60, 60, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+            photo.setContentsMargins(60, 0, 0, 0)
+
+            self.pfpu_table.addWidget(newlabel, row * 2 - 1, 0, 1, 4)  # 添加文字标签，占据整行
+            self.pfpu_table.addWidget(photo, row * 2, 0)  # 添加头像
 
         self.pfpu_table.setContentsMargins(20, 10, 30, 30)
         self.pfpu_layout.addLayout(self.pfpu_header_layout)  # 更新说明窗口布局
