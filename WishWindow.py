@@ -243,7 +243,7 @@ class WishWindow(MovableWindow):
         
         lucky_one = self.get_lucky()  # 抽学号
         
-        profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'  # 头像处理
+        profile_photo_path = f'.wish/profilephoto/{lucky_one}.png'  # 头像处理
         
         if self.is_avatar_shown and QPixmap(profile_photo_path).isNull() is False:  # 显示头像且头像存在
             pixmap = QPixmap(profile_photo_path).scaled(50, 50, Qt.KeepAspectRatio, Qt.SmoothTransformation)
