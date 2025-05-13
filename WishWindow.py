@@ -16,7 +16,7 @@ from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 from SettingsWindow import SettingsWindow
 
-from config import _ver_short, _ver, _ver_type, _iconpath, _base_numbers, _default_lang , _EVER_excluded_numbers, _morning_newspaper
+from config import _ver_short, _ver, _ver_type, _iconpath, _base_numbers, _default_lang , _EVER_excluded_numbers, _morning_newspaper, _is_special_wish_on, _is_debug_on
 
 class WishWindow(MovableWindow):
     def __init__(self, parent=None):
@@ -190,6 +190,12 @@ class WishWindow(MovableWindow):
                     lucky_person = random.choice(self.supportable_numbers)
                 if lucky_person not in self.last_some_picks: ######################### 8抽保底
                     break
+
+            if _is_special_wish_on:
+                if self.pick_num == 2:
+                    print(1)
+                    lucky_person = 41
+
             self.last_some_picks.append(lucky_person)
             if lucky_person not in self.history_last: 
                 self.history_last.append(lucky_person)
@@ -224,7 +230,9 @@ class WishWindow(MovableWindow):
         self.history_all.append(lucky_person)
         self.last_pick = lucky_person
 
-        # print(lucky_person, self.pick_num_rest, self.last_some_picks, self.lucky_rest)  # 调试信息
+        if _is_debug_on:
+            print(f'''本次祈愿: {lucky_person} 距保底剩余抽数: {self.pick_num_rest} 最近小保底抽: {self.last_some_picks} 本轮保底已抽到: {self.history_last} 本轮保底未抽到: {self.lucky_rest}''')  # 调试信息
+        
         return lucky_person
     ##############################################################################################################
     ##############################################################################################################
