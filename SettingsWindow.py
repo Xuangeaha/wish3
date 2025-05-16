@@ -14,6 +14,7 @@ from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 from LogWindow import LogWindow
 from AboutWindow import AboutWindow
+import MessageBox
 
 from config import _ver_short, _ver, _ver_type, _iconpath, _default_lang
 from i18n import STATIC_STRINGS
@@ -209,13 +210,9 @@ class SettingsWindow(MovableWindow):
             self.wish_window.setStyleSheet("")
         if index == 1:
             picture = r'.wish\assets\themes\spring.jpg'
-            # colour = QColor(0, 165, 0)
-            # stylesheet = "QWidget {background-color: #00a500; color: white}"
         elif index == 2:
             picture = r'.wish\assets\themes\ocean.png'
             stylesheet = "QLabel {color: white}"
-            # colour = QColor(255, 184, 198)
-            # stylesheet = "QWidget {background-color: #ffb8c6; color: white}"
         elif index == 3:   
             options = QFileDialog.Options()
             fileName, _ = QFileDialog.getOpenFileName(self, self.lang_text['settings_filedialog_title'], r".wish\themes", self.lang_text['settings_filedialog_filetype'], options=options)  
@@ -227,7 +224,7 @@ class SettingsWindow(MovableWindow):
                     file_infomation = f"{self.lang_text['settings_file_information_1']}{file_name_split[0]}\n{self.lang_text['settings_file_information_2']}{file_name_split[1]}\n{self.lang_text['settings_file_information_3']}{file_name_split[2].split('.')[0]}"
                 except IndexError:
                     file_infomation = f"{self.lang_text['settings_file_information_4']}{fileName}"
-                self.show_messagebox(f"{self.lang_text['settings_file_applied']}\n\n{file_infomation}\n\n{self.lang_text['settings_file_declare']}", lang=self.LANGUAGE_INDEX, type=QMessageBox.Information)
+                self.show_messagebox(f"{self.lang_text['settings_file_applied']}\n\n{file_infomation}\n\n{self.lang_text['settings_file_declare']}")
         self.wish_window.round_shadow.set_background(colour=colour, picture=picture)
         self.wish_window.setStyleSheet(stylesheet)
 
@@ -251,21 +248,21 @@ class SettingsWindow(MovableWindow):
         detailed_message = ['存在错误输入，请检查。', '存在输入格式错误，请检查。', '存在不支持的学号，请检查。', '学号不得捆绑或隔离自身，请检查。', '「心之隔离」与「心之捆绑」已更新。'] if self.LANGUAGE_INDEX == 0 else ['There are errors in the input, please check.', 'There are input format errors, please check.', 'There are unsupported student numbers, please check.', 'Student number cannot be tied or separated with itself, please check.', '「The Tied」and「The Separated」have been updated.']
         def check_list(lineedit, message_prefix): 
             try: new_list = [int(item) for item in filter(None, re.split(r'[-| ]+', lineedit.text()))]  
-            except ValueError: self.show_messagebox(f"「{message_prefix}」{detailed_message[0]}\n", lang=self.LANGUAGE_INDEX, type=QMessageBox.Critical); return None  
+            except ValueError: MessageBox.show_messagebox(message=f"「{message_prefix}」{detailed_message[0]}", duration=1.5); return None  
             if len(new_list) % 2 != 0:  
-                self.show_messagebox(f"「{message_prefix}」{detailed_message[1]}\n", lang=self.LANGUAGE_INDEX, type=QMessageBox.Critical); return None  
+                MessageBox.show_messagebox(f"「{message_prefix}」{detailed_message[1]}", duration=1.5); return None 
             is_unsupported_number = False  
             for number in new_list:  
                 if number not in self.wish_window.supportable_numbers.copy(): 
                     is_unsupported_number = True  
             if is_unsupported_number:
-                self.show_messagebox(f"「{message_prefix}」{detailed_message[2]}\n", lang=self.LANGUAGE_INDEX, type=QMessageBox.Warning); return None 
+                MessageBox.show_messagebox(f"「{message_prefix}」{detailed_message[2]}", duration=1.5); return None 
             is_selfed = False
             for number in range(len(new_list)-1):
                 if number % 2 == 0 and new_list[number] == new_list[number + 1]:
                     is_selfed = True
             if is_selfed:
-                self.show_messagebox(f"{detailed_message[3]}\n", lang=self.LANGUAGE_INDEX, type=QMessageBox.Warning); return None  
+                MessageBox.show_messagebox(f"{detailed_message[3]}", duration=1.5); return None 
             return new_list
             
         while True:  
@@ -274,7 +271,7 @@ class SettingsWindow(MovableWindow):
             new_separate_list = check_list(self.separate_lineedit, message_prefix[1]) 
             if new_tie_list is None or new_separate_list is None: break
             self.wish_window.tie_list, self.wish_window.separate_list = new_tie_list, new_separate_list
-            self.show_messagebox(f"{detailed_message[4]}", lang=self.LANGUAGE_INDEX, type=QMessageBox.Information)
+            MessageBox.show_messagebox(f"{detailed_message[4]}", duration=1.5)
             break
     
     def toggle_onfront(self):  # 窗口置顶切换

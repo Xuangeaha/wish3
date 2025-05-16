@@ -10,7 +10,6 @@ from PyQt5.QtGui import QFontDatabase, QFont
 from PyQt5.QtCore import Qt, QPropertyAnimation, QTimer, QPoint, QEasingCurve
 
 from RoundShadow import RoundShadow
-import sys
 
 class MessageBox(RoundShadow):
     def __init__(self, message:str, duration:int|float=3, parent=None):
@@ -24,7 +23,7 @@ class MessageBox(RoundShadow):
         self.message_label.setFont(QFont(_global_font, 12))
         self.message_label.setText(message)
         self.message_label.adjustSize()
-        self.resize(self.message_label.width() + 80, self.message_label.height() + 50)
+        self.resize(self.message_label.width() + 120, self.message_label.height() + 50)
         self.message_label.move((self.width() - self.message_label.width()) // 2, (self.height() - self.message_label.height()) // 2)
 
         screen = QApplication.primaryScreen().geometry()
@@ -79,10 +78,15 @@ class MessageBox(RoundShadow):
 
     def _on_hidden(self):
         self.close()
-        QApplication.quit()
+        self.deleteLater()
 
 def show_messagebox(message=str, duration:int|float=3):
-    app_messagebox = QApplication(sys.argv) or QApplication.instance()
+    """
+    显示消息气泡
+    
+    """
+    app_messagebox = QApplication.instance()
     messagebox = MessageBox(message, duration)
     messagebox.show()
-    app_messagebox.exec_()
+    if not QApplication.instance().thread().isRunning():
+        app_messagebox.exec_()
