@@ -224,7 +224,7 @@ class SettingsWindow(MovableWindow):
                     file_infomation = f"{self.lang_text['settings_file_information_1']}{file_name_split[0]}\n{self.lang_text['settings_file_information_2']}{file_name_split[1]}\n{self.lang_text['settings_file_information_3']}{file_name_split[2].split('.')[0]}"
                 except IndexError:
                     file_infomation = f"{self.lang_text['settings_file_information_4']}{fileName}"
-                self.show_messagebox(f"{self.lang_text['settings_file_applied']}\n\n{file_infomation}\n\n{self.lang_text['settings_file_declare']}")
+                self.show_dialoguebox(f"{self.lang_text['settings_file_applied']}\n\n{file_infomation}\n\n{self.lang_text['settings_file_declare']}")
         self.wish_window.round_shadow.set_background(colour=colour, picture=picture)
         self.wish_window.setStyleSheet(stylesheet)
 
@@ -248,21 +248,21 @@ class SettingsWindow(MovableWindow):
         detailed_message = ['存在错误输入，请检查。', '存在输入格式错误，请检查。', '存在不支持的学号，请检查。', '学号不得捆绑或隔离自身，请检查。', '「心之隔离」与「心之捆绑」已更新。'] if self.LANGUAGE_INDEX == 0 else ['There are errors in the input, please check.', 'There are input format errors, please check.', 'There are unsupported student numbers, please check.', 'Student number cannot be tied or separated with itself, please check.', '「The Tied」and「The Separated」have been updated.']
         def check_list(lineedit, message_prefix): 
             try: new_list = [int(item) for item in filter(None, re.split(r'[-| ]+', lineedit.text()))]  
-            except ValueError: MessageBox.show_messagebox(message=f"「{message_prefix}」{detailed_message[0]}", duration=1.5); return None  
+            except ValueError: MessageBox.show_messagebox(message=f"⚠「{message_prefix}」{detailed_message[0]}", duration=2); return None  
             if len(new_list) % 2 != 0:  
-                MessageBox.show_messagebox(f"「{message_prefix}」{detailed_message[1]}", duration=1.5); return None 
+                MessageBox.show_messagebox(f"⚠「{message_prefix}」{detailed_message[1]}", duration=2); return None 
             is_unsupported_number = False  
             for number in new_list:  
                 if number not in self.wish_window.supportable_numbers.copy(): 
                     is_unsupported_number = True  
             if is_unsupported_number:
-                MessageBox.show_messagebox(f"「{message_prefix}」{detailed_message[2]}", duration=1.5); return None 
+                MessageBox.show_messagebox(f"⚠「{message_prefix}」{detailed_message[2]}", duration=2); return None 
             is_selfed = False
             for number in range(len(new_list)-1):
                 if number % 2 == 0 and new_list[number] == new_list[number + 1]:
                     is_selfed = True
             if is_selfed:
-                MessageBox.show_messagebox(f"{detailed_message[3]}", duration=1.5); return None 
+                MessageBox.show_messagebox(f"⚠{detailed_message[3]}", duration=2); return None 
             return new_list
             
         while True:  
@@ -283,11 +283,11 @@ class SettingsWindow(MovableWindow):
             self.wish_window.show()
         pass
 
-    def show_messagebox(self, message:str, lang:int=int, type=QMessageBox.Warning):  # 消息框弹出
-        msg = QMessageBox()  
-        msg.setIcon(type)
-        msg.setWindowIcon(QIcon(_iconpath))
-        msg_title = "祈愿 · 幸运观众" if lang == 0 else "Wish3: Who's the Luckiest Dog?"
-        msg.setWindowTitle(msg_title)
-        msg.setText(message)
-        msg.exec_() 
+    def show_dialoguebox(self, message:str, lang:int=int, type=QMessageBox.Warning):  # 消息框弹出
+        dialoguebox = QMessageBox()  
+        dialoguebox.setIcon(type)
+        dialoguebox.setWindowIcon(QIcon(_iconpath))
+        dialogue_title = "祈愿 · 幸运观众" if lang == 0 else "Wish3: Who's the Luckiest Dog?"
+        dialoguebox.setWindowTitle(dialogue_title)
+        dialoguebox.setText(message)
+        dialoguebox.exec_() 

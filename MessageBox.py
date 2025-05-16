@@ -18,7 +18,7 @@ class MessageBox(RoundShadow):
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window | Qt.Tool | Qt.WindowStaysOnTopHint)
         _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0]
 
-        self.message_label = QLabel(self)
+        self.message_label = QLabel(self)  # 气泡文字
         self.message_label.setAlignment(Qt.AlignCenter)
         self.message_label.setFont(QFont(_global_font, 12))
         self.message_label.setText(message)
@@ -26,61 +26,61 @@ class MessageBox(RoundShadow):
         self.resize(self.message_label.width() + 120, self.message_label.height() + 50)
         self.message_label.move((self.width() - self.message_label.width()) // 2, (self.height() - self.message_label.height()) // 2)
 
-        screen = QApplication.primaryScreen().geometry()
+        screen = QApplication.primaryScreen().geometry()  # 气泡居中显示
         x = (screen.width() - self.width()) // 2
         y = int(screen.height() * 0.18)
         self.move(x, y + 60)
 
-        self.opacity_effect = QGraphicsOpacityEffect(self)
+        self.opacity_effect = QGraphicsOpacityEffect(self)  # 透明度效果
         self.message_label.setGraphicsEffect(self.opacity_effect)
         self.opacity_effect.setOpacity(0)
 
-        self.show_anim = QPropertyAnimation(self.opacity_effect, b"opacity")
+        self.show_anim = QPropertyAnimation(self.opacity_effect, b"opacity")  # 显示动画
         self.show_anim.setDuration(500)
         self.show_anim.setStartValue(0)
         self.show_anim.setEndValue(1)
         self.show_anim.setEasingCurve(QEasingCurve.OutCubic)
 
-        self.move_anim = QPropertyAnimation(self, b"pos")
-        self.move_anim.setDuration(500)
-        self.move_anim.setStartValue(QPoint(x, y + 60))
-        self.move_anim.setEndValue(QPoint(x, y))
-        self.move_anim.setEasingCurve(QEasingCurve.OutCubic)
+        self.show_move_anim = QPropertyAnimation(self, b"pos")  # 显示时的移动动画
+        self.show_move_anim.setDuration(500)
+        self.show_move_anim.setStartValue(QPoint(x, y + 60))
+        self.show_move_anim.setEndValue(QPoint(x, y))
+        self.show_move_anim.setEasingCurve(QEasingCurve.OutCubic)
 
-        self.hide_anim = QPropertyAnimation(self.opacity_effect, b"opacity")
+        self.hide_anim = QPropertyAnimation(self.opacity_effect, b"opacity")  # 隐藏动画
         self.hide_anim.setDuration(500)
         self.hide_anim.setStartValue(1)
         self.hide_anim.setEndValue(0)
         self.hide_anim.setEasingCurve(QEasingCurve.InCubic)
 
-        self.hide_move_anim = QPropertyAnimation(self, b"pos")
+        self.hide_move_anim = QPropertyAnimation(self, b"pos")  # 隐藏时的移动动画
         self.hide_move_anim.setDuration(500)
         self.hide_move_anim.setStartValue(QPoint(x, y))
         self.hide_move_anim.setEndValue(QPoint(x, y - 60))
         self.hide_move_anim.setEasingCurve(QEasingCurve.InCubic)
 
-        self.show_anim.finished.connect(self._on_showed)
+        self.show_anim.finished.connect(self._on_showed)  # 气泡显示完成后触发
         self.hide_anim.finished.connect(self._on_hidden)
 
-        self.show_duration = int(duration * 1000)
+        self.show_duration = int(duration * 1000)  # 气泡持续时长
 
     def showEvent(self, event):
         self.show_anim.start()
-        self.move_anim.start()
+        self.show_move_anim.start()
         super().showEvent(event)
 
-    def _on_showed(self):
+    def _on_showed(self):  # 气泡显示完成后，开始计时隐藏
         QTimer.singleShot(self.show_duration, self._start_hide)
 
-    def _start_hide(self):
+    def _start_hide(self):  # 开始隐藏气泡
         self.hide_anim.start()
         self.hide_move_anim.start()
 
-    def _on_hidden(self):
+    def _on_hidden(self):  # 气泡隐藏完成后，关闭并删除
         self.close()
         self.deleteLater()
 
-def show_messagebox(message=str, duration:int|float=3):
+def show_messagebox(message=str, duration:int|float=3):  # 显示消息气泡
     """
     显示消息气泡
     

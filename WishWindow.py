@@ -37,15 +37,15 @@ class WishWindow(MovableWindow):
                     self.supportable_numbers = [_i for _i in _base_numbers if _i not in _EVER_excluded_numbers]
                     self.GUARANTEE = [8, 60]
                     if _default_lang == 0:
-                        SettingsWindow.show_messagebox(self, f"「自定义祈愿学号池」中存在输入错误，请检查：\n\n        {get_content}\n\n  当前学号池及保底机制已重置为默认（学号1-41，8-60保底）。", lang=0, type=QMessageBox.Critical)
+                        SettingsWindow.show_dialoguebox(self, f"「自定义祈愿学号池」中存在输入错误，请检查：\n\n        {get_content}\n\n  当前学号池及保底机制已重置为默认（学号1-41，8-60保底）。", lang=0, type=QMessageBox.Critical)
                     else:
-                        SettingsWindow.show_messagebox(self, f"There are errors in the「Customed Lucky Number Pool」input, please check.\n\n        {get_content}\n\nThe current student number pool and guarantee mode have been reset to default (numbers 1-41, with 8-60 guarantee).", lang=1, type=QMessageBox.Critical)
+                        SettingsWindow.show_dialoguebox(self, f"There are errors in the「Customed Lucky Number Pool」input, please check.\n\n        {get_content}\n\nThe current student number pool and guarantee mode have been reset to default (numbers 1-41, with 8-60 guarantee).", lang=1, type=QMessageBox.Critical)
                 else:
                     if len(resolved_list) == 1:
                         if _default_lang == 0:
-                            SettingsWindow.show_messagebox(self, f"「自定义祈愿学号池」中仅有一个学号： {resolved_list[0]}\n\n  这将导致祈愿的结果都为该学号。", lang=0)
+                            SettingsWindow.show_dialoguebox(self, f"「自定义祈愿学号池」中仅有一个学号： {resolved_list[0]}\n\n  这将导致祈愿的结果都为该学号。", lang=0)
                         else:
-                            SettingsWindow.show_messagebox(self, f"There is only one student number in「Customed Lucky Number Pool」:  {resolved_list[0]}\n\n  This will result in all wishes being the same student number.", lang=1)
+                            SettingsWindow.show_dialoguebox(self, f"There is only one student number in「Customed Lucky Number Pool」:  {resolved_list[0]}\n\n  This will result in all wishes being the same student number.", lang=1)
                     self.supportable_numbers = resolved_list
                     length = len(self.supportable_numbers)
                     self.GUARANTEE = [int(length/5 + 1) if length < 20 else 8, (int(length*1.5) // 10 + 1) * 10]
@@ -353,13 +353,13 @@ class WishWindow(MovableWindow):
         if self.root_settings.LANGUAGE_INDEX == 0:
             pyperclip.copy(f'{self.history_all}（祈愿记录导出于 {ticktime}）')
             if len(self.history_all) < 500:
-                SettingsWindow.show_messagebox(self, f"祈愿历史记录（{ticktime}）共 {len(self.history_all)} 次祈愿：\n\n{self.history_all}\n\n已复制至剪贴板。", lang=0, type=QMessageBox.Information)
+                SettingsWindow.show_dialoguebox(self, f"祈愿历史记录（{ticktime}）共 {len(self.history_all)} 次祈愿：\n\n{self.history_all}\n\n已复制至剪贴板。", lang=0, type=QMessageBox.Information)
             else:
-                SettingsWindow.show_messagebox(self, f"祈愿历史记录（{ticktime}）共 {len(self.history_all)} 次祈愿，最近 500 次祈愿：\n\n...{self.history_all[-500:]}\n\n所有祈愿记录已复制至剪贴板。", lang=0, type=QMessageBox.Information)
+                SettingsWindow.show_dialoguebox(self, f"祈愿历史记录（{ticktime}）共 {len(self.history_all)} 次祈愿，最近 500 次祈愿：\n\n...{self.history_all[-500:]}\n\n所有祈愿记录已复制至剪贴板。", lang=0, type=QMessageBox.Information)
         else:
             pyperclip.copy(f'{self.history_all}（Wish record exported at {ticktime}）')
             if len(self.history_all) < 500:
-                SettingsWindow.show_messagebox(self, f"Wish History ({ticktime}) Total {len(self.history_all)} wishes: \n\n{self.history_all}\n\nCopied to clipboard.", lang=1, type=QMessageBox.Information)
+                SettingsWindow.show_dialoguebox(self, f"Wish History ({ticktime}) Total {len(self.history_all)} wishes: \n\n{self.history_all}\n\nCopied to clipboard.", lang=1, type=QMessageBox.Information)
             else:
-                SettingsWindow.show_messagebox(self, f"Wish History ({ticktime}) Total {len(self.history_all)} wishes, recent 500 wishes: \n\n...{self.history_all[-500:]}\n\nAll wish records copied to clipboard.", lang=1, type=QMessageBox.Information)
+                SettingsWindow.show_dialoguebox(self, f"Wish History ({ticktime}) Total {len(self.history_all)} wishes, recent 500 wishes: \n\n...{self.history_all[-500:]}\n\nAll wish records copied to clipboard.", lang=1, type=QMessageBox.Information)
 

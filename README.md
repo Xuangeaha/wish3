@@ -4,7 +4,7 @@
 
 A Qt-based desktop gadget for randomly selecting student numbers.
 
-**当前正式版：**`3.4.6` &emsp;&emsp;**当前开发版本：**`3.5.0-exp2`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
+**当前正式版：**`3.4.6` &emsp;&emsp;**当前开发版本：**`3.5.0-exp3`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
 
 > “无论当下的境遇如何，属于幸运观众们的星空中将永远闪耀着你的位置。”
 >
@@ -16,7 +16,9 @@ A Qt-based desktop gadget for randomly selecting student numbers.
 
     · 更好的UI界面
         · 消息气泡
-            现在所有的弹窗消息都以气泡形式出现。
+            现在一些弹窗消息以气泡形式出现。
+
+        >>> 该机制于「祈愿 · 幸运观众」实验性测试版本 3.5.0-exp1 后加入。
 
 
 ## 祈愿 · 幸运观众 3.4：「可视化心愿」（Blessing in Sight）：头像与祈愿历史记录（2025年4月11日）
@@ -52,12 +54,12 @@ A Qt-based desktop gadget for randomly selecting student numbers.
         现在支持简体中文与英文两种语言。
             · 通过「设置」窗口中「语言/Languages」栏目即可切换语言。
 
-        >>> 该机制于「祈愿 · 幸运观众」开发版本 3.3.0-exp1 后加入。
+        >>> 该机制于「祈愿 · 幸运观众」实验性测试版本 3.3.0-exp1 后加入。
 
     · 动态信息栏
         现在祈愿过程中进入保底、重置保底及「心之捆绑」生效时将在窗口短暂显示消息。
 
-        >>> 该机制于「祈愿 · 幸运观众」开发版本 3.3.1-pre1 后加入。
+        >>> 该机制于「祈愿 · 幸运观众」预发布版本 3.3.1-pre1 后加入。
 
 ## 祈愿 · 幸运观众 3.2：「自定义祈愿学号池」（2025年1月10日）
 
@@ -71,7 +73,7 @@ A Qt-based desktop gadget for randomly selecting student numbers.
             · 格式示例：“1-50 76-88 -10 -21 +66 +94”。
             · 如未填写或格式错误，学号池及保底机制将设置为默认。
 
-        >>> 该机制于「祈愿 · 幸运观众」开发版本 3.2.0-pre1 后加入。
+        >>> 该机制于「祈愿 · 幸运观众」预发布版本 3.2.0-pre1 后加入。
 
     ———————————————————————————————————————————————————————————————————————————————— 
 
@@ -99,7 +101,7 @@ A Qt-based desktop gadget for randomly selecting student numbers.
         ·「心之捆绑」与「心之隔离」均可在「设置」窗口设置。以正确格式输入捆绑或隔离学号，点击“应用”按钮
             后，自下一次祈愿起即生效。
     
-        >>> 该机制于「祈愿 · 幸运观众」开发版本 3.1-dev09.51-exp 后加入。
+        >>> 该机制于「祈愿 · 幸运观众」实验性测试版本 3.1-dev09.51-exp 后加入。
 
     · 自定义图片背景
         设置自定义图片作为祈愿窗口背景。
@@ -111,7 +113,7 @@ A Qt-based desktop gadget for randomly selecting student numbers.
             均严格归属于原始拍摄者所有。用户上传的照片需确保已获得合法授权或属于公共领域资源，不侵犯任何
             第三方权益。我们鼓励合法、健康的内容创作与分享，感谢您的使用。
     
-        >>> 该功能于「祈愿 · 幸运观众」开发版本 3.1-prerelease2 后加入。
+        >>> 该功能于「祈愿 · 幸运观众」预发布版本 3.1-prerelease2 后加入。
 
     · 祈愿窗口置顶显示
 
@@ -142,7 +144,7 @@ A Qt-based desktop gadget for randomly selecting student numbers.
 
     ||| 修改 |||
 
-    · 优化调整了抽学号核心算法。
+    · 优化抽学号核心算法。
     
 
 **Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO)**
