@@ -6,7 +6,7 @@ Copyright © 2024-2025 XuangeAha(轩哥啊哈OvO)
 """
 
 from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QHBoxLayout, QVBoxLayout, QGridLayout, QComboBox, QMessageBox, QFileDialog, QCheckBox
-from PyQt5.QtGui import QColor, QFont, QFontDatabase, QIcon
+from PyQt5.QtGui import QFont, QFontDatabase, QIcon
 from PyQt5.QtCore import Qt
 import re
 
@@ -25,7 +25,7 @@ class SettingsWindow(MovableWindow):
         self.root_about = AboutWindow(self)
         self.wish_window = wish_window
 
-        self.round_shadow = RoundShadow(self)
+        self.round_shadow = RoundShadow(self)        
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.Window)
         _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0] 

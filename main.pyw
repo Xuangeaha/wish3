@@ -17,13 +17,14 @@ from WishWindow import WishWindow
 from config import _is_profilephotoupdatewindow_shown
 
 
-from exceptionHandler import handle_exception
+# from exceptionHandler import handle_exception
 
-sys.excepthook = handle_exception
+# sys.excepthook = handle_exception
 
 
 def run():
     app = QApplication(sys.argv)
+    
     root = WishWindow()
     root.show()
 
