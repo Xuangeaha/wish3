@@ -5,7 +5,7 @@ Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO)
 
 """
 
-from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox, QGraphicsOpacityEffect
+from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox, QGraphicsOpacityEffect, QMenu
 from PyQt5.QtGui import QFont, QFontDatabase, QIcon, QPixmap
 from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation
 import time
@@ -144,6 +144,11 @@ class WishWindow(MovableWindow):
         self.main_layout.addLayout(self.bottom_layout)
         self.main_layout.setContentsMargins(30, 25, 30, 25)
 
+        # 添加右键菜单
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.show_context_menu)
+
+
         self.setWindowTitle("祈愿 · 幸运观众")
         self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(100, 100, 900, 600)
@@ -152,6 +157,18 @@ class WishWindow(MovableWindow):
 
         self.send_newspaper(_morning_newspaper, show_time=10000)  # 晨报
 
+    def show_context_menu(self, pos):
+        context_menu = QMenu(self)
+        toggle_avatar_action = context_menu.addAction("切换头像显示" if self.root_settings.LANGUAGE_INDEX == 0 else "Toggle Avatar Display")
+        toggle_avatar_action.triggered.connect(self.toggle_avatar_display)
+        context_menu.exec_(self.mapToGlobal(pos))
+
+    def toggle_avatar_display(self):
+        self.is_avatar_shown = not self.is_avatar_shown
+        if self.root_settings.LANGUAGE_INDEX == 0:
+            self.send_newspaper("头像显示已切换.." if self.is_avatar_shown else "头像显示已关闭..")
+        else:
+            self.send_newspaper("Avatar display toggled on.." if self.is_avatar_shown else "Avatar display toggled off..")
         
     @staticmethod
     def set_widget_style(widget, background_color:str, color:str, sizex:int, sizey:int):  # 元件格式包装
