@@ -5,7 +5,7 @@ Copyright © 2025 XuangeAha(轩哥啊哈OvO)
 
 """
 
-from PyQt5.QtWidgets import QLabel, QGraphicsOpacityEffect, QApplication, QBoxLayout
+from PyQt5.QtWidgets import QLabel, QGraphicsOpacityEffect, QApplication
 from PyQt5.QtGui import QFontDatabase, QFont
 from PyQt5.QtCore import Qt, QPropertyAnimation, QTimer, QPoint, QEasingCurve
 
@@ -64,8 +64,6 @@ class MessageBox(RoundShadow):
 
         self.show_duration = int(duration * 1000)  # 气泡持续时长
 
-        
-        print(f"MessageBox size: {self.width()}x{self.height()}, pos: {x},{y}")
 
     def showEvent(self, event):
         self.show_anim.start()
@@ -82,6 +80,7 @@ class MessageBox(RoundShadow):
     def _on_hidden(self):  # 气泡隐藏完成后，关闭并删除
         self.close()
         self.deleteLater()
+
 
 def show_messagebox(message=str, duration:int|float=3):  # 显示消息气泡
     """

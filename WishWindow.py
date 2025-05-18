@@ -15,6 +15,7 @@ import pyperclip
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 from SettingsWindow import SettingsWindow
+import MessageBox
 
 from config import _ver_short, _ver, _ver_type, _iconpath, _base_numbers, _default_lang , _EVER_excluded_numbers, _morning_newspaper, _is_special_wish_on, _is_debug_on
 
@@ -127,12 +128,12 @@ class WishWindow(MovableWindow):
 
         self.button_once = QPushButton('抽 1 次', self)  # 抽 1 次按钮
         self.button_once.setFont(QFont(_global_font, 13))
-        self.button_once.clicked.connect(self.draw_once)
+        self.button_once.clicked.connect(self.pick_once)
         self.button_once.setFixedSize(160, 60)
 
         self.button_ten = QPushButton('抽 10 次', self)  # 抽 10 次按钮
         self.button_ten.setFont(QFont(_global_font, 13))
-        self.button_ten.clicked.connect(self.draw_ten)
+        self.button_ten.clicked.connect(self.pick_ten)
         self.button_ten.setFixedSize(160, 60)
 
         self.bottom_layout.addLayout(self.label_number_layout)  # 底部栏布局
@@ -144,10 +145,8 @@ class WishWindow(MovableWindow):
         self.main_layout.addLayout(self.bottom_layout)
         self.main_layout.setContentsMargins(30, 25, 30, 25)
 
-        # 添加右键菜单
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.customContextMenuRequested.connect(self.show_context_menu)
-
+        self.setContextMenuPolicy(Qt.CustomContextMenu)  # 右键菜单
+        self.customContextMenuRequested.connect(self.context_menu)
 
         self.setWindowTitle("祈愿 · 幸运观众")
         self.setWindowIcon(QIcon(_iconpath))
@@ -157,19 +156,6 @@ class WishWindow(MovableWindow):
 
         self.send_newspaper(_morning_newspaper, show_time=10000)  # 晨报
 
-    def show_context_menu(self, pos):
-        context_menu = QMenu(self)
-        toggle_avatar_action = context_menu.addAction("切换头像显示" if self.root_settings.LANGUAGE_INDEX == 0 else "Toggle Avatar Display")
-        toggle_avatar_action.triggered.connect(self.toggle_avatar_display)
-        context_menu.exec_(self.mapToGlobal(pos))
-
-    def toggle_avatar_display(self):
-        self.is_avatar_shown = not self.is_avatar_shown
-        if self.root_settings.LANGUAGE_INDEX == 0:
-            self.send_newspaper("头像显示已切换.." if self.is_avatar_shown else "头像显示已关闭..")
-        else:
-            self.send_newspaper("Avatar display toggled on.." if self.is_avatar_shown else "Avatar display toggled off..")
-        
     @staticmethod
     def set_widget_style(widget, background_color:str, color:str, sizex:int, sizey:int):  # 元件格式包装
         widget.setFixedSize(sizex, sizey)
@@ -255,7 +241,7 @@ class WishWindow(MovableWindow):
     ##############################################################################################################
     ##############################################################################################################
     
-    def draw_once(self):  # 抽 1 次
+    def pick_once(self):  # 抽 1 次
         if hasattr(self, 'update_label_timer') and self.update_label_timer.isActive(): # 避免10抽1抽连续抽取
             return
         
@@ -280,7 +266,7 @@ class WishWindow(MovableWindow):
         self.adjustSize()
         self.adjustSize()
 
-    def draw_ten(self):  # 抽 10 次
+    def pick_ten(self):  # 抽 10 次
         self.label_number_avatar.setFixedWidth(0)
         self.label_number_avatar.clear()
         self.label_number_text.setFixedWidth(620)
@@ -369,14 +355,51 @@ class WishWindow(MovableWindow):
         ticktime = time.asctime(time.localtime(time.time()))
         if self.root_settings.LANGUAGE_INDEX == 0:
             pyperclip.copy(f'{self.history_all}（祈愿记录导出于 {ticktime}）')
+            MessageBox.show_messagebox(f"祈愿历史记录已复制到剪贴板。", duration=3)
             if len(self.history_all) < 500:
-                SettingsWindow.show_dialoguebox(self, f"祈愿历史记录（{ticktime}）共 {len(self.history_all)} 次祈愿：\n\n{self.history_all}\n\n已复制至剪贴板。", lang=0, type=QMessageBox.Information)
+                SettingsWindow.show_dialoguebox(self, f"祈愿历史记录（{ticktime}）共 {len(self.history_all)} 次祈愿：\n\n{self.history_all}", lang=0, type=QMessageBox.Information)
             else:
-                SettingsWindow.show_dialoguebox(self, f"祈愿历史记录（{ticktime}）共 {len(self.history_all)} 次祈愿，最近 500 次祈愿：\n\n...{self.history_all[-500:]}\n\n所有祈愿记录已复制至剪贴板。", lang=0, type=QMessageBox.Information)
+                SettingsWindow.show_dialoguebox(self, f"祈愿历史记录（{ticktime}）共 {len(self.history_all)} 次祈愿，最近 500 次祈愿：\n\n...{self.history_all[-500:]}", lang=0, type=QMessageBox.Information)
         else:
             pyperclip.copy(f'{self.history_all}（Wish record exported at {ticktime}）')
+            MessageBox.show_messagebox(f"Wish record copied to clipboard.", duration=3)
             if len(self.history_all) < 500:
-                SettingsWindow.show_dialoguebox(self, f"Wish History ({ticktime}) Total {len(self.history_all)} wishes: \n\n{self.history_all}\n\nCopied to clipboard.", lang=1, type=QMessageBox.Information)
+                SettingsWindow.show_dialoguebox(self, f"Wish History ({ticktime}) Total {len(self.history_all)} wishes: \n\n{self.history_all}", lang=1, type=QMessageBox.Information)
             else:
-                SettingsWindow.show_dialoguebox(self, f"Wish History ({ticktime}) Total {len(self.history_all)} wishes, recent 500 wishes: \n\n...{self.history_all[-500:]}\n\nAll wish records copied to clipboard.", lang=1, type=QMessageBox.Information)
+                SettingsWindow.show_dialoguebox(self, f"Wish History ({ticktime}) Total {len(self.history_all)} wishes, recent 500 wishes: \n\n...{self.history_all[-500:]}", lang=1, type=QMessageBox.Information)
 
+    def context_menu(self, pos):  # 右键菜单
+        context_menu = QMenu(self)
+        context_menu.setStyleSheet("""
+            QMenu {
+                background-color: #ffffff;
+                padding: 8px;
+            }
+            QMenu::item {
+                background-color: transparent;
+                padding: 3px 18px;
+                margin: 1px 1px;
+                border-radius: 4px;
+            }
+            QMenu::item:selected {
+                background-color: gray;
+                color: white;
+            }
+            QMenu::separator {
+                height: 1px;
+                margin: 4px 0;
+            }
+        """)
+        
+        context_menu_pick_once = context_menu.addAction("抽 1 次" if self.root_settings.LANGUAGE_INDEX == 0 else "Pick Once")
+        context_menu_pick_once.triggered.connect(self.pick_once)
+
+        context_menu_pick_ten = context_menu.addAction("抽 10 次" if self.root_settings.LANGUAGE_INDEX == 0 else "Pick Ten Times")
+        context_menu_pick_ten.triggered.connect(self.pick_ten)
+
+        context_menu.addSeparator()
+
+        context_menu_open_settings_window = context_menu.addAction("设置" if self.root_settings.LANGUAGE_INDEX == 0 else "Settings")
+        context_menu_open_settings_window.triggered.connect(self.root_settings.show)
+
+        context_menu.exec_(self.mapToGlobal(pos))
