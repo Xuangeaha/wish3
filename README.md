@@ -4,7 +4,7 @@
 
 A Qt-based desktop gadget for randomly selecting student numbers.
 
-**当前正式版：**`3.4.6` &emsp;&emsp;**当前开发版本：**`3.5.0-exp5`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
+**当前正式版：**`3.4.7` &emsp;&emsp;**当前开发版本：**`3.5.0-exp6`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
 
 > “无论当下的境遇如何，属于幸运观众们的星空中将永远闪耀着你的位置。”
 >
@@ -18,12 +18,17 @@ A Qt-based desktop gadget for randomly selecting student numbers.
         · 消息气泡
             现在一些弹窗消息以气泡形式出现。
 
-        >>> 该机制于「祈愿 · 幸运观众」实验性测试版本 3.5.0-exp1 后加入。
+            >>> 该机制于「祈愿 · 幸运观众」实验性测试版本 3.5.0-exp1 后加入。
 
         · 右键菜单
             现在右键祈愿主窗口可显示菜单，包含一些简单功能。
 
-        >>> 该机制于「祈愿 · 幸运观众」实验性测试版本 3.5.0-exp4 后加入。
+            >>> 该机制于「祈愿 · 幸运观众」实验性测试版本 3.5.0-exp4 后加入。
+    
+    · 动画效果
+        现在软件增加了多处非线性动画效果。
+
+        >>> 该机制于「祈愿 · 幸运观众」实验性测试版本 3.5.0-exp6 后加入。
 
 
 ## 祈愿 · 幸运观众 3.4：「可视化心愿」（Blessing in Sight）：头像与祈愿历史记录（2025年4月11日）

@@ -1,0 +1,38 @@
+def toggle_information(self):
+        visible = not self.information.isVisible()
+        
+        # 获取当前窗口大小
+        current_height = self.height()
+        
+        # 计算展开/收起后的目标高度
+        information_height = self.information.sizeHint().height()
+        target_height = current_height + information_height if visible else current_height - information_height
+
+        # 创建高度动画
+        self.animation = QPropertyAnimation(self, b"minimumHeight")
+        self.animation.setDuration(200)  # 动画持续时间(毫秒)
+        self.animation.setStartValue(current_height)
+        self.animation.setEndValue(target_height)
+        
+        # 创建最大高度动画(与最小高度同步)
+        self.animation_max = QPropertyAnimation(self, b"maximumHeight")
+        self.animation_max.setDuration(200)
+        self.animation_max.setStartValue(current_height)
+        self.animation_max.setEndValue(target_height)
+
+        if visible:
+            # 显示时先开始动画再显示内容
+            self.animation.finished.connect(lambda: self.information.setVisible(True))
+        else:
+            # 隐藏时先隐藏内容再开始动画
+            self.information.setVisible(False)
+
+        # 更新按钮文字
+        if self.root_settings.LANGUAGE_INDEX == 0:
+            self.information_button.setText('∧祈愿详情∧' if visible else '∨祈愿详情∨')
+        else:
+            self.information_button.setText('∧Details∧' if visible else '∨Details∨')
+
+        # 同时启动两个动画
+        self.animation.start()
+        self.animation_max.start()
