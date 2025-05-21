@@ -23,7 +23,7 @@ class MessageBox(RoundShadow):
         self.message_label.setFont(QFont(_global_font, 12))
         self.message_label.setText(message)
         self.message_label.adjustSize()
-        self.resize(self.message_label.width() + 120, self.message_label.height() + 50)
+        self.resize(self.message_label.width() + 130, self.message_label.height() + 50)
         self.message_label.move((self.width() - self.message_label.width()) // 2, (self.height() - self.message_label.height()) // 2)
 
         screen = QApplication.primaryScreen().geometry()  # 气泡居中显示

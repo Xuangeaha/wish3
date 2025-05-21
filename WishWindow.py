@@ -318,64 +318,37 @@ class WishWindow(MovableWindow):
 
     def toggle_information(self):  # 信息显示及按钮文字切换
         visible = not self.information.isVisible()
+        
         if self.root_settings.LANGUAGE_INDEX == 0:
             self.information_button.setText('∧祈愿详情∧' if visible else '∨祈愿详情∨')
         else:
             self.information_button.setText('∧Details∧' if visible else '∨Details∨')
 
-        if visible:
-            # 显示information但初始高度为0
+        def _on_value_changed(value):  # 动画每一帧都调整窗口大小
+            self.information.setMinimumHeight(value)
+            self.adjustSize()
+
+        def _on_anim_finished():  # 动画结束时隐藏information
+            self.information.setVisible(False)
+
+        self.anim = QPropertyAnimation(self.information, b"maximumHeight")  # 祈愿详情展开/收回动画
+        self.anim.setDuration(300)
+
+        if visible:  # 展开
+            self.information.setFixedHeight(0)  # 显示information但初始高度为0
             self.information.setVisible(True)
+            self.information.setFixedHeight(16777215)  # 获取完整展开时的高度
+            full_height = self.information.sizeHint().height() + 20
             self.information.setFixedHeight(0)
-            
-            # 获取完整展开时的高度
-            self.information.setFixedHeight(16777215)
-            full_height = self.information.sizeHint().height()
-            self.information.setFixedHeight(0)
-            
-            # 创建高度动画
-            self.anim = QPropertyAnimation(self.information, b"maximumHeight")
-            self.anim.setDuration(300)  # 动画持续300毫秒
             self.anim.setStartValue(0)
             self.anim.setEndValue(full_height)
-            self.anim.setEasingCurve(QEasingCurve.OutQuad)  # 使用缓出动画曲线
-            
-            # 动画每一帧都调整窗口大小
-            def on_value_changed(value):
-                self.information.setMinimumHeight(value)
-                self.adjustSize()
-            self.anim.valueChanged.connect(on_value_changed)
-            
-            # 动画结束时清理
-            def on_finish():
-                self.information.setMaximumHeight(16777215)
-                self.information.setMinimumHeight(0)
-            self.anim.finished.connect(on_finish)
-            
-        else:
-            # 获取当前高度
-            current_height = self.information.height()
-            
-            # 创建高度动画
-            self.anim = QPropertyAnimation(self.information, b"maximumHeight")
-            self.anim.setDuration(300)
-            self.anim.setStartValue(current_height)
+        else:  # 收回
+            self.anim.setStartValue(self.information.height())
             self.anim.setEndValue(0)
-            self.anim.setEasingCurve(QEasingCurve.OutQuad)
-            
-            # 动画每一帧都调整窗口大小
-            def on_value_changed(value):
-                self.information.setMinimumHeight(value)
-                self.adjustSize()
-            self.anim.valueChanged.connect(on_value_changed)
-            
-            # 动画结束时隐藏information
-            def on_finish():
-                self.information.setVisible(False)
-                self.information.setMaximumHeight(16777215)
-                self.information.setMinimumHeight(0)
-            self.anim.finished.connect(on_finish)
+            self.anim.finished.connect(_on_anim_finished)
         
+        self.anim.setEasingCurve(QEasingCurve.OutQuad)  # 使用缓出动画曲线
+        self.anim.valueChanged.connect(_on_value_changed)
         self.anim.start()
         
     def send_newspaper(self, news:str, show_time:int=5000):  # 发报纸

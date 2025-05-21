@@ -33,6 +33,8 @@ class SettingsWindow(MovableWindow):
 
         self.LANGUAGE_INDEX = _default_lang
         self.lang_text = STATIC_STRINGS[str(self.LANGUAGE_INDEX)]
+        
+        self.is_initializing = False
 
         self.settings_layout = QVBoxLayout(self)
 
@@ -178,7 +180,7 @@ class SettingsWindow(MovableWindow):
         
         self.activateWindow()  # 激活以刷新文字 避免 UpdateLayeredWindowIndirect
         self.wish_window.activateWindow()
-        
+
         if self.LANGUAGE_INDEX == 1:
             self.wish_window.information.setText(self.wish_window.information_list_en[self.wish_window.guarantee_mode])
             self.theme_combo.clear()
@@ -188,6 +190,9 @@ class SettingsWindow(MovableWindow):
             self.guarantee_combo.addItem(self.guarantee_item_name_en)
             self.guarantee_combo.addItem("No Guarantee")
             self.guarantee_combo.setFixedWidth(350)
+            if self.is_initializing:
+                MessageBox.show_messagebox(message='Language changed to English.', duration=1.5)
+            self.is_initializing = True
         else:
             self.wish_window.information.setText(self.wish_window.information_list_zh[self.wish_window.guarantee_mode])
             self.theme_combo.clear()
@@ -197,6 +202,10 @@ class SettingsWindow(MovableWindow):
             self.guarantee_combo.addItem(self.guarantee_item_name_zh)
             self.guarantee_combo.addItem("无保底")
             self.guarantee_combo.setFixedWidth(300)
+            if self.is_initializing:
+                MessageBox.show_messagebox(message='语言已切换为中文。', duration=1.5)
+            self.is_initializing = True
+
         self.adjustSize()
         self.adjustSize()
 
@@ -231,16 +240,22 @@ class SettingsWindow(MovableWindow):
     def toggle_avatar(self):  # 3 头像显示切换
         if self.avatar_checkbox.isChecked():
             self.wish_window.is_avatar_shown = True
+            MessageBox.show_messagebox(message='头像已切换显示。' if self.LANGUAGE_INDEX == 0 else 'Avatar set to be shown.', duration=1.5)
         else:
             self.wish_window.is_avatar_shown = False
+            MessageBox.show_messagebox(message='头像已切换隐藏。' if self.LANGUAGE_INDEX == 0 else 'Avatar set to be hidden.', duration=1.5)
 
     def toggle_guarantee(self, index:int):  # 4 保底机制切换
         self.wish_window.reset_guarantee()
         self.wish_window.guarantee_mode = index
         if self.LANGUAGE_INDEX == 0:
             self.wish_window.information.setText(self.wish_window.information_list_zh[index])
+            if self.is_initializing:
+                MessageBox.show_messagebox(message=f"保底机制已切换为{self.guarantee_combo.itemText(index)}。", duration=1.5)
         else:
             self.wish_window.information.setText(self.wish_window.information_list_en[index])
+            if self.is_initializing:
+                MessageBox.show_messagebox(message=f"Guarantee mode has been switched to {self.guarantee_combo.itemText(index)}.", duration=1.5)
         self.wish_window.information.setFixedSize(950, [100, 60][index])
         self.wish_window.adjustSize()
    
