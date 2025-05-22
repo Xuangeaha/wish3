@@ -233,17 +233,19 @@ class SettingsWindow(MovableWindow):
                     file_infomation = f"{self.lang_text['settings_file_information_1']}{file_name_split[0]}\n{self.lang_text['settings_file_information_2']}{file_name_split[1]}\n{self.lang_text['settings_file_information_3']}{file_name_split[2].split('.')[0]}"
                 except IndexError:
                     file_infomation = f"{self.lang_text['settings_file_information_4']}{fileName}"
-                self.show_dialoguebox(f"{self.lang_text['settings_file_applied']}\n\n{file_infomation}\n\n{self.lang_text['settings_file_declare']}")
+                self.show_dialoguebox(f"{self.lang_text['settings_file_applied']}\n\n{file_infomation}\n\n{self.lang_text['settings_file_declare']}", type=QMessageBox.Information)
         self.wish_window.round_shadow.set_background(colour=colour, picture=picture)
         self.wish_window.setStyleSheet(stylesheet)
+        if self.is_initializing:
+            MessageBox.show_messagebox(message=f"主题配色已切换为{self.theme_combo.itemText(index)}。" if self.LANGUAGE_INDEX == 0 else f"Theme colour switched to {self.theme_combo.itemText(index)}.", duration=1.5)
 
     def toggle_avatar(self):  # 3 头像显示切换
         if self.avatar_checkbox.isChecked():
             self.wish_window.is_avatar_shown = True
-            MessageBox.show_messagebox(message='头像已切换显示。' if self.LANGUAGE_INDEX == 0 else 'Avatar set to be shown.', duration=1.5)
+            MessageBox.show_messagebox(message='头像已切换显示。' if self.LANGUAGE_INDEX == 0 else 'Avatar shown.', duration=1.5)
         else:
             self.wish_window.is_avatar_shown = False
-            MessageBox.show_messagebox(message='头像已切换隐藏。' if self.LANGUAGE_INDEX == 0 else 'Avatar set to be hidden.', duration=1.5)
+            MessageBox.show_messagebox(message='头像已切换隐藏。' if self.LANGUAGE_INDEX == 0 else 'Avatar hidden.', duration=1.5)
 
     def toggle_guarantee(self, index:int):  # 4 保底机制切换
         self.wish_window.reset_guarantee()
@@ -293,9 +295,11 @@ class SettingsWindow(MovableWindow):
         if self.onfront_checkbox.isChecked():
             self.wish_window.setWindowFlags(self.wish_window.windowFlags() | Qt.WindowStaysOnTopHint)
             self.wish_window.show()
+            MessageBox.show_messagebox(message='窗口已切换置顶。' if self.LANGUAGE_INDEX == 0 else 'Window pinned on top.', duration=1.5)
         else:
             self.wish_window.setWindowFlags(self.wish_window.windowFlags() & ~Qt.WindowStaysOnTopHint)
             self.wish_window.show()
+            MessageBox.show_messagebox(message='窗口已取消置顶。' if self.LANGUAGE_INDEX == 0 else 'Window unpinned.', duration=1.5)
         pass
 
     def show_dialoguebox(self, message:str, lang:int=int, type=QMessageBox.Warning):  # 消息框弹出
