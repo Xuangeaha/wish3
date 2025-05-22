@@ -5,9 +5,9 @@ Copyright © 2024-2025 XuangeAha(轩哥啊哈OvO)
 
 """
 
-_ver_short: str = '3.4.7'  # 短版本号
-_ver: str = '3.5.0dev0522a'  # 版本号
-_ver_type: str = '开发版本'  # 版本类型
+_ver_short: str = '3.4.8'  # 短版本号
+_ver: str = '3.4.8-Release-patch-3.5.0dev0522a'  # 版本号
+_ver_type: str = '正式版'  # 版本类型
 
 _morning_newspaper: str = '感谢 2,400+ 次下载！'  # 晨报
 
