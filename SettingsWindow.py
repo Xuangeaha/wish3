@@ -178,12 +178,14 @@ class SettingsWindow(MovableWindow):
         self.about_button.setText(self.lang_text['settings_about'])
         self.log_button.setText(self.lang_text['settings_log'])
         
-        self.activateWindow()  # 激活以刷新文字 避免 UpdateLayeredWindowIndirect
-        self.wish_window.activateWindow()
+        # self.activateWindow()  # 激活以刷新文字 避免 UpdateLayeredWindowIndirect
+        # self.wish_window.activateWindow()
         
-        self.theme_combo.blockSignals(True)
+        self.theme_combo.blockSignals(True)  # 阻断信号以防止触发 toggle
         self.guarantee_combo.blockSignals(True)
-        
+        current_theme = self.theme_combo.currentIndex()  # 保存当前索引
+        current_guarantee = self.guarantee_combo.currentIndex()
+    
         if self.LANGUAGE_INDEX == 1:
             self.wish_window.information.setText(self.wish_window.information_list_en[self.wish_window.guarantee_mode])
             self.theme_combo.clear()
@@ -211,12 +213,14 @@ class SettingsWindow(MovableWindow):
 
         self.adjustSize()
         self.adjustSize()
-
-        self.theme_combo.blockSignals(False)
+        
+        self.theme_combo.setCurrentIndex(current_theme)  # 恢复保底选择
+        self.guarantee_combo.setCurrentIndex(current_guarantee)
+        self.theme_combo.blockSignals(False)  # 解除信号阻断
         self.guarantee_combo.blockSignals(False)
 
-        self.activateWindow()  # 激活以刷新文字 避免 UpdateLayeredWindowIndirect
-        self.wish_window.activateWindow()
+        # self.activateWindow()  # 激活以刷新文字 避免 UpdateLayeredWindowIndirect
+        # self.wish_window.activateWindow()
 
     def toggle_theme(self, index:int):  # 2 主题配色切换
         colour, picture, stylesheet = None, None, None
