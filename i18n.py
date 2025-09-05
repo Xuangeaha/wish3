@@ -1,7 +1,7 @@
 """
 祈愿 · 幸运观众：本地化静态字符串
 
-Copyright © 2025 XuangeAha(轩哥啊哈OvO)
+Copyright © 2025 XuangeAha(轩哥啊哈OvO/卡猫kat)
 
 """
 

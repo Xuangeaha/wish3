@@ -4,7 +4,7 @@
 > “无论当下的境遇如何，属于幸运观众们的星空中将永远闪耀着你的位置。”
 > "No matter the present, your place will forever shine in the starry sky of the luckiest ones."
 
-Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO)
+Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO/卡猫kat)
 MIT License | All rights reserved.
 
 """

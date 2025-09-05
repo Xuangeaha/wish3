@@ -194,12 +194,8 @@ class WishWindow(MovableWindow):
                 if lucky_person not in self.last_some_picks: ######################### 8抽保底
                     break
 
-                if lucky_person == 41 and self.pick_num < 4:
-                    continue # 41号学号在4抽内不可抽到
-
             if _is_special_wish_on:
-                if self.pick_num == 4:
-                    lucky_person = 41 # 41号学号在5抽时必出
+                pass
 
             self.last_some_picks.append(lucky_person)
             if lucky_person not in self.history_last: 
