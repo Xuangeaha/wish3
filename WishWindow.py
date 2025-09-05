@@ -154,7 +154,7 @@ class WishWindow(MovableWindow):
 
         self.root_settings.toggle_language(self.root_settings.LANGUAGE_INDEX)
 
-        self.send_newspaper(_morning_newspaper, show_time=10000)  # 晨报
+        self.send_newspaper(random.choice(_morning_newspaper), show_time=4000)  # 晨报
 
     @staticmethod
     def set_widget_style(widget, background_color:str, color:str, sizex:int, sizey:int):  # 元件格式包装
@@ -456,6 +456,7 @@ class WishWindow(MovableWindow):
 
         context_menu.exec_(self.mapToGlobal(pos))
 
-    def close(self) -> None:  # 关闭所有窗口并退出应用
+    def close(self):  # 关闭所有窗口并退出应用
         from PyQt5.QtWidgets import QApplication
         QApplication.instance().quit()
+        

@@ -4,13 +4,13 @@
 
 A Qt-based desktop gadget for randomly selecting student numbers.
 
-**当前正式版：**`3.4.9` &emsp;&emsp;**当前开发版本：**`3.5.0dev0905f`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
+**当前正式版：**`3.5` &emsp;&emsp;**当前开发版本：**`3.5.0-Release`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
 
 > “无论当下的境遇如何，属于幸运观众们的星空中将永远闪耀着你的位置。”
 >
 > "No matter the present, your place will forever shine in the starry sky of the luckiest ones."
 
-## 祈愿 · 幸运观众 3.5：「」（）：（预计2025年9月）
+## 祈愿 · 幸运观众 3.5：「流韵祈念」（Ethereal Invocation）：更好的UI与动画（2025年9月5日）
 
     ||| 新增 |||
 
@@ -25,14 +25,15 @@ A Qt-based desktop gadget for randomly selecting student numbers.
 
             >>> 该机制于「祈愿 · 幸运观众」实验性测试版本 3.5.0-exp4 后加入。
     
-    · 动画效果
-        现在软件增加了多处非线性动画效果。
+        · 动画效果
+            现在软件增加了多处非线性动画效果。
 
-        >>> 该机制于「祈愿 · 幸运观众」实验性测试版本 3.5.0-exp6 后加入。
+            >>> 该机制于「祈愿 · 幸运观众」实验性测试版本 3.5.0-exp6 后加入。
 
     ||| 修复 |||
 
     · 修复了祈愿 · 幸运观众在特定系统环境中无法运行的问题。
+
     · 修复了切换语言时，背景图片、保底模式及保底数异常重置的问题。
 
 ## 祈愿 · 幸运观众 3.4：「可视化心愿」（Blessing in Sight）：头像与祈愿历史记录（2025年4月11日）

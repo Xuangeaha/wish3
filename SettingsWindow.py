@@ -223,6 +223,9 @@ class SettingsWindow(MovableWindow):
         # self.wish_window.activateWindow()
 
     def toggle_theme(self, index:int):  # 2 主题配色切换
+        if not hasattr(self.wish_window, 'current_theme_index'):
+            self.wish_window.current_theme_index = 0
+            
         colour, picture, stylesheet = None, None, None
         if index == 0:
             colour = Qt.white
@@ -244,8 +247,15 @@ class SettingsWindow(MovableWindow):
                 except IndexError:
                     file_infomation = f"{self.lang_text['settings_file_information_4']}{fileName}"
                 self.show_dialoguebox(f"{self.lang_text['settings_file_applied']}\n\n{file_infomation}\n\n{self.lang_text['settings_file_declare']}", type=QMessageBox.Information)
+            else:
+                self.theme_combo.blockSignals(True)
+                self.theme_combo.setCurrentIndex(self.wish_window.current_theme_index)
+                self.theme_combo.blockSignals(False)
+                return
         self.wish_window.round_shadow.set_background(colour=colour, picture=picture)
         self.wish_window.setStyleSheet(stylesheet)
+        self.wish_window.current_theme_index = index
+
         if self.is_initializing:
             MessageBox.show_messagebox(message=f"主题配色已切换为{self.theme_combo.itemText(index)}。" if self.LANGUAGE_INDEX == 0 else f"Theme colour switched to {self.theme_combo.itemText(index)}.", duration=1.5)
 
