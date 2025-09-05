@@ -456,3 +456,6 @@ class WishWindow(MovableWindow):
 
         context_menu.exec_(self.mapToGlobal(pos))
 
+    def close(self) -> None:  # 关闭所有窗口并退出应用
+        from PyQt5.QtWidgets import QApplication
+        QApplication.instance().quit()
