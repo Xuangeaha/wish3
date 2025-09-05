@@ -375,6 +375,10 @@ class WishWindow(MovableWindow):
         self.newspaper.setVisible(False)
         self.newspaper.setGraphicsEffect(None)
 
+    def clear_label(self):  # 清除学号显示
+        self.label_number_avatar.clear()
+        self.label_number_text.setText('')
+
     def show_history(self):  # 历史记录
         ticktime = time.asctime(time.localtime(time.time()))
         if self.root_settings.LANGUAGE_INDEX == 0:
@@ -402,7 +406,7 @@ class WishWindow(MovableWindow):
             QMenu::item {
                 background-color: transparent;
                 padding: 3px 18px;
-                margin: 1px 1px;
+                margin: 1px 8px 1px 1px;
                 border-radius: 4px;
             }
             QMenu::item:selected {
@@ -423,7 +427,25 @@ class WishWindow(MovableWindow):
 
         context_menu.addSeparator()
 
-        context_menu_open_settings_window = context_menu.addAction("设置" if self.root_settings.LANGUAGE_INDEX == 0 else "Settings")
+        context_menu_reset_guarantee = context_menu.addAction("重置保底" if self.root_settings.LANGUAGE_INDEX == 0 else "Reset guarantee")
+        context_menu_reset_guarantee.triggered.connect(self.reset_guarantee)
+
+        context_menu_show_history = context_menu.addAction("祈愿历史记录" if self.root_settings.LANGUAGE_INDEX == 0 else "Wish History")
+        context_menu_show_history.triggered.connect(self.show_history)
+
+        context_menu_clear_label = context_menu.addAction("清除学号显示" if self.root_settings.LANGUAGE_INDEX == 0 else "Clear number display")
+        context_menu_clear_label.triggered.connect(self.clear_label)
+
+        context_menu.addSeparator()
+
+        context_menu_toggle_onfront = context_menu.addAction("置顶窗口" if self.root_settings.LANGUAGE_INDEX == 0 else "Pin on top")
+        context_menu_toggle_onfront.triggered.connect(self.root_settings.toggle_onfront)
+
+        context_menu_open_settings_window = context_menu.addAction("设置.." if self.root_settings.LANGUAGE_INDEX == 0 else "Settings..")
         context_menu_open_settings_window.triggered.connect(self.root_settings.show)
 
+        context_menu_exit = context_menu.addAction("退出.." if self.root_settings.LANGUAGE_INDEX == 0 else "Exit..")
+        context_menu_exit.triggered.connect(self.close)
+
         context_menu.exec_(self.mapToGlobal(pos))
+

@@ -6,7 +6,7 @@ Copyright © 2024-2025 XuangeAha(轩哥啊哈OvO/卡猫kat)
 """
 
 _ver_short: str = '3.4.9'  # 短版本号
-_ver: str = '3.4.9-Release-patch-3.5.0dev0905a'  # 版本号
+_ver: str = '3.4.9-Release-patch-3.5.0dev0905b'  # 版本号
 _ver_type: str = '测试版本'  # 版本类型
 
 _morning_newspaper: str = '感谢 3,000+ 次下载！'  # 晨报
