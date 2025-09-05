@@ -275,6 +275,9 @@ class WishWindow(MovableWindow):
         self.update_label_timer.timeout.connect(self.update_label)
         self.update_label_timer.start(50)
 
+        self.adjustSize()
+        self.adjustSize()
+
     def update_label(self):  # 学号显示动画
         if self.update_label_index < len(self.numbers):
             self.label_number_text.setText(' '.join(f'{num}' for num in self.numbers[:self.update_label_index + 1]))
@@ -321,15 +324,18 @@ class WishWindow(MovableWindow):
             self.information_toggle_button.setText('∧Details∧' if visible else '∨Details∨')
 
         def _on_value_changed(value):  # 动画每一帧都调整窗口大小
+            self.information.setMaximumHeight(value)
             self.information.setMinimumHeight(value)
             self.adjustSize()
 
         def _on_anim_finished():  # 动画结束时隐藏information
-            self.information.setVisible(False)
+            if not visible:
+                self.information.setVisible(False)
+                self.adjustSize()
 
         self.anim = QPropertyAnimation(self.information, b"maximumHeight")  # 祈愿详情展开/收回动画
         self.anim.setDuration(300)
-
+        
         if visible:  # 展开
             self.information.setFixedHeight(0)  # 显示information但初始高度为0
             self.information.setVisible(True)
@@ -339,7 +345,8 @@ class WishWindow(MovableWindow):
             self.anim.setStartValue(0)
             self.anim.setEndValue(full_height)
         else:  # 收回
-            self.anim.setStartValue(self.information.height())
+            current_height = self.information.height() + 0
+            self.anim.setStartValue(current_height)
             self.anim.setEndValue(0)
             self.anim.finished.connect(_on_anim_finished)
         
