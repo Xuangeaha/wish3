@@ -163,7 +163,7 @@ class SettingsWindow(MovableWindow):
         self.wish_window.setWindowTitle(self.lang_text['title'])
         newtitle = f'{self.lang_text["title"]} {_ver_short}（{_ver_type}）{_ver}' if _ver_type != '正式版' else f'{self.lang_text["title"]} {_ver_short}'
         self.wish_window.title_label.setText(newtitle)
-        self.wish_window.information_button.setText(self.lang_text['information_button'])
+        self.wish_window.information_toggle_button.setText(self.lang_text['information_button'])
         self.wish_window.button_once.setText(self.lang_text['button_once'])
         self.wish_window.button_ten.setText(self.lang_text['button_ten'])
 
@@ -180,7 +180,10 @@ class SettingsWindow(MovableWindow):
         
         self.activateWindow()  # 激活以刷新文字 避免 UpdateLayeredWindowIndirect
         self.wish_window.activateWindow()
-
+        
+        self.theme_combo.blockSignals(True)
+        self.guarantee_combo.blockSignals(True)
+        
         if self.LANGUAGE_INDEX == 1:
             self.wish_window.information.setText(self.wish_window.information_list_en[self.wish_window.guarantee_mode])
             self.theme_combo.clear()
@@ -208,6 +211,9 @@ class SettingsWindow(MovableWindow):
 
         self.adjustSize()
         self.adjustSize()
+
+        self.theme_combo.blockSignals(False)
+        self.guarantee_combo.blockSignals(False)
 
         self.activateWindow()  # 激活以刷新文字 避免 UpdateLayeredWindowIndirect
         self.wish_window.activateWindow()

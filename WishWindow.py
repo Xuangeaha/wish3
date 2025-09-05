@@ -75,10 +75,10 @@ class WishWindow(MovableWindow):
         self.title_label = QLabel(self.title, self)
         self.title_label.setFont(QFont(_global_font, 11))
 
-        self.information_button = QPushButton('∨祈愿详情∨', self)  # 祈愿详情按钮
-        self.information_button.setFont(QFont(_global_font, 9))
-        self.information_button.clicked.connect(self.toggle_information)
-        self.set_widget_style(self.information_button, 'gray', 'white', 150, 26)
+        self.information_toggle_button = QPushButton('∨祈愿详情∨', self)  # 祈愿详情按钮
+        self.information_toggle_button.setFont(QFont(_global_font, 9))
+        self.information_toggle_button.clicked.connect(self.toggle_information)
+        self.set_widget_style(self.information_toggle_button, 'gray', 'white', 150, 26)
 
         self.newspaper = QLabel('', self)  # 动态信息报纸
         self.newspaper.setFont(QFont(_global_font, 11))
@@ -103,7 +103,7 @@ class WishWindow(MovableWindow):
         self.close_button.clicked.connect(self.close) 
         self.set_widget_style(self.close_button, 'red', 'white', 30, 30)
         
-        for _widget in [self.title_label, self.information_button, 1, self.newspaper, 1, self.history_button, self.minimize_button, self.settings_button, self.close_button]:  # 标题栏布局
+        for _widget in [self.title_label, self.information_toggle_button, 1, self.newspaper, 1, self.history_button, self.minimize_button, self.settings_button, self.close_button]:  # 标题栏布局
             try: self.header_layout.addWidget(_widget)
             except TypeError: self.header_layout.addStretch(_widget)
 
@@ -316,9 +316,9 @@ class WishWindow(MovableWindow):
         visible = not self.information.isVisible()
         
         if self.root_settings.LANGUAGE_INDEX == 0:
-            self.information_button.setText('∧祈愿详情∧' if visible else '∨祈愿详情∨')
+            self.information_toggle_button.setText('∧祈愿详情∧' if visible else '∨祈愿详情∨')
         else:
-            self.information_button.setText('∧Details∧' if visible else '∨Details∨')
+            self.information_toggle_button.setText('∧Details∧' if visible else '∨Details∨')
 
         def _on_value_changed(value):  # 动画每一帧都调整窗口大小
             self.information.setMinimumHeight(value)

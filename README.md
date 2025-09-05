@@ -4,7 +4,7 @@
 
 A Qt-based desktop gadget for randomly selecting student numbers.
 
-**当前正式版：**`3.4.9` &emsp;&emsp;**当前开发版本：**`3.5.0dev0522a`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
+**当前正式版：**`3.4.9` &emsp;&emsp;**当前开发版本：**`3.5.0dev0522c`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
 
 > “无论当下的境遇如何，属于幸运观众们的星空中将永远闪耀着你的位置。”
 >
@@ -33,6 +33,7 @@ A Qt-based desktop gadget for randomly selecting student numbers.
     ||| 修复 |||
 
     · 修复了祈愿 · 幸运观众在特定系统环境中无法运行的问题。
+    · 修复了切换语言时，背景图片、保底模式及保底数异常重置的问题。
 
 ## 祈愿 · 幸运观众 3.4：「可视化心愿」（Blessing in Sight）：头像与祈愿历史记录（2025年4月11日）
 
