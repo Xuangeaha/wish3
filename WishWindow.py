@@ -287,14 +287,16 @@ class WishWindow(MovableWindow):
         else:
             self.update_label_timer.stop()
 
-    def reset_guarantee(self):  # 重置保底
+    def reset_guarantee(self, from_context_menu:bool=False):  # 重置保底
         self.history_last = []
         self.lucky_rest = self.supportable_numbers.copy()
         self.pick_num, self.pick_num_rest, self.is_in_guarantee = 0, self.GUARANTEE[1], False
         if self.root_settings.LANGUAGE_INDEX == 0:
-            self.send_newspaper('保底已重置..')
+            self.send_newspaper('保底已重置..', force_show=from_context_menu)
         else:
-            self.send_newspaper('Guarantee reset..')
+            self.send_newspaper('Guarantee reset..', force_show=from_context_menu)
+    
+    # def reset_guarantee_from_context_menu(self):  # 从右键菜单重置保底
 
     class Resolver:  # 「自定义祈愿学号池」学号解析器
         def resolve(input_str:str) -> list:
@@ -354,8 +356,8 @@ class WishWindow(MovableWindow):
         self.anim.valueChanged.connect(_on_value_changed)
         self.anim.start()
         
-    def send_newspaper(self, news:str, show_time:int=5000):  # 发报纸
-        if news != self.newspaper.text():
+    def send_newspaper(self, news:str, show_time:int=5000, force_show:bool=False):  # 发报纸
+        if force_show or news != self.newspaper.text():
             self.newspaper.setText(news)
             self.newspaper.setVisible(True)
             self.adjustSize()
@@ -435,7 +437,7 @@ class WishWindow(MovableWindow):
         context_menu.addSeparator()
 
         context_menu_reset_guarantee = context_menu.addAction("重置保底" if self.root_settings.LANGUAGE_INDEX == 0 else "Reset guarantee")
-        context_menu_reset_guarantee.triggered.connect(self.reset_guarantee)
+        context_menu_reset_guarantee.triggered.connect(lambda: self.reset_guarantee(from_context_menu=True))
 
         context_menu_show_history = context_menu.addAction("祈愿历史记录" if self.root_settings.LANGUAGE_INDEX == 0 else "Wish History")
         context_menu_show_history.triggered.connect(self.show_history)

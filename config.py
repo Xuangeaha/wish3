@@ -6,8 +6,8 @@ Copyright © 2024-2025 XuangeAha(轩哥啊哈OvO/卡猫kat)
 """
 
 _ver_short: str = '3.5'  # 短版本号
-_ver: str = '3.5.0-Release'  # 版本号
-_ver_type: str = '正式版'  # 版本类型
+_ver: str = '3.5.1-dev0916a'  # 版本号
+_ver_type: str = '测试版本'  # 版本类型
 
 _morning_newspaper: list[str] = ['3.5版本「流韵祈念」现已开启！', '感谢 3,000+ 次下载！']  # 晨报
 
