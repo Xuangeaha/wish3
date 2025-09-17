@@ -4,7 +4,7 @@
 
 A Qt-based desktop gadget for randomly selecting student numbers.
 
-**当前正式版：**`3.5` &emsp;&emsp;**当前开发版本：**`3.5.0-Release`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
+**当前正式版：**`3.5` &emsp;&emsp;**当前开发版本：**`3.5.1-exp0918`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
 
 > “无论当下的境遇如何，属于幸运观众们的星空中将永远闪耀着你的位置。”
 >

@@ -15,6 +15,7 @@ import pyperclip
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 from SettingsWindow import SettingsWindow
+from DeveloperCommandWindow import DeveloperCommandWindow
 import MessageBox
 
 from config import _ver_short, _ver, _ver_type, _iconpath, _base_numbers, _default_lang , _EVER_excluded_numbers, _morning_newspaper, _is_special_wish_on, _is_debug_on
@@ -67,6 +68,7 @@ class WishWindow(MovableWindow):
         _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0]  
 
         self.root_settings = SettingsWindow(self)
+        self.root_developer_command_window = DeveloperCommandWindow(self, self.root_settings)
         self.main_layout = QVBoxLayout(self)
 
         self.header_layout = QHBoxLayout()  # 标题栏
@@ -128,12 +130,12 @@ class WishWindow(MovableWindow):
 
         self.button_once = QPushButton('抽 1 次', self)  # 抽 1 次按钮
         self.button_once.setFont(QFont(_global_font, 13))
-        self.button_once.clicked.connect(self.pick_once)
+        self.button_once.clicked.connect(lambda: self.pick_once())
         self.button_once.setFixedSize(160, 60)
 
         self.button_ten = QPushButton('抽 10 次', self)  # 抽 10 次按钮
         self.button_ten.setFont(QFont(_global_font, 13))
-        self.button_ten.clicked.connect(self.pick_ten)
+        self.button_ten.clicked.connect(lambda: self.pick_ten())
         self.button_ten.setFixedSize(160, 60)
 
         self.bottom_layout.addLayout(self.label_number_layout)  # 底部栏布局
@@ -155,6 +157,8 @@ class WishWindow(MovableWindow):
         self.root_settings.toggle_language(self.root_settings.LANGUAGE_INDEX)
 
         self.send_newspaper(random.choice(_morning_newspaper), show_time=4000)  # 晨报
+
+        self.root_developer_command_window.show()
 
     @staticmethod
     def set_widget_style(widget, background_color:str, color:str, sizex:int, sizey:int):  # 元件格式包装
@@ -239,12 +243,17 @@ class WishWindow(MovableWindow):
     ##############################################################################################################
     ##############################################################################################################
     
-    def pick_once(self):  # 抽 1 次
+    def pick_once(self, forced_number=None):  # 抽 1 次
+        print(forced_number)
         if hasattr(self, 'update_label_timer') and self.update_label_timer.isActive(): # 避免10抽1抽连续抽取
             return
         
-        lucky_one = self.get_lucky()  # 抽学号
-        
+        if forced_number is not None:
+            self.history_all.append(forced_number)
+            lucky_one = forced_number
+        else:
+            lucky_one = self.get_lucky()
+
         profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'  # 头像处理
         
         if self.is_avatar_shown and QPixmap(profile_photo_path).isNull() is False:  # 显示头像且头像存在
@@ -264,14 +273,18 @@ class WishWindow(MovableWindow):
         self.adjustSize()
         self.adjustSize()
 
-    def pick_ten(self):  # 抽 10 次
+    def pick_ten(self, forced_numbers=None):  # 抽 10 次
         self.label_number_avatar.setFixedWidth(0)
         self.label_number_avatar.clear()
         self.label_number_text.setFixedWidth(620)
         self.label_number_text.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
         self.update_label_index = 0
         self.update_label_timer = QTimer(self)
-        self.numbers = [self.get_lucky() for _ in range(10)]
+        if forced_numbers is not None:
+            self.numbers = forced_numbers
+        else:
+            self.numbers = [self.get_lucky() for _ in range(10)]
+
         self.update_label_timer.timeout.connect(self.update_label)
         self.update_label_timer.start(50)
 
@@ -295,8 +308,7 @@ class WishWindow(MovableWindow):
             self.send_newspaper('保底已重置..', force_show=from_context_menu)
         else:
             self.send_newspaper('Guarantee reset..', force_show=from_context_menu)
-    
-    # def reset_guarantee_from_context_menu(self):  # 从右键菜单重置保底
+
 
     class Resolver:  # 「自定义祈愿学号池」学号解析器
         def resolve(input_str:str) -> list:
@@ -445,10 +457,13 @@ class WishWindow(MovableWindow):
         context_menu_clear_label = context_menu.addAction("清除学号显示" if self.root_settings.LANGUAGE_INDEX == 0 else "Clear number display")
         context_menu_clear_label.triggered.connect(self.clear_label)
 
-        context_menu.addSeparator()
-
         context_menu_toggle_onfront = context_menu.addAction("置顶窗口" if self.root_settings.LANGUAGE_INDEX == 0 else "Pin on top")
         context_menu_toggle_onfront.triggered.connect(self.root_settings.toggle_onfront)
+
+        context_menu.addSeparator()
+
+        context_menu_developer_command = context_menu.addAction("开发者指令.." if self.root_settings.LANGUAGE_INDEX == 0 else "Developer Command..")
+        context_menu_developer_command.triggered.connect(self.root_developer_command_window.show)
 
         context_menu_open_settings_window = context_menu.addAction("设置.." if self.root_settings.LANGUAGE_INDEX == 0 else "Settings..")
         context_menu_open_settings_window.triggered.connect(self.root_settings.show)

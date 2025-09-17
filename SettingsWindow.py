@@ -320,7 +320,6 @@ class SettingsWindow(MovableWindow):
             self.wish_window.setWindowFlags(self.wish_window.windowFlags() & ~Qt.WindowStaysOnTopHint)
             self.wish_window.show()
             MessageBox.show_messagebox(message='窗口已取消置顶。' if self.LANGUAGE_INDEX == 0 else 'Window unpinned.', duration=1.5)
-        pass
 
     def show_dialoguebox(self, message:str, lang:int=int, type=QMessageBox.Warning):  # 消息框弹出
         dialoguebox = QMessageBox()  
