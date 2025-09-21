@@ -91,7 +91,7 @@ class SettingsWindow(MovableWindow):
         self.guarantee_combo = QComboBox(self)
         self.guarantee_combo.setFont(QFont(_global_font, 12))
         self.guarantee_item_name_zh = "8-60保底" if wish_window.GUARANTEE == [8,60] else f"自适应保底（当前{wish_window.GUARANTEE[0]}-{wish_window.GUARANTEE[1]}）"
-        self.guarantee_item_name_en = "8-60 Guarantee" if wish_window.GUARANTEE == [8,60] else f"Auto Adaptive Guarantee (Currently {wish_window.GUARANTEE[0]}-{wish_window.GUARANTEE[1]})"
+        self.guarantee_item_name_en = "8-60 Guarantee" if wish_window.GUARANTEE == [8,60] else f"Adaptive Guarantee (Currently {wish_window.GUARANTEE[0]}-{wish_window.GUARANTEE[1]})"
         self.guarantee_combo.addItem(self.guarantee_item_name_zh)
         self.guarantee_combo.addItem("无保底")
         self.guarantee_combo.currentIndexChanged.connect(self.toggle_guarantee)

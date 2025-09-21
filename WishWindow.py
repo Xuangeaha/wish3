@@ -158,7 +158,6 @@ class WishWindow(MovableWindow):
 
         self.send_newspaper(random.choice(_morning_newspaper), show_time=4000)  # 晨报
 
-        self.root_developer_command_window.show()
 
     @staticmethod
     def set_widget_style(widget, background_color:str, color:str, sizex:int, sizey:int):  # 元件格式包装
@@ -244,7 +243,6 @@ class WishWindow(MovableWindow):
     ##############################################################################################################
     
     def pick_once(self, forced_number=None):  # 抽 1 次
-        print(forced_number)
         if hasattr(self, 'update_label_timer') and self.update_label_timer.isActive(): # 避免10抽1抽连续抽取
             return
         

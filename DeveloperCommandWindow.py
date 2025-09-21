@@ -5,7 +5,7 @@ Copyright © 2025 XuangeAha(轩哥啊哈OvO/卡猫kat)
 
 """
 
-from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QLineEdit
+from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QLineEdit, QMessageBox
 from PyQt5.QtGui import QFont, QFontDatabase, QIcon
 from PyQt5.QtCore import Qt
 import shlex
@@ -97,32 +97,22 @@ class DeveloperCommandWindow(MovableWindow):
         args = parts[1:]
 
         command_map = {
-            # 退出命令
-            'esc': lambda: self.wish_window.close(),
+            'esc': lambda: self.wish_window.close(),  # 退出
             'exit': lambda: self.wish_window.close(),
             'quit': lambda: self.wish_window.close(),
             'close': lambda: self.wish_window.close(),
             'kill': lambda: self.wish_window.close(),
-            
-            # 单抽命令
-            'pick1': lambda: self.wish_window.pick_once(),
+            'pick1': lambda: self.wish_window.pick_once(),  # 单抽
             'pickonce': lambda: self.wish_window.pick_once(),
             'p1': lambda: self.wish_window.pick_once(),
-            
-            # 十连命令
-            'pick10': lambda: self.wish_window.pick_ten(),
+            'pick10': lambda: self.wish_window.pick_ten(),  # 十连
             'pickten': lambda: self.wish_window.pick_ten(),
             'p10': lambda: self.wish_window.pick_ten(),
-            
-            # 自定义抽取命令
-            'pick': self._handle_pick_command,
+            'pick': self._handle_pick_command,  # 自选
             'p': self._handle_pick_command,
-            
-            # 重置命令
-            'reset': self._handle_reset_command,
-            
-            # 历史记录命令
-            'history': self._handle_history_command
+            'number': self._handle_number_command,  # 数字调整
+            'reset': self._handle_reset_command,  # 重置
+            'history': self._handle_history_command  # 历史记录
         }
 
         if cmd_name not in command_map:
@@ -136,9 +126,12 @@ class DeveloperCommandWindow(MovableWindow):
         except Exception as e:
             MessageBox.show_messagebox(f"[开发者指令] ⚠执行指令时出错: {e}" if self.root_settings.LANGUAGE_INDEX == 0 else f"[Developer Command] ⚠Error executing command: {e}")
 
-    # 辅助方法
-    def _handle_pick_command(self):
-        """处理抽取命令"""
+    def _get_current_args(self):  # 获取当前指令参数
+        command = self.command_input.text().strip()
+        parts = shlex.split(command[1:])
+        return parts[1:] if len(parts) > 1 else []
+    
+    def _handle_pick_command(self):  # 自选
         args = self._get_current_args()
         try:
             if len(args) == 1:
@@ -160,8 +153,62 @@ class DeveloperCommandWindow(MovableWindow):
             self.command_input.setFocus()
             self.command_input.selectAll()
 
-    def _handle_reset_command(self):
-        """处理重置命令"""
+    def _handle_number_command(self):  # 数字调整
+        args = self._get_current_args()
+        if not args or args[0] in ['show']:
+            self.root_settings.show_dialoguebox(message=f"[开发者指令] 当前学号池: {self.wish_window.supportable_numbers}" if self.root_settings.LANGUAGE_INDEX == 0 else f"[Developer Command] Current number pool: {self.wish_window.supportable_numbers}", type=QMessageBox.Information)
+        elif args[0] in ['set']:
+            new_number_list = self.wish_window.Resolver.resolve(args[1])
+            if new_number_list in [[-1],[]]:
+                MessageBox.show_messagebox(f"[开发者指令] ⚠学号池设置错误: {args[1]}" if self.root_settings.LANGUAGE_INDEX == 0 else f"[Developer Command] ⚠Number pool setting error: {args[1]}")
+                self.command_input.setFocus()
+                self.command_input.selectAll()
+                return
+            else:
+                self.wish_window.supportable_numbers = new_number_list
+                self.wish_window.lucky_rest = self.wish_window.supportable_numbers.copy()
+                self.wish_window.reset_guarantee()
+                length = len(self.wish_window.supportable_numbers)
+                self.wish_window.GUARANTEE = [int(length/5 + 1) if length < 20 else 8, (int(length*1.5) // 10 + 1) * 10]
+
+                self.information_list_zh = [
+                    f"当前保底机制：  · 每{self.wish_window.GUARANTEE[1]}次祈愿内，所有学号必出至少一次。\n                                · 任意连续{self.wish_window.GUARANTEE[0]}次祈愿内，相同学号至多出一次。",
+                    "当前保底机制：  无保底全随机"]
+                self.information_list_en = [
+                    f"Current Mechanism of Guarantee: \n  Each number is guaranteed to appear at least once within {self.wish_window.GUARANTEE[1]} wishes.\n   The same number can appear at most once within any consecutive {self.wish_window.GUARANTEE[0]} wishes.",
+                    "Current Mechanism of Guarantee:    Completely random with no guarantee"]
+                if self.wish_window.guarantee_mode == 0:
+                    self.wish_window.information.setText(self.information_list_zh[0] if self.root_settings.LANGUAGE_INDEX == 0 else self.information_list_en[0])
+                self.root_settings.guarantee_combo.setItemText(0, f"自适应保底（当前{self.wish_window.GUARANTEE[0]}-{self.wish_window.GUARANTEE[1]}）" if self.root_settings.LANGUAGE_INDEX == 0 else f"Adaptive Guarantee (Currently {self.wish_window.GUARANTEE[0]}-{self.wish_window.GUARANTEE[1]})")
+        elif args[0] in ['add']:
+            new_number_list = self.wish_window.Resolver.resolve(args[1])
+            if new_number_list in [[-1],[]]:
+                MessageBox.show_messagebox(f"[开发者指令] ⚠学号池添加错误: {args[1]}" if self.root_settings.LANGUAGE_INDEX == 0 else f"[Developer Command] ⚠Number pool addition error: {args[1]}")
+                self.command_input.setFocus()
+                self.command_input.selectAll()
+                return
+            else:
+                for number in new_number_list:
+                    if number not in self.wish_window.supportable_numbers:
+                        self.wish_window.supportable_numbers.append(number)
+                self.wish_window.supportable_numbers.sort()
+                self.wish_window.lucky_rest = self.wish_window.supportable_numbers.copy()
+                length = len(self.wish_window.supportable_numbers)
+                self.wish_window.GUARANTEE = [int(length/5 + 1) if length < 20 else 8, (int(length*1.5) // 10 + 1) * 10]
+
+                self.information_list_zh = [
+                    f"当前保底机制：  · 每{self.wish_window.GUARANTEE[1]}次祈愿内，所有学号必出至少一次。\n                                · 任意连续{self.wish_window.GUARANTEE[0]}次祈愿内，相同学号至多出一次。",
+                    "当前保底机制：  无保底全随机"]
+                self.information_list_en = [
+                    f"Current Mechanism of Guarantee: \n  Each number is guaranteed to appear at least once within {self.wish_window.GUARANTEE[1]} wishes.\n   The same number can appear at most once within any consecutive {self.wish_window.GUARANTEE[0]} wishes.",
+                    "Current Mechanism of Guarantee:    Completely random with no guarantee"]
+                if self.wish_window.guarantee_mode == 0:
+                    self.wish_window.information.setText(self.information_list_zh[0] if self.root_settings.LANGUAGE_INDEX == 0 else self.information_list_en[0])
+                self.root_settings.guarantee_combo.setItemText(0, f"自适应保底（当前{self.wish_window.GUARANTEE[0]}-{self.wish_window.GUARANTEE[1]}）")
+        else:
+            self._unknown_command('number')
+
+    def _handle_reset_command(self):  # 重置
         args = self._get_current_args()
         if not args or args[0] == 'all':
             self.wish_window.hide_newspaper()
@@ -173,8 +220,7 @@ class DeveloperCommandWindow(MovableWindow):
         else:
             self._unknown_command('reset')
 
-    def _handle_history_command(self):
-        """处理历史记录命令"""
+    def _handle_history_command(self):  # 历史记录
         args = self._get_current_args()
         if not args or args[0] in ['show']:
             self.wish_window.show_history()
@@ -183,14 +229,8 @@ class DeveloperCommandWindow(MovableWindow):
         else:
             self._unknown_command('history')
 
-    def _unknown_command(self, cmd_name):
-        """处理未知命令"""
+    def _unknown_command(self, cmd_name):  # 未知指令
         MessageBox.show_messagebox(f"[开发者指令] ⚠未知指令: {cmd_name}" if self.root_settings.LANGUAGE_INDEX == 0 else f"[Developer Command] ⚠Unknown command: {cmd_name}")
         self.command_input.setFocus()
         self.command_input.selectAll()
 
-    def _get_current_args(self):
-        """获取当前命令参数"""
-        command = self.command_input.text().strip()
-        parts = shlex.split(command[1:])
-        return parts[1:] if len(parts) > 1 else []
