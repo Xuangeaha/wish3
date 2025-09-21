@@ -5,8 +5,8 @@ Copyright © 2023-2025 XuangeAha(轩哥啊哈OvO)
 
 """
 
-from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox, QGraphicsOpacityEffect, QMenu
-from PyQt5.QtGui import QFont, QFontDatabase, QIcon, QPixmap
+from PyQt5.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox, QGraphicsOpacityEffect, QMenu, QGraphicsDropShadowEffect
+from PyQt5.QtGui import QFont, QFontDatabase, QIcon, QPixmap, QColor
 from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QEasingCurve
 import time
 import random
@@ -18,8 +18,7 @@ from SettingsWindow import SettingsWindow
 from DeveloperCommandWindow import DeveloperCommandWindow
 import MessageBox
 
-from config import _ver_short, _ver, _ver_type, _iconpath, _base_numbers, _default_lang , _EVER_excluded_numbers, _morning_newspaper, _is_special_wish_on, _is_debug_on
-
+from config import _ver_short, _ver, _ver_type, _iconpath, _base_numbers, _default_lang , _EVER_excluded_numbers, _morning_newspaper, _is_special_wish_on, _is_debug_on, _is_zlb_on
 class WishWindow(MovableWindow):
     def __init__(self, parent=None):
         super(WishWindow, self).__init__(parent)
@@ -250,15 +249,50 @@ class WishWindow(MovableWindow):
             self.history_all.append(forced_number)
             lucky_one = forced_number
         else:
-            lucky_one = self.get_lucky()
-
+            self._is_zlb = random.randint(1, 100) == 1
+            if _is_zlb_on and self._is_zlb:
+                teachers = ['@teacher.zlb', '@teacher.cb']
+                lucky_one = random.choice(teachers)
+            else:
+                lucky_one = self.get_lucky()
+                    
         profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'  # 头像处理
         
+        teacher_mapping = {
+            '@teacher.zlb': '张立波',
+            '@teacher.cb': '程斌'
+        }
+        lucky_one = teacher_mapping.get(lucky_one, lucky_one)
+        
+        self.shadow_effect = QGraphicsDropShadowEffect()
+        self.shadow_effect.setBlurRadius(10)  # 模糊半径
+        self.shadow_effect.setColor(QColor(255, 215, 0))  # 金色发光
+        self.shadow_effect.setOffset(0, 0)  # 偏移量
+        self.normal_style = "QLabel{}"
+        self.gold_style = """
+            QLabel {
+                color: qlineargradient(
+                    x1: 0, y1: 0, x2: 1, y2: 0,
+                    stop: 0 #FFD700, 
+                    stop: 0.5 #DAA520, 
+                    stop: 1 #FFD700
+                );
+                font-size: 34px;
+            }
+        """
+
         if self.is_avatar_shown and QPixmap(profile_photo_path).isNull() is False:  # 显示头像且头像存在
             pixmap = QPixmap(profile_photo_path).scaled(55, 55, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.label_number_avatar.setFixedWidth(310)
-            self.label_number_avatar.setPixmap(pixmap)
             self.label_number_text.setFixedWidth(310)
+            self.label_number_text.setGraphicsEffect(None)
+            self.label_number_text.setStyleSheet(self.normal_style)
+            if self._is_zlb:
+                self.label_number_avatar.setFixedWidth(300)
+                self.label_number_text.setFixedWidth(320)
+                self.label_number_text.setGraphicsEffect(self.shadow_effect)
+                self.label_number_text.setStyleSheet(self.gold_style)
+            self.label_number_avatar.setPixmap(pixmap)
             self.label_number_text.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
             self.label_number_text.setText(" "+str(lucky_one))
         else:  # 不显示头像或头像不存在
@@ -274,6 +308,9 @@ class WishWindow(MovableWindow):
     def pick_ten(self, forced_numbers=None):  # 抽 10 次
         self.label_number_avatar.setFixedWidth(0)
         self.label_number_avatar.clear()
+        self.normal_style = "QLabel{}"
+        self.label_number_text.setGraphicsEffect(None)
+        self.label_number_text.setStyleSheet(self.normal_style)
         self.label_number_text.setFixedWidth(620)
         self.label_number_text.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
         self.update_label_index = 0
