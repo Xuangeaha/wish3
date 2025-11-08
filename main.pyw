@@ -14,8 +14,6 @@ import sys
 
 from WishWindow import WishWindow
 
-from config import _is_profilephotoupdatewindow_shown
-
 
 # from exceptionHandler import handle_exception
 
@@ -27,11 +25,6 @@ def run():
     
     root = WishWindow()
     root.show()
-
-    if _is_profilephotoupdatewindow_shown:
-        from ProfilephotoUpdateWindow import ProfilephotoUpdateWindow
-        profile_photo_window = ProfilephotoUpdateWindow()
-        profile_photo_window.show()
 
     app.exec_()
 

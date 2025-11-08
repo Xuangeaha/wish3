@@ -15,7 +15,6 @@ import pyperclip
 from RoundShadow import RoundShadow
 from MovableWindow import MovableWindow
 from SettingsWindow import SettingsWindow
-from DeveloperCommandWindow import DeveloperCommandWindow
 import MessageBox
 
 from config import _ver_short, _ver, _ver_type, _iconpath, _base_numbers, _default_lang , _EVER_excluded_numbers, _morning_newspaper, _is_special_wish_on, _is_debug_on, _is_zlb_on
@@ -67,7 +66,6 @@ class WishWindow(MovableWindow):
         _global_font = QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(r'.wish\fonts\HYWH-85w Heavy.ttf'))[0]  
 
         self.root_settings = SettingsWindow(self)
-        self.root_developer_command_window = DeveloperCommandWindow(self, self.root_settings)
         self.main_layout = QVBoxLayout(self)
 
         self.header_layout = QHBoxLayout()  # 标题栏
@@ -496,9 +494,6 @@ class WishWindow(MovableWindow):
         context_menu_toggle_onfront.triggered.connect(self.root_settings.toggle_onfront)
 
         context_menu.addSeparator()
-
-        context_menu_developer_command = context_menu.addAction("开发者指令.." if self.root_settings.LANGUAGE_INDEX == 0 else "Developer Command..")
-        context_menu_developer_command.triggered.connect(self.root_developer_command_window.show)
 
         context_menu_open_settings_window = context_menu.addAction("设置.." if self.root_settings.LANGUAGE_INDEX == 0 else "Settings..")
         context_menu_open_settings_window.triggered.connect(self.root_settings.show)
