@@ -35,6 +35,7 @@ class SettingsWindow(MovableWindow):
         self.lang_text = STATIC_STRINGS[str(self.LANGUAGE_INDEX)]
         
         self.is_initializing = False
+        self.onfront = False
 
         self.settings_layout = QVBoxLayout(self)
 
@@ -306,14 +307,20 @@ class SettingsWindow(MovableWindow):
             break
     
     def toggle_onfront(self):  # 窗口置顶切换
-        if self.onfront_checkbox.isChecked():
+        self.onfront_checkbox.blockSignals(True)
+        if self.onfront == False:
+            self.onfront = True
+            self.onfront_checkbox.setChecked(True)
             self.wish_window.setWindowFlags(self.wish_window.windowFlags() | Qt.WindowStaysOnTopHint)
             self.wish_window.show()
             MessageBox.show_messagebox(message='窗口已置顶。' if self.LANGUAGE_INDEX == 0 else 'Window pinned on top.', duration=1.5)
         else:
+            self.onfront = False
+            self.onfront_checkbox.setChecked(False)
             self.wish_window.setWindowFlags(self.wish_window.windowFlags() & ~Qt.WindowStaysOnTopHint)
             self.wish_window.show()
             MessageBox.show_messagebox(message='窗口已取消置顶。' if self.LANGUAGE_INDEX == 0 else 'Window unpinned.', duration=1.5)
+        self.onfront_checkbox.blockSignals(False)
 
     def show_dialoguebox(self, message:str, lang:int=int, type=QMessageBox.Warning):  # 消息框弹出
         dialoguebox = QMessageBox()  

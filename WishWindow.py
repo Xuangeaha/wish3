@@ -298,7 +298,7 @@ class WishWindow(MovableWindow):
         self.adjustSize()
         self.adjustSize()
 
-    def pick_ten(self, forced_numbers=None):  # 抽 10 次
+    def pick_ten(self):  # 抽 10 次
         self.label_number_avatar.setFixedWidth(0)
         self.label_number_avatar.clear()
         self.normal_style = "QLabel{}"
@@ -308,10 +308,7 @@ class WishWindow(MovableWindow):
         self.label_number_text.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
         self.update_label_index = 0
         self.update_label_timer = QTimer(self)
-        if forced_numbers is not None:
-            self.numbers = forced_numbers
-        else:
-            self.numbers = [self.get_lucky() for _ in range(10)]
+        self.numbers = [self.get_lucky() for _ in range(10)]
 
         self.update_label_timer.timeout.connect(self.update_label)
         self.update_label_timer.start(50)
