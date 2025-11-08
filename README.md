@@ -4,7 +4,7 @@
 
 A Qt-based desktop gadget for randomly selecting student numbers.
 
-**当前正式版：**`3.5.2` &emsp;&emsp;**当前开发版本：**`3.5.2-Release`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
+**当前正式版：**`3.5.3` &emsp;&emsp;**当前开发版本：**`3.5.3-Release`&emsp;&emsp;![Downloads](https://vsmarketplacebadges.dev/downloads/xuangeaha.wish3-whos-the-luckiest-dog.svg?&subject=全球下载量（次）)
 
 > “无论当下的境遇如何，属于幸运观众们的星空中将永远闪耀着你的位置。”
 >
@@ -23,8 +23,6 @@ A Qt-based desktop gadget for randomly selecting student numbers.
     
         · 动画效果 (3.5.0-experimental6~)
             现在软件增加了多处非线性动画效果。
-    
-    ————————————————————————————————————————————————————————————————————————————————
 
     ||| 修复 |||
 
@@ -43,8 +41,6 @@ A Qt-based desktop gadget for randomly selecting student numbers.
 
     · 祈愿历史记录 (3.4.0dev00.0319a~)
         现在点击祈愿窗口顶栏“历史”按钮即可显示祈愿历史记录、导出时间，并复制到剪贴板。
-
-    ————————————————————————————————————————————————————————————————————————————————
 
     ||| 修复 |||
 
@@ -75,8 +71,6 @@ A Qt-based desktop gadget for randomly selecting student numbers.
             系统将自动调整保底机制以适应自定义学号情况。
             · 格式示例：“1-50 76-88 -10 -21 +66 +94”。
             · 如未填写或格式错误，学号池及保底机制将设置为默认。
-
-    ————————————————————————————————————————————————————————————————————————————————
 
     ||| 修改 |||
 
@@ -115,13 +109,9 @@ A Qt-based desktop gadget for randomly selecting student numbers.
     · 祈愿窗口置顶显示 (3.1.1-Release~)
         现在可在设置窗口中将祈愿主窗口切换置顶。
 
-    ————————————————————————————————————————————————————————————————————————————————
-
     ||| 修改 |||
 
     · 自该版本起，用户无需手动安装字体文件即可启动程序使用「祈愿 · 幸运观众」字体。
-
-    ————————————————————————————————————————————————————————————————————————————————
 
     ||| 其他 |||
 
@@ -135,8 +125,6 @@ A Qt-based desktop gadget for randomly selecting student numbers.
     · 全新Qt架构。
 
     · 全新外观。
-
-    ————————————————————————————————————————————————————————————————————————————————
 
     ||| 修改 |||
 
