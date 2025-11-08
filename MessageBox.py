@@ -64,7 +64,6 @@ class MessageBox(RoundShadow):
 
         self.show_duration = int(duration * 1000)  # 气泡持续时长
 
-
     def showEvent(self, event):
         self.show_anim.start()
         self.show_move_anim.start()
@@ -92,3 +91,4 @@ def show_messagebox(message=str, duration:int|float=3):  # 显示消息气泡
     messagebox.show()
     if not QApplication.instance().thread().isRunning():
         app_messagebox.exec_()
+

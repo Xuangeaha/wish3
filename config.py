@@ -5,11 +5,11 @@ Copyright © 2024-2025 XuangeAha(轩哥啊哈OvO/卡猫kat)
 
 """
 
-_ver_short: str = '3.5.1'  # 短版本号
-_ver: str = '3.5.1-Release'  # 版本号
+_ver_short: str = '3.5.3'  # 短版本号
+_ver: str = '3.5.3-Release'  # 版本号
 _ver_type: str = '正式版'  # 版本类型
 
-_morning_newspaper: list[str] = ['3.5.1版本 现已开启！', '感谢 3,100+ 次下载！']  # 晨报
+_morning_newspaper: list[str] = ['3.5.3版本 现已开启！', '感谢 3,300+ 次下载！']  # 晨报
 
 _default_lang: int = 0  # 默认语言
 _iconpath: str = r'wish.ico'  # 图标路径

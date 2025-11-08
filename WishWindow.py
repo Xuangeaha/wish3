@@ -153,8 +153,7 @@ class WishWindow(MovableWindow):
 
         self.root_settings.toggle_language(self.root_settings.LANGUAGE_INDEX)
 
-        self.send_newspaper(random.choice(_morning_newspaper), show_time=4000)  # 晨报
-
+        self.send_newspaper(random.choice(_morning_newspaper), show_time=5000)  # 晨报
 
     @staticmethod
     def set_widget_style(widget, background_color:str, color:str, sizex:int, sizey:int):  # 元件格式包装
@@ -239,33 +238,29 @@ class WishWindow(MovableWindow):
     ##############################################################################################################
     ##############################################################################################################
     
-    def pick_once(self, forced_number=None):  # 抽 1 次
+    def pick_once(self):  # 抽 1 次
         if hasattr(self, 'update_label_timer') and self.update_label_timer.isActive(): # 避免10抽1抽连续抽取
             return
         
-        if forced_number is not None:
-            self.history_all.append(forced_number)
-            lucky_one = forced_number
+        self._is_zlb = random.randint(1, 50) == 1  # 教师
+        if _is_zlb_on and self._is_zlb:
+            teachers = ['@teacher.zlb', '@teacher.cb', '@teacher.zsq']
+            lucky_one = random.choice(teachers)
         else:
-            self._is_zlb = random.randint(1, 100) == 1
-            if _is_zlb_on and self._is_zlb:
-                teachers = ['@teacher.zlb', '@teacher.cb']
-                lucky_one = random.choice(teachers)
-            else:
-                lucky_one = self.get_lucky()
+            lucky_one = self.get_lucky()
                     
-        profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'  # 头像处理
-        
-        teacher_mapping = {
+        profile_photo_path = f'.wish/profilephoto/{lucky_one}.jpg'
+        teacher_mapping = {  # 教师头像
             '@teacher.zlb': '张立波',
-            '@teacher.cb': '程斌'
+            '@teacher.cb': '程斌',
+            '@teacher.zsq': '张双桥'
         }
         lucky_one = teacher_mapping.get(lucky_one, lucky_one)
         
-        self.shadow_effect = QGraphicsDropShadowEffect()
-        self.shadow_effect.setBlurRadius(10)  # 模糊半径
-        self.shadow_effect.setColor(QColor(255, 215, 0))  # 金色发光
-        self.shadow_effect.setOffset(0, 0)  # 偏移量
+        self.shadow_effect = QGraphicsDropShadowEffect()  # 金色发光效果
+        self.shadow_effect.setBlurRadius(10)
+        self.shadow_effect.setColor(QColor(255, 215, 0))
+        self.shadow_effect.setOffset(0, 0)
         self.normal_style = "QLabel{}"
         self.gold_style = """
             QLabel {
@@ -279,13 +274,13 @@ class WishWindow(MovableWindow):
             }
         """
 
-        if self.is_avatar_shown and QPixmap(profile_photo_path).isNull() is False:  # 显示头像且头像存在
+        if self.is_avatar_shown and QPixmap(profile_photo_path).isNull() is False:  # 显示头像
             pixmap = QPixmap(profile_photo_path).scaled(55, 55, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.label_number_avatar.setFixedWidth(310)
             self.label_number_text.setFixedWidth(310)
             self.label_number_text.setGraphicsEffect(None)
             self.label_number_text.setStyleSheet(self.normal_style)
-            if self._is_zlb:
+            if self._is_zlb:  # 教师金色发光显示
                 self.label_number_avatar.setFixedWidth(300)
                 self.label_number_text.setFixedWidth(320)
                 self.label_number_text.setGraphicsEffect(self.shadow_effect)
@@ -370,12 +365,12 @@ class WishWindow(MovableWindow):
         else:
             self.information_toggle_button.setText('∧Details∧' if visible else '∨Details∨')
 
-        def _on_value_changed(value):  # 动画每一帧都调整窗口大小
+        def _on_value_changed(value):  # 每帧调整窗口大小
             self.information.setMaximumHeight(value)
             self.information.setMinimumHeight(value)
             self.adjustSize()
 
-        def _on_anim_finished():  # 动画结束时隐藏information
+        def _on_anim_finished():  # 动画结束隐藏information
             if not visible:
                 self.information.setVisible(False)
                 self.adjustSize()
@@ -384,9 +379,9 @@ class WishWindow(MovableWindow):
         self.anim.setDuration(300)
         
         if visible:  # 展开
-            self.information.setFixedHeight(0)  # 显示information但初始高度为0
+            self.information.setFixedHeight(0)
             self.information.setVisible(True)
-            self.information.setFixedHeight(16777215)  # 获取完整展开时的高度
+            self.information.setFixedHeight(16777215)
             full_height = self.information.sizeHint().height() + 20
             self.information.setFixedHeight(0)
             self.anim.setStartValue(0)
@@ -397,7 +392,7 @@ class WishWindow(MovableWindow):
             self.anim.setEndValue(0)
             self.anim.finished.connect(_on_anim_finished)
         
-        self.anim.setEasingCurve(QEasingCurve.OutQuad)  # 使用缓出动画曲线
+        self.anim.setEasingCurve(QEasingCurve.OutQuad)
         self.anim.valueChanged.connect(_on_value_changed)
         self.anim.start()
         

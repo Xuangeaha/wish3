@@ -84,3 +84,4 @@ class AboutWindow(MovableWindow):
         import webbrowser
         webbrowser.open('https://github.com/xuangeaha/wish3')
     
+    

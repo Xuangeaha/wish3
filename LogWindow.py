@@ -70,3 +70,4 @@ class LogWindow(MovableWindow):
         self.setWindowTitle("祈愿 · 幸运观众 - 更新说明")
         self.setWindowIcon(QIcon(_iconpath))
         self.setGeometry(300, 300, 400, 400)
+

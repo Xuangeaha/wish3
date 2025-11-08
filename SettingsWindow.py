@@ -178,9 +178,6 @@ class SettingsWindow(MovableWindow):
         self.about_button.setText(self.lang_text['settings_about'])
         self.log_button.setText(self.lang_text['settings_log'])
         
-        # self.activateWindow()  # 激活以刷新文字 避免 UpdateLayeredWindowIndirect
-        # self.wish_window.activateWindow()
-        
         self.theme_combo.blockSignals(True)  # 阻断信号以防止触发 toggle
         self.guarantee_combo.blockSignals(True)
         current_theme = self.theme_combo.currentIndex()  # 保存当前索引
@@ -218,9 +215,6 @@ class SettingsWindow(MovableWindow):
         self.guarantee_combo.setCurrentIndex(current_guarantee)
         self.theme_combo.blockSignals(False)  # 解除信号阻断
         self.guarantee_combo.blockSignals(False)
-
-        # self.activateWindow()  # 激活以刷新文字 避免 UpdateLayeredWindowIndirect
-        # self.wish_window.activateWindow()
 
     def toggle_theme(self, index:int):  # 2 主题配色切换
         if not hasattr(self.wish_window, 'current_theme_index'):
@@ -315,7 +309,7 @@ class SettingsWindow(MovableWindow):
         if self.onfront_checkbox.isChecked():
             self.wish_window.setWindowFlags(self.wish_window.windowFlags() | Qt.WindowStaysOnTopHint)
             self.wish_window.show()
-            MessageBox.show_messagebox(message='窗口已切换置顶。' if self.LANGUAGE_INDEX == 0 else 'Window pinned on top.', duration=1.5)
+            MessageBox.show_messagebox(message='窗口已置顶。' if self.LANGUAGE_INDEX == 0 else 'Window pinned on top.', duration=1.5)
         else:
             self.wish_window.setWindowFlags(self.wish_window.windowFlags() & ~Qt.WindowStaysOnTopHint)
             self.wish_window.show()
@@ -329,3 +323,4 @@ class SettingsWindow(MovableWindow):
         dialoguebox.setWindowTitle(dialogue_title)
         dialoguebox.setText(message)
         dialoguebox.exec_() 
+
